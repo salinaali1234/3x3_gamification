@@ -1,0 +1,56 @@
+import type { Metadata } from "next";
+import { Bebas_Neue, Inter, JetBrains_Mono } from "next/font/google";
+import { cookies } from "next/headers";
+import "./globals.css";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
+import { getLocaleFromCookieValue, type Locale } from "@/lib/i18n/config";
+import { getCurrentUser } from "@/lib/session";
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const bebas = Bebas_Neue({
+  variable: "--font-bebas",
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+});
+
+const mono = JetBrains_Mono({
+  variable: "--font-mono-fallback",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  title: "3x3 Unites — From the Streets to the Top",
+  description:
+    "Gamification platform for the 3x3 Unites basketball event. Scan QR codes, complete challenges, climb the leaderboard.",
+};
+
+export default async function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+  const cookieStore = await cookies();
+  const locale: Locale = getLocaleFromCookieValue(
+    cookieStore.get("locale")?.value
+  );
+  const user = await getCurrentUser();
+
+  return (
+    <html
+      lang={locale}
+      className={`${inter.variable} ${bebas.variable} ${mono.variable} h-full antialiased`}
+    >
+      <body className="min-h-full flex flex-col bg-brand-black text-brand-white">
+        <SiteHeader locale={locale} user={user} />
+        <main className="flex-1 flex flex-col">{children}</main>
+        <SiteFooter locale={locale} />
+      </body>
+    </html>
+  );
+}
