@@ -18,8 +18,8 @@ export default async function LeaderboardPage() {
       <h1 className="font-display text-5xl sm:text-6xl">{t.leaderboard.title}</h1>
       <p className="mt-3 text-white/70">{t.leaderboard.subtitle}</p>
 
-      <div className="mt-8 rounded-md border border-white/10 overflow-hidden">
-        <table className="w-full">
+      <div className="mt-8 rounded-md border border-white/10 overflow-x-auto">
+        <table className="w-full min-w-[480px]">
           <thead className="bg-white/[0.04]">
             <tr className="text-left text-xs uppercase tracking-wider text-white/50">
               <th className="px-4 py-3 w-12">{t.leaderboard.colRank}</th>

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Bebas_Neue, Inter, JetBrains_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
@@ -29,7 +29,16 @@ const mono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "3x3 Unites — From the Streets to the Top",
   description:
-    "Gamification platform for the 3x3 Unites basketball event. Scan QR codes, complete challenges, climb the leaderboard.",
+    "Gamification platform for the 3x3 Unites basketball event. Enter codes, explore the festival map, complete challenges, climb the leaderboard.",
+  formatDetection: { telephone: false },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+  themeColor: "#000000",
 };
 
 export default async function RootLayout({
@@ -46,9 +55,23 @@ export default async function RootLayout({
       lang={locale}
       className={`${inter.variable} ${bebas.variable} ${mono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-brand-black text-brand-white">
+      <body
+        className="min-h-full flex flex-col bg-brand-black text-brand-white"
+        style={{
+          paddingLeft: "env(safe-area-inset-left)",
+          paddingRight: "env(safe-area-inset-right)",
+        }}
+      >
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[60] focus:rounded focus:bg-brand-green focus:px-3 focus:py-2 focus:text-brand-black"
+        >
+          Skip to content
+        </a>
         <SiteHeader locale={locale} user={user} />
-        <main className="flex-1 flex flex-col">{children}</main>
+        <main id="main-content" className="flex-1 flex flex-col">
+          {children}
+        </main>
         <SiteFooter locale={locale} />
       </body>
     </html>

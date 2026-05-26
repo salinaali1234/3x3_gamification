@@ -10,6 +10,7 @@ import type {
   UserBadge,
   ChallengeAttempt,
   QrCode,
+  WheelPrize,
 } from "./types";
 
 const AVATAR_COLORS = [
@@ -76,148 +77,243 @@ const LAST_INITIALS = [
 
 export const SEED_JOURNEY_STEPS: JourneyStep[] = [
   {
-    id: "step-1",
+    id: "step-rabo-bus",
     order: 1,
-    code: "JOURNEY-01",
-    title: { nl: "Rabobank Court Leader Activatie", en: "Rabobank Court Leader Activation" },
-    location: { nl: "Court 1 — Rabobank zone", en: "Court 1 — Rabobank zone" },
+    code: "JOURNEY-RABO",
+    title: { nl: "Rabo Bus", en: "Rabo Bus" },
+    location: { nl: "Rabobank Bus", en: "Rabobank Bus" },
     description: {
-      nl: "Check in bij de leader activatie en scan de QR op de Rabobank banner.",
-      en: "Check in at the leader activation and scan the QR on the Rabobank banner.",
+      nl: "Bezoek de Rabo Bus en voer de code in die je daar vindt.",
+      en: "Visit the Rabo Bus and enter the code you find there.",
     },
-    points: 50,
-    qrCode: "JOURNEY-01",
+    qrCode: "JOURNEY-RABO",
     accent: "orange",
+    verifyMethod: "code",
   },
   {
-    id: "step-2",
+    id: "step-cultuur-bus",
     order: 2,
-    code: "JOURNEY-02",
-    title: { nl: "De Bus", en: "The Bus" },
-    location: { nl: "Bus area — entree", en: "Bus area — entrance" },
+    code: "JOURNEY-CULTUUR",
+    title: { nl: "Cultuur Bus", en: "Culture Bus" },
+    location: { nl: "Cultuur Dorp", en: "Culture Village" },
     description: {
-      nl: "Vind de 3x3 Unites bus en scan de QR aan de zijkant.",
-      en: "Find the 3x3 Unites bus and scan the QR on its side.",
+      nl: "Stap binnen bij de Cultuur Bus en voer de code in.",
+      en: "Step into the Culture Bus and enter the code.",
     },
-    points: 40,
-    qrCode: "JOURNEY-02",
-    accent: "orange",
+    qrCode: "JOURNEY-CULTUUR",
+    accent: "blue",
+    verifyMethod: "code",
   },
   {
-    id: "step-3",
+    id: "step-streets",
     order: 3,
-    code: "JOURNEY-03",
-    title: { nl: "Leader Ads Installatie", en: "Leader Ads Installation" },
-    location: { nl: "Hoofdingang — billboard wall", en: "Main entrance — billboard wall" },
-    description: {
-      nl: "Bekijk de leader ads en scan de QR onderaan.",
-      en: "Check out the leader ads and scan the QR at the bottom.",
+    code: "JOURNEY-STREETS",
+    title: {
+      nl: "The Streets: KFC court",
+      en: "The Streets: KFC court",
     },
-    points: 40,
-    qrCode: "JOURNEY-03",
-    accent: "blue",
+    location: { nl: "The Streets: KFC court", en: "The Streets: KFC court" },
+    description: {
+      nl: "Speel een minuut op The Streets en voer de code in op de boarding.",
+      en: "Play a minute on The Streets and enter the code on the boarding.",
+    },
+    qrCode: "JOURNEY-STREETS",
+    accent: "orange",
+    verifyMethod: "code",
   },
   {
-    id: "step-4",
+    id: "step-dome",
     order: 4,
-    code: "JOURNEY-04",
-    title: { nl: "KFC / Street Court", en: "KFC / Street Court" },
-    location: { nl: "Street court — buiten", en: "Street court — outside" },
+    code: "JOURNEY-DOME",
+    title: { nl: "Dome", en: "Dome" },
+    location: { nl: "NXT Level Dome", en: "NXT Level Dome" },
     description: {
-      nl: "Speel een minuut op het street court en scan de QR op de boarding.",
-      en: "Play one minute on the street court and scan the QR on the boarding.",
+      nl: "Doe mee aan de NXT Level activiteit in de Dome en voer de code in.",
+      en: "Join the NXT Level activity in the Dome and enter the code.",
     },
-    points: 50,
-    qrCode: "JOURNEY-04",
-    accent: "orange",
-  },
-  {
-    id: "step-5",
-    order: 5,
-    code: "JOURNEY-05",
-    title: { nl: "Merch Stand", en: "Merch Stand" },
-    location: { nl: "Merch zone", en: "Merch zone" },
-    description: {
-      nl: "Bekijk de drop en scan de QR op het merch display.",
-      en: "Check the drop and scan the QR on the merch display.",
-    },
-    points: 30,
-    qrCode: "JOURNEY-05",
-    accent: "green",
-  },
-  {
-    id: "step-6",
-    order: 6,
-    code: "JOURNEY-06",
-    title: { nl: "Practice Court", en: "Practice Court" },
-    location: { nl: "Practice court — warm-up zone", en: "Practice court — warm-up zone" },
-    description: {
-      nl: "Watch een warm-up en scan de QR op de assistentenbank.",
-      en: "Watch a warm-up and scan the QR on the assistants bench.",
-    },
-    points: 40,
-    qrCode: "JOURNEY-06",
-    accent: "orange",
-  },
-  {
-    id: "step-7",
-    order: 7,
-    code: "JOURNEY-07",
-    title: { nl: "Big Court", en: "Big Court" },
-    location: { nl: "Center court", en: "Center court" },
-    description: {
-      nl: "Pak je seat op het center court en scan de QR op de scoretafel.",
-      en: "Take your seat at center court and scan the QR on the scorers table.",
-    },
-    points: 60,
-    qrCode: "JOURNEY-07",
-    accent: "orange",
-  },
-  {
-    id: "step-8",
-    order: 8,
-    code: "JOURNEY-08",
-    title: { nl: "DJ Booth", en: "DJ Booth" },
-    location: { nl: "Main stage — DJ booth", en: "Main stage — DJ booth" },
-    description: {
-      nl: "Vote op het volgende nummer en scan de QR bij de DJ booth.",
-      en: "Vote for the next song and scan the QR at the DJ booth.",
-    },
-    points: 30,
-    qrCode: "JOURNEY-08",
-    accent: "green",
-  },
-  {
-    id: "step-9",
-    order: 9,
-    code: "JOURNEY-09",
-    title: { nl: "Meet a Leader", en: "Meet a Leader" },
-    location: { nl: "Leader lounge", en: "Leader lounge" },
-    description: {
-      nl: "Ontmoet een 3x3 leader en scan de QR op hun lanyard.",
-      en: "Meet a 3x3 leader and scan the QR on their lanyard.",
-    },
-    points: 70,
-    qrCode: "JOURNEY-09",
+    qrCode: "JOURNEY-DOME",
     accent: "blue",
+    verifyMethod: "code",
   },
   {
-    id: "step-10",
-    order: 10,
-    code: "JOURNEY-10",
-    title: { nl: "Finale Ceremonie", en: "Finals Ceremony" },
-    location: { nl: "Center court — podium", en: "Center court — podium" },
+    id: "step-practice",
+    order: 5,
+    code: "JOURNEY-PRACTICE",
+    title: { nl: "Practice Court", en: "Practice Court" },
+    location: { nl: "Practice court", en: "Practice court" },
     description: {
-      nl: "Vier de finale en scan de laatste QR op het podium.",
-      en: "Celebrate the finals and scan the last QR at the podium.",
+      nl: "Niet iedereen mag het stadion in — maak een foto van het Practice Court / stadion en upload die.",
+      en: "Not everyone can go inside the stadium — take a photo of the Practice Court / stadium and upload it.",
     },
-    points: 100,
-    qrCode: "JOURNEY-10",
+    qrCode: "JOURNEY-PRACTICE",
     accent: "orange",
+    verifyMethod: "photo",
+  },
+  {
+    id: "step-hekken",
+    order: 6,
+    code: "JOURNEY-HEKKEN",
+    title: { nl: "Hekken Installatie", en: "Fence Installation" },
+    location: { nl: "Hekken installatie", en: "Fence installation" },
+    description: {
+      nl: "Bekijk de hekken installatie en voer de code in onderaan het artwork.",
+      en: "Check out the fence installation and enter the code at the bottom of the artwork.",
+    },
+    qrCode: "JOURNEY-HEKKEN",
+    accent: "blue",
+    verifyMethod: "code",
+  },
+  {
+    id: "step-kids-painting",
+    order: 7,
+    code: "JOURNEY-PAINT",
+    title: { nl: "Kids / Painting", en: "Kids / Painting" },
+    location: { nl: "Kids Area — T-vorm paint wall", en: "Kids Area — T-shape paint wall" },
+    description: {
+      nl: "Loop achter de T-vorm in de Kids area, schilder iets op de muur en voer de code in.",
+      en: "Walk behind the T-shape in the Kids area, paint something on the wall and enter the code.",
+    },
+    qrCode: "JOURNEY-PAINT",
+    accent: "green",
+    verifyMethod: "code",
+  },
+  {
+    id: "step-leader-hub",
+    order: 8,
+    code: "JOURNEY-LEADER",
+    title: { nl: "Leader Hub", en: "Leader Hub" },
+    location: { nl: "Leader Hub", en: "Leader Hub" },
+    description: {
+      nl: "Sluit je journey af bij de Leader Hub. Beschikbaar zodra alle andere main quests klaar zijn.",
+      en: "Finish your journey at the Leader Hub. Unlocks once all other main quests are done.",
+    },
+    qrCode: "JOURNEY-LEADER",
+    accent: "orange",
+    verifyMethod: "code",
+    isFinal: true,
+  },
+];
+
+export const SEED_SIDE_EVENTS: import("./types").SideEvent[] = [
+  {
+    id: "se-rabiya-friday",
+    day: "friday",
+    startTime: "16:00",
+    endTime: "17:30",
+    title: { nl: "Rabiya × 3x3 Activation", en: "Rabiya × 3x3 Activation" },
+    description: {
+      nl: "Speciale activatie met Rabiya — meet & greet, signing en mini-clinic.",
+      en: "Special activation with Rabiya — meet & greet, signing and a mini clinic.",
+    },
+    location: { nl: "Rabobank Court", en: "Rabobank Court" },
+    host: "Rabiya",
+    kind: "activation",
+  },
+  {
+    id: "se-merch-drop",
+    day: "friday",
+    startTime: "18:00",
+    endTime: "20:00",
+    title: { nl: "Merch Drop", en: "Merch Drop" },
+    description: {
+      nl: "De nieuwe drop bij de Merch zone. Side event — geen main quest.",
+      en: "The new drop at the Merch zone. Side event — not a main quest.",
+    },
+    location: { nl: "Merch zone", en: "Merch zone" },
+    kind: "activation",
+  },
+  {
+    id: "se-dj-set-saturday",
+    day: "saturday",
+    startTime: "20:00",
+    endTime: "22:00",
+    title: { nl: "DJ Set @ Main Stage", en: "DJ Set @ Main Stage" },
+    description: {
+      nl: "Live DJ — vote op het volgende nummer in de side challenge.",
+      en: "Live DJ — vote on the next track in the side challenge.",
+    },
+    location: { nl: "Main stage — DJ booth", en: "Main stage — DJ booth" },
+    kind: "show",
+  },
+  {
+    id: "se-finals-sunday",
+    day: "sunday",
+    startTime: "16:00",
+    endTime: "18:00",
+    title: { nl: "Finals & Ceremony", en: "Finals & Ceremony" },
+    description: {
+      nl: "De finales en prijsuitreiking. Live match scores in de app.",
+      en: "The finals and award ceremony. Live match scores in the app.",
+    },
+    location: { nl: "Center court — podium", en: "Center court — podium" },
+    kind: "match",
+  },
+];
+
+export const SEED_LIVE_MATCHES: import("./types").LiveMatch[] = [
+  {
+    id: "match-qf1",
+    day: "saturday",
+    startTime: "14:00",
+    label: {
+      nl: "Quarterfinal 1 — Amsterdam vs Utrecht",
+      en: "Quarterfinal 1 — Amsterdam vs Utrecht",
+    },
+    teamA: "Amsterdam",
+    teamB: "Utrecht",
+    finalScore: "21-18",
+  },
+  {
+    id: "match-qf2",
+    day: "saturday",
+    startTime: "15:00",
+    label: {
+      nl: "Quarterfinal 2 — Rotterdam vs Den Haag",
+      en: "Quarterfinal 2 — Rotterdam vs Den Haag",
+    },
+    teamA: "Rotterdam",
+    teamB: "Den Haag",
+    finalScore: null,
+  },
+  {
+    id: "match-final",
+    day: "sunday",
+    startTime: "17:00",
+    label: { nl: "Finale", en: "Finals" },
+    teamA: "TBD",
+    teamB: "TBD",
+    finalScore: null,
   },
 ];
 
 export const SEED_CHALLENGES: Challenge[] = [
+  {
+    id: "ch-merch-drop",
+    type: "trivia",
+    title: { nl: "Merch Drop side event", en: "Merch Drop side event" },
+    description: {
+      nl: "Bezoek de merch zone en beantwoord welke kleur de drop deze editie is.",
+      en: "Visit the merch zone and answer what colour the drop is this edition.",
+    },
+    points: 25,
+    accent: "green",
+    payload: {
+      type: "trivia",
+      data: {
+        question: {
+          nl: "Welke kleur staat centraal in de merch drop?",
+          en: "What is the headline colour of the merch drop?",
+        },
+        options: [
+          { nl: "Brand groen", en: "Brand green" },
+          { nl: "Brand oranje", en: "Brand orange" },
+          { nl: "Brand blauw", en: "Brand blue" },
+          { nl: "Off-white", en: "Off-white" },
+        ],
+        correctIndex: 0,
+      },
+    },
+  },
   {
     id: "ch-dj-poll",
     type: "poll",
@@ -242,12 +338,54 @@ export const SEED_CHALLENGES: Challenge[] = [
     },
   },
   {
+    id: "ch-ar-prompt",
+    type: "panna_qr",
+    title: { nl: "AR / VR prompt", en: "AR / VR prompt" },
+    description: {
+      nl: "Maak een prompt bij de AR/VR booth, laat de host het resultaat zien en krijg de code.",
+      en: "Create a prompt at the AR/VR booth, show the host your result and receive the code.",
+    },
+    points: 60,
+    accent: "blue",
+    payload: {
+      type: "panna_qr",
+      data: {
+        hint: {
+          nl: "Booth geeft een unieke code zodra je prompt af is.",
+          en: "Booth hands you a unique code once your prompt is done.",
+        },
+        qrCode: "AR-PROMPT-01",
+      },
+    },
+  },
+  {
+    id: "ch-go-bald",
+    type: "panna_qr",
+    title: { nl: "Go bald 🪒", en: "Go bald 🪒" },
+    description: {
+      nl: "Durf jij het kale-hoofd avontuur aan bij de barbershop booth? Krijg de code van de barber na de cut.",
+      en: "Brave enough to go bald at the barbershop booth? Get the code from the barber after the cut.",
+    },
+    points: 100,
+    accent: "orange",
+    payload: {
+      type: "panna_qr",
+      data: {
+        hint: {
+          nl: "Alleen de barber kan deze code afgeven.",
+          en: "Only the barber can hand out this code.",
+        },
+        qrCode: "BALD-01",
+      },
+    },
+  },
+  {
     id: "ch-panna-qr",
     type: "panna_qr",
-    title: { nl: "Find the hidden panna QR", en: "Find the hidden panna QR" },
+    title: { nl: "Vind de verborgen panna code", en: "Find the hidden panna code" },
     description: {
-      nl: "Een QR is verstopt in de panna cage. Vind hem en scan.",
-      en: "A QR code is hidden in the panna cage. Find it and scan.",
+      nl: "Een code is verstopt in de panna cage. Vind hem en voer hem in.",
+      en: "A code is hidden in the panna cage. Find it and enter it.",
     },
     points: 75,
     accent: "orange",
@@ -606,7 +744,10 @@ export function buildSeedCompletions(profiles: Profile[]): StepCompletion[] {
   const out: StepCompletion[] = [];
   profiles.forEach((p, idx) => {
     if (p.role === "admin") return;
-    const count = Math.max(0, Math.min(10, Math.floor((30 - idx) / 3)));
+    const count = Math.max(
+      0,
+      Math.min(SEED_JOURNEY_STEPS.length, Math.floor((30 - idx) / 3))
+    );
     for (let s = 0; s < count; s++) {
       out.push({
         userId: p.id,
@@ -708,6 +849,45 @@ export function buildSeedPhotoLikes(profiles: Profile[], photos: Photo[]): Photo
   });
   return out;
 }
+
+export const SEED_WHEEL_PRIZES: WheelPrize[] = [
+  {
+    id: "wp-water",
+    label: { nl: "Gratis water", en: "Free water" },
+    emoji: "💧",
+    weight: 28,
+  },
+  {
+    id: "wp-snack",
+    label: { nl: "Snack voucher", en: "Snack voucher" },
+    emoji: "🍔",
+    weight: 24,
+  },
+  {
+    id: "wp-merch-10",
+    label: { nl: "10% merch korting", en: "10% merch discount" },
+    emoji: "🧢",
+    weight: 20,
+  },
+  {
+    id: "wp-sticker",
+    label: { nl: "Sticker pack", en: "Sticker pack" },
+    emoji: "⭐",
+    weight: 15,
+  },
+  {
+    id: "wp-spin-again",
+    label: { nl: "Nog een spin!", en: "Spin again!" },
+    emoji: "🔄",
+    weight: 8,
+  },
+  {
+    id: "wp-food",
+    label: { nl: "Food voucher", en: "Food voucher" },
+    emoji: "🎁",
+    weight: 5,
+  },
+];
 
 export function buildSeedQrCodes(): QrCode[] {
   const stepCodes: QrCode[] = SEED_JOURNEY_STEPS.map((s) => ({

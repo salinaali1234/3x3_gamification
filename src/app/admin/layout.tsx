@@ -21,7 +21,7 @@ export default async function AdminLayout({
     { href: "/admin", label: t.admin.title, exact: true },
     { href: "/admin/participants", label: t.admin.participants },
     { href: "/admin/challenges", label: t.admin.challenges },
-    { href: "/admin/qr-codes", label: t.admin.qrCodes },
+    { href: "/admin/qr-codes", label: t.admin.codes },
     { href: "/admin/photos", label: t.admin.photos },
     { href: "/admin/rewards", label: t.admin.rewards },
   ];

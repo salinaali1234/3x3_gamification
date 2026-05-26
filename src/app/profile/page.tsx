@@ -37,9 +37,6 @@ export default async function ProfilePage() {
         <div>
           <div className="font-display text-3xl">{user.displayName}</div>
           <div className="text-sm text-white/60 font-mono">{user.email}</div>
-          <div className="mt-2 text-sm text-white/60">
-            cm.nl ticket: <span className="font-mono">{user.cmTicketId}</span>
-          </div>
           <div className="mt-2 font-display text-2xl text-brand-green">
             {points} pts
           </div>

@@ -4,13 +4,16 @@ export type Bilingual = { nl: string; en: string };
 
 export type Profile = {
   id: string;
-  cmTicketId: string;
+  /** Optional link to cm.nl order; not required for web registration */
+  cmTicketId?: string | null;
   displayName: string;
   email: string;
   avatarColor: string;
   role: Role;
   createdAt: string;
 };
+
+export type JourneyVerifyMethod = "code" | "photo";
 
 export type JourneyStep = {
   id: string;
@@ -19,9 +22,51 @@ export type JourneyStep = {
   title: Bilingual;
   location: Bilingual;
   description: Bilingual;
-  points: number;
   qrCode: string;
   accent: "green" | "orange" | "blue";
+  /** How participants prove they were there */
+  verifyMethod?: JourneyVerifyMethod;
+  /** Forced position — true means must be the LAST quest unlocked */
+  isFinal?: boolean;
+};
+
+export type FestivalDay = "friday" | "saturday" | "sunday";
+
+export type SideEvent = {
+  id: string;
+  day: FestivalDay;
+  startTime: string;
+  endTime: string;
+  title: Bilingual;
+  description: Bilingual;
+  location: Bilingual;
+  host?: string;
+  kind: "activation" | "match" | "show" | "meet";
+};
+
+export type LiveMatch = {
+  id: string;
+  day: FestivalDay;
+  startTime: string;
+  label: Bilingual;
+  teamA: string;
+  teamB: string;
+  /** Set by admin once match is final; null while live/upcoming */
+  finalScore: string | null;
+};
+
+export type WheelPrize = {
+  id: string;
+  label: Bilingual;
+  emoji: string;
+  weight: number;
+};
+
+export type WheelSpin = {
+  id: string;
+  userId: string;
+  prizeId: string;
+  createdAt: string;
 };
 
 export type StepCompletion = {

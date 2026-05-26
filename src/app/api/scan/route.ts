@@ -3,10 +3,13 @@ import { z } from "zod";
 import {
   addChallengeAttempt,
   addStepCompletion,
+  canCompleteStep,
   getChallengeById,
   getJourneyStepById,
   getQrCode,
   hasChallengeAttempt,
+  wheelSpinsAvailable,
+  wheelSpinsEarned,
 } from "@/lib/data/store";
 import { evaluateBadges } from "@/lib/award-points";
 import { getCurrentUser } from "@/lib/session";
@@ -33,15 +36,25 @@ export async function POST(req: Request) {
     if (!step) {
       return NextResponse.json({ ok: false, error: "invalid" });
     }
+    if (step.verifyMethod === "photo") {
+      return NextResponse.json({ ok: false, error: "photo_required" });
+    }
+    if (!canCompleteStep(user.id, step.id)) {
+      return NextResponse.json({ ok: false, error: "leader_hub_locked" });
+    }
+    const earnedBefore = wheelSpinsEarned(user.id);
     const added = addStepCompletion(user.id, step.id);
     if (!added) {
       return NextResponse.json({ ok: false, error: "already" });
     }
+    const spinsGained = wheelSpinsEarned(user.id) - earnedBefore;
     const { newlyEarnedBadges } = evaluateBadges(user.id);
     return NextResponse.json({
       ok: true,
       type: "step",
-      target: { id: step.id, title: step.title, points: step.points },
+      target: { id: step.id, title: step.title },
+      wheelSpinsGained: spinsGained,
+      wheelSpinsAvailable: wheelSpinsAvailable(user.id),
       newBadges: newlyEarnedBadges,
     });
   }

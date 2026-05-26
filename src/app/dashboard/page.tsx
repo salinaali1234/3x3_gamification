@@ -7,10 +7,13 @@ import { getCurrentUser } from "@/lib/session";
 import {
   leaderboard,
   listJourneySteps,
+  listLiveMatches,
   totalPoints,
+  wheelSpinsAvailable,
   userAttempts,
   userBadgesFor,
   userCompletions,
+  userMatchSubmissions,
   getBadgeById,
   getChallengeById,
   listChallenges,
@@ -19,6 +22,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { SectionLabel } from "@/components/ui/section-label";
 import { BadgeSticker } from "@/components/ui/badge-sticker";
 import { Avatar } from "@/components/ui/avatar";
+import { MatchScorePopup } from "@/components/match-score-popup";
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();
@@ -32,6 +36,7 @@ export default async function DashboardPage() {
   const completedIds = new Set(completions.map((c) => c.stepId));
   const nextStep = steps.find((s) => !completedIds.has(s.id));
   const points = totalPoints(user.id);
+  const spins = wheelSpinsAvailable(user.id);
   const badges = userBadgesFor(user.id)
     .map((ub) => getBadgeById(ub.badgeId))
     .filter(Boolean);
@@ -42,9 +47,17 @@ export default async function DashboardPage() {
   );
   const lb = leaderboard(100);
   const myRank = lb.findIndex((r) => r.userId === user.id);
+  const liveMatches = listLiveMatches();
+  const matchDoneIds = userMatchSubmissions(user.id).map((s) => s.matchId);
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+      <MatchScorePopup
+        matches={liveMatches}
+        alreadyDone={matchDoneIds}
+        locale={locale}
+        dict={t}
+      />
       <div className="brand-section-label mb-2">
         3x3 unites // dashboard
       </div>
@@ -58,14 +71,16 @@ export default async function DashboardPage() {
           : "Ready for your next step?"}
       </p>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-3">
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Tile
+          label={locale === "nl" ? "Wheel spins" : "Wheel spins"}
+          value={spins}
+          accent="orange"
+        />
         <Tile
           label={t.common.yourPoints}
           value={points}
           accent="green"
-          mono={`+${
-            points - (attempts.reduce((s, a) => s + a.awardedPoints, 0))
-          } / -0`}
         />
         <Tile
           label={locale === "nl" ? "Stappen voltooid" : "Steps completed"}
@@ -96,12 +111,15 @@ export default async function DashboardPage() {
               </p>
             </div>
             <div className="flex flex-col gap-2 sm:items-end">
-              <span className="font-display text-3xl text-brand-orange">
-                +{nextStep.points} pts
-              </span>
-              <ButtonLink href="/scan" variant="orange">
-                {t.scan.title}
-              </ButtonLink>
+              <span className="font-display text-3xl text-brand-orange">🎡 spin</span>
+              <div className="flex flex-wrap gap-2">
+                <ButtonLink href="/scan" variant="orange">
+                  {t.scan.title}
+                </ButtonLink>
+                <ButtonLink href="/wheel" variant="outline">
+                  {t.nav.wheel}
+                </ButtonLink>
+              </div>
             </div>
           </div>
         ) : (

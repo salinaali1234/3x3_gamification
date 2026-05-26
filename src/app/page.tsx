@@ -32,7 +32,7 @@ export default async function HomePage() {
         <div className="absolute -bottom-40 -left-32 h-[420px] w-[420px] rounded-full bg-brand-green/20 blur-3xl" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-20 lg:pt-24 lg:pb-32">
           <div className="brand-section-label mb-6">{t.home.eyebrow}</div>
-          <h1 className="font-display text-6xl sm:text-7xl lg:text-9xl leading-[0.9] whitespace-pre-line">
+          <h1 className="font-display text-5xl xs:text-6xl sm:text-7xl lg:text-9xl leading-[0.9] whitespace-pre-line break-words">
             <span className="text-brand-white">From the streets</span>
             <br />
             <span className="text-brand-green">to the top.</span>
@@ -44,6 +44,9 @@ export default async function HomePage() {
             </ButtonLink>
             <ButtonLink href="/scan" variant="outline" size="lg">
               {t.home.ctaScan}
+            </ButtonLink>
+            <ButtonLink href="/map" variant="outline" size="lg">
+              {t.home.ctaMap}
             </ButtonLink>
           </div>
           <div className="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-4">

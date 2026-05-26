@@ -35,7 +35,7 @@ export async function POST(req: Request) {
   const color = AVATAR_COLORS[all.length % AVATAR_COLORS.length];
   addProfile({
     id: newId,
-    cmTicketId: `CM-${200000 + all.length}`,
+    cmTicketId: null,
     displayName: parsed.data.name,
     email: parsed.data.email,
     avatarColor: color,

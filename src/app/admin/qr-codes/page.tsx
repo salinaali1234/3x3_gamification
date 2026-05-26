@@ -6,9 +6,9 @@ import {
   getJourneyStepById,
   listQrCodes,
 } from "@/lib/data/store";
-import { QrCard } from "./qr-card";
+import { CodeCard } from "./code-card";
 
-export default async function AdminQrCodes() {
+export default async function AdminCodesPage() {
   const cookieStore = await cookies();
   const locale = getLocaleFromCookieValue(cookieStore.get("locale")?.value);
   const t = getDictionary(locale);
@@ -29,12 +29,18 @@ export default async function AdminQrCodes() {
     <div className="space-y-6">
       <p className="text-white/70 text-sm max-w-2xl">
         {locale === "nl"
-          ? "Print deze QR codes en plak ze op de juiste locaties. Iedere code triggert een journey-stap of een challenge bij scannen."
-          : "Print these QR codes and place them at the right locations. Each code triggers a journey step or a challenge when scanned."}
+          ? "Print deze codes en hang ze op bij de juiste locaties. Deelnemers typen de code in de app om punten te verdienen."
+          : "Print these codes and place them at the right locations. Participants type the code in the app to earn points."}
       </p>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {enriched.map((q) => (
-          <QrCard key={q.code} code={q.code} label={q.label} targetType={q.targetType} dict={t} />
+          <CodeCard
+            key={q.code}
+            code={q.code}
+            label={q.label}
+            targetType={q.targetType}
+            dict={t}
+          />
         ))}
       </div>
     </div>

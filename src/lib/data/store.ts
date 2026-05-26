@@ -10,12 +10,16 @@ import {
   SEED_CHALLENGES,
   SEED_JOURNEY_STEPS,
   SEED_REWARDS,
+  SEED_WHEEL_PRIZES,
+  SEED_SIDE_EVENTS,
+  SEED_LIVE_MATCHES,
 } from "./seed";
 import type {
   Badge,
   Challenge,
   ChallengeAttempt,
   JourneyStep,
+  LiveMatch,
   Photo,
   PhotoLike,
   PollVote,
@@ -23,8 +27,11 @@ import type {
   QrCode,
   Reward,
   RewardClaim,
+  SideEvent,
   StepCompletion,
   UserBadge,
+  WheelPrize,
+  WheelSpin,
 } from "./types";
 
 type Store = {
@@ -41,6 +48,26 @@ type Store = {
   rewards: Reward[];
   rewardClaims: RewardClaim[];
   qrCodes: QrCode[];
+  wheelPrizes: WheelPrize[];
+  wheelSpins: WheelSpin[];
+  sideEvents: SideEvent[];
+  liveMatches: LiveMatch[];
+  /** map of matchId -> userId -> score */
+  matchScoreSubmissions: Array<{
+    userId: string;
+    matchId: string;
+    submittedScore: string;
+    correct: boolean;
+    awardedPoints: number;
+    createdAt: string;
+  }>;
+  /** journey step photo uploads */
+  stepPhotoUploads: Array<{
+    userId: string;
+    stepId: string;
+    storagePath: string;
+    createdAt: string;
+  }>;
 };
 
 declare global {
@@ -69,6 +96,12 @@ function buildStore(): Store {
     rewards: SEED_REWARDS,
     rewardClaims: [],
     qrCodes: buildSeedQrCodes(),
+    wheelPrizes: SEED_WHEEL_PRIZES,
+    wheelSpins: [],
+    sideEvents: SEED_SIDE_EVENTS,
+    liveMatches: SEED_LIVE_MATCHES,
+    matchScoreSubmissions: [],
+    stepPhotoUploads: [],
   };
 }
 
@@ -76,7 +109,15 @@ export function getStore(): Store {
   if (!globalThis.__3X3_STORE__) {
     globalThis.__3X3_STORE__ = buildStore();
   }
-  return globalThis.__3X3_STORE__;
+  const s = globalThis.__3X3_STORE__;
+  // Migrate older in-memory stores from previous dev sessions (HMR keeps globals).
+  if (!s.sideEvents) s.sideEvents = SEED_SIDE_EVENTS;
+  if (!s.liveMatches) s.liveMatches = SEED_LIVE_MATCHES;
+  if (!s.matchScoreSubmissions) s.matchScoreSubmissions = [];
+  if (!s.stepPhotoUploads) s.stepPhotoUploads = [];
+  if (!s.wheelPrizes) s.wheelPrizes = SEED_WHEEL_PRIZES;
+  if (!s.wheelSpins) s.wheelSpins = [];
+  return s;
 }
 
 export function resetStore() {
@@ -135,6 +176,10 @@ export function listPhotos() {
   );
 }
 
+export function listPhotosForUser(userId: string) {
+  return listPhotos().filter((p) => p.userId === userId);
+}
+
 export function getPhotoById(id: string) {
   return getStore().photos.find((p) => p.id === id);
 }
@@ -171,15 +216,75 @@ export function userPhotoLikes(userId: string) {
 
 // ---------- Aggregations ----------
 
+/** Shop points — only from side challenges + match-score submissions, not the main journey */
+export function challengePoints(userId: string): number {
+  return userAttempts(userId).reduce((sum, a) => sum + a.awardedPoints, 0);
+}
+
+export function matchScorePoints(userId: string): number {
+  return userMatchSubmissions(userId).reduce((sum, s) => sum + s.awardedPoints, 0);
+}
+
 export function totalPoints(userId: string): number {
-  const completions = userCompletions(userId);
-  const steps = getStore().journeySteps;
-  const stepPts = completions.reduce((sum, c) => {
-    const step = steps.find((s) => s.id === c.stepId);
-    return sum + (step?.points ?? 0);
-  }, 0);
-  const attemptPts = userAttempts(userId).reduce((sum, a) => sum + a.awardedPoints, 0);
-  return stepPts + attemptPts;
+  return challengePoints(userId) + matchScorePoints(userId);
+}
+
+/** 2 journey steps = 1 spin; +1 at 5 steps; +2 when journey complete */
+export function wheelSpinsEarned(userId: string): number {
+  const stepsDone = userCompletions(userId).length;
+  const totalSteps = getStore().journeySteps.length;
+  let spins = Math.floor(stepsDone / 2);
+  if (stepsDone >= 5) spins += 1;
+  if (stepsDone >= totalSteps) spins += 2;
+  const challenges = getStore().challenges;
+  const done = userAttempts(userId).filter((a) => a.correct).length;
+  if (challenges.length > 0 && done >= challenges.length) spins += 1;
+  const spinAgainBonus = getStore().wheelSpins.filter(
+    (s) => s.userId === userId && s.prizeId === "wp-spin-again"
+  ).length;
+  return spins + spinAgainBonus;
+}
+
+export function wheelSpinsUsed(userId: string): number {
+  return getStore().wheelSpins.filter((s) => s.userId === userId).length;
+}
+
+export function wheelSpinsAvailable(userId: string): number {
+  return Math.max(0, wheelSpinsEarned(userId) - wheelSpinsUsed(userId));
+}
+
+export function listWheelPrizes() {
+  return getStore().wheelPrizes;
+}
+
+export function getWheelPrizeById(id: string) {
+  return getStore().wheelPrizes.find((p) => p.id === id);
+}
+
+export function userWheelSpins(userId: string) {
+  return getStore().wheelSpins.filter((s) => s.userId === userId);
+}
+
+export function pickWheelPrize(): WheelPrize {
+  const prizes = getStore().wheelPrizes;
+  const total = prizes.reduce((sum, p) => sum + p.weight, 0);
+  let r = Math.random() * total;
+  for (const p of prizes) {
+    r -= p.weight;
+    if (r <= 0) return p;
+  }
+  return prizes[prizes.length - 1]!;
+}
+
+export function recordWheelSpin(userId: string, prizeId: string): WheelSpin {
+  const spin: WheelSpin = {
+    id: `spin-${userId}-${Date.now()}`,
+    userId,
+    prizeId,
+    createdAt: new Date().toISOString(),
+  };
+  getStore().wheelSpins.push(spin);
+  return spin;
 }
 
 export type LeaderboardRow = {
@@ -298,6 +403,83 @@ export function updateProfile(userId: string, patch: Partial<Profile>) {
 
 export function addQrCode(qr: QrCode) {
   getStore().qrCodes.push(qr);
+}
+
+// ---------- Side events & live matches ----------
+
+export function listSideEvents() {
+  return getStore().sideEvents;
+}
+
+export function listLiveMatches() {
+  return getStore().liveMatches;
+}
+
+export function getLiveMatchById(id: string) {
+  return getStore().liveMatches.find((m) => m.id === id);
+}
+
+export function userMatchSubmissions(userId: string) {
+  return getStore().matchScoreSubmissions.filter((s) => s.userId === userId);
+}
+
+export function hasMatchSubmission(userId: string, matchId: string) {
+  return getStore().matchScoreSubmissions.some(
+    (s) => s.userId === userId && s.matchId === matchId
+  );
+}
+
+/** Submitting a match score awards 1 point if correct */
+export function submitMatchScore(userId: string, matchId: string, score: string) {
+  const store = getStore();
+  if (hasMatchSubmission(userId, matchId)) {
+    return { ok: false as const, error: "already" };
+  }
+  const match = store.liveMatches.find((m) => m.id === matchId);
+  if (!match) return { ok: false as const, error: "invalid" };
+  if (!match.finalScore) return { ok: false as const, error: "not_final" };
+
+  const correct = match.finalScore.trim() === score.trim();
+  const awardedPoints = correct ? 1 : 0;
+  store.matchScoreSubmissions.push({
+    userId,
+    matchId,
+    submittedScore: score.trim(),
+    correct,
+    awardedPoints,
+    createdAt: new Date().toISOString(),
+  });
+  return { ok: true as const, correct, awardedPoints, finalScore: match.finalScore };
+}
+
+// ---------- Journey step photo uploads ----------
+
+export function addStepPhotoUpload(userId: string, stepId: string, storagePath: string) {
+  getStore().stepPhotoUploads.push({
+    userId,
+    stepId,
+    storagePath,
+    createdAt: new Date().toISOString(),
+  });
+}
+
+export function userStepPhotoUploads(userId: string) {
+  return getStore().stepPhotoUploads.filter((p) => p.userId === userId);
+}
+
+// ---------- Leader Hub gating ----------
+
+/** Leader Hub (final step) is only completable when every other step is done */
+export function canCompleteStep(userId: string, stepId: string): boolean {
+  const store = getStore();
+  const step = store.journeySteps.find((s) => s.id === stepId);
+  if (!step) return false;
+  if (!step.isFinal) return true;
+  const otherSteps = store.journeySteps.filter((s) => s.id !== stepId);
+  const done = new Set(
+    store.stepCompletions.filter((c) => c.userId === userId).map((c) => c.stepId)
+  );
+  return otherSteps.every((s) => done.has(s.id));
 }
 
 export function totalCounts() {

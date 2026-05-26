@@ -14,9 +14,9 @@ export default async function AdminParticipants() {
   return (
     <div className="space-y-6">
       <div className="rounded-md border border-brand-green/40 bg-brand-green/5 p-5">
-        <div className="brand-section-label !text-brand-green mb-1">cm.nl</div>
-        <h2 className="font-display text-2xl">{t.admin.simulatePurchase}</h2>
-        <p className="text-sm text-white/70 mt-1">{t.admin.simulateBody}</p>
+        <div className="brand-section-label !text-brand-green mb-1">demo</div>
+        <h2 className="font-display text-2xl">{t.admin.addDemoParticipant}</h2>
+        <p className="text-sm text-white/70 mt-1">{t.admin.addDemoParticipantBody}</p>
         <div className="mt-3">
           <SimulateButton dict={t} />
         </div>
@@ -29,9 +29,6 @@ export default async function AdminParticipants() {
               <th className="px-4 py-3 text-left">{locale === "nl" ? "Naam" : "Name"}</th>
               <th className="px-4 py-3 text-left hidden sm:table-cell">
                 {locale === "nl" ? "Email" : "Email"}
-              </th>
-              <th className="px-4 py-3 text-left hidden md:table-cell">
-                cm.nl ticket
               </th>
               <th className="px-4 py-3 text-right">
                 {locale === "nl" ? "Stappen" : "Steps"}
@@ -51,9 +48,6 @@ export default async function AdminParticipants() {
                 </td>
                 <td className="px-4 py-3 hidden sm:table-cell font-mono text-xs text-white/60">
                   {p.email}
-                </td>
-                <td className="px-4 py-3 hidden md:table-cell font-mono text-xs text-white/60">
-                  {p.cmTicketId}
                 </td>
                 <td className="px-4 py-3 text-right tabular-nums">
                   {userCompletions(p.id).length}
