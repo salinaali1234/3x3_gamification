@@ -8,6 +8,8 @@ import {
   getProfileById,
   listPhotos,
   listPhotosForUser,
+  PHOTOS_PER_SESSION,
+  userPhotoCount,
 } from "@/lib/data/store";
 import { PhotoWall } from "./photo-wall";
 
@@ -56,6 +58,8 @@ export default async function PhotosPage() {
         dict={t}
         isLoggedIn
         isLeaderView={isLeader}
+        photosRemaining={Math.max(0, PHOTOS_PER_SESSION - userPhotoCount(user.id))}
+        photosLimit={PHOTOS_PER_SESSION}
       />
     </div>
   );

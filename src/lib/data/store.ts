@@ -225,24 +225,29 @@ export function matchScorePoints(userId: string): number {
   return userMatchSubmissions(userId).reduce((sum, s) => sum + s.awardedPoints, 0);
 }
 
-export function totalPoints(userId: string): number {
-  return challengePoints(userId) + matchScorePoints(userId);
+export function journeyPoints(userId: string): number {
+  const store = getStore();
+  const doneIds = new Set(
+    store.stepCompletions.filter((c) => c.userId === userId).map((c) => c.stepId)
+  );
+  return store.journeySteps
+    .filter((s) => doneIds.has(s.id))
+    .reduce((sum, s) => sum + s.points, 0);
 }
 
-/** 2 journey steps = 1 spin; +1 at 5 steps; +2 when journey complete */
+export function totalPoints(userId: string): number {
+  return journeyPoints(userId) + challengePoints(userId) + matchScorePoints(userId);
+}
+
+/** 1 wheel spin per 200 points earned (+ spin-again prizes) */
+export const POINTS_PER_WHEEL_SPIN = 200;
+
 export function wheelSpinsEarned(userId: string): number {
-  const stepsDone = userCompletions(userId).length;
-  const totalSteps = getStore().journeySteps.length;
-  let spins = Math.floor(stepsDone / 2);
-  if (stepsDone >= 5) spins += 1;
-  if (stepsDone >= totalSteps) spins += 2;
-  const challenges = getStore().challenges;
-  const done = userAttempts(userId).filter((a) => a.correct).length;
-  if (challenges.length > 0 && done >= challenges.length) spins += 1;
+  const fromPoints = Math.floor(totalPoints(userId) / POINTS_PER_WHEEL_SPIN);
   const spinAgainBonus = getStore().wheelSpins.filter(
     (s) => s.userId === userId && s.prizeId === "wp-spin-again"
   ).length;
-  return spins + spinAgainBonus;
+  return fromPoints + spinAgainBonus;
 }
 
 export function wheelSpinsUsed(userId: string): number {
@@ -369,6 +374,16 @@ export function awardBadge(userId: string, badgeId: string) {
   if (store.userBadges.some((b) => b.userId === userId && b.badgeId === badgeId)) return false;
   store.userBadges.push({ userId, badgeId, earnedAt: new Date().toISOString() });
   return true;
+}
+
+export const PHOTOS_PER_SESSION = 10;
+
+export function userPhotoCount(userId: string): number {
+  return getStore().photos.filter((p) => p.userId === userId).length;
+}
+
+export function canUploadPhoto(userId: string): boolean {
+  return userPhotoCount(userId) < PHOTOS_PER_SESSION;
 }
 
 export function addPhoto(p: Photo) {

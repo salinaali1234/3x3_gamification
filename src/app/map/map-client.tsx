@@ -53,6 +53,15 @@ export function MapClient({
             priority
             sizes="(max-width: 1024px) 100vw, 70vw"
           />
+          <div
+            className="absolute z-20 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1 pointer-events-none"
+            style={{ left: "88%", top: "88%" }}
+          >
+            <span className="rounded-full bg-brand-green px-2 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider text-brand-black shadow-md">
+              {dict.map.youAreHere}
+            </span>
+            <span className="h-3 w-3 rounded-full border-2 border-brand-black bg-brand-green" />
+          </div>
           {FESTIVAL_MAP_POIS.map((poi) => {
             const active = selected?.id === poi.id;
             const visible = results.some((r) => r.id === poi.id);
@@ -79,7 +88,7 @@ export function MapClient({
                 <span
                   className={cn(
                     "block rounded-full border-2 border-brand-black",
-                    CATEGORY_COLORS[poi.category],
+                    poi.isMainQuest ? "bg-brand-orange" : CATEGORY_COLORS[poi.category],
                     active ? "h-6 w-6 ring-4 ring-brand-green" : "h-4 w-4 opacity-90"
                   )}
                 />

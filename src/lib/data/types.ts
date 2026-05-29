@@ -26,6 +26,8 @@ export type JourneyStep = {
   accent: "green" | "orange" | "blue";
   /** How participants prove they were there */
   verifyMethod?: JourneyVerifyMethod;
+  /** Main quest point reward (typically 100+) */
+  points: number;
   /** Forced position — true means must be the LAST quest unlocked */
   isFinal?: boolean;
 };

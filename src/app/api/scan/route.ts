@@ -3,11 +3,12 @@ import { z } from "zod";
 import {
   addChallengeAttempt,
   addStepCompletion,
-  canCompleteStep,
   getChallengeById,
   getJourneyStepById,
   getQrCode,
   hasChallengeAttempt,
+  POINTS_PER_WHEEL_SPIN,
+  totalPoints,
   wheelSpinsAvailable,
   wheelSpinsEarned,
 } from "@/lib/data/store";
@@ -39,27 +40,28 @@ export async function POST(req: Request) {
     if (step.verifyMethod === "photo") {
       return NextResponse.json({ ok: false, error: "photo_required" });
     }
-    if (!canCompleteStep(user.id, step.id)) {
-      return NextResponse.json({ ok: false, error: "leader_hub_locked" });
-    }
-    const earnedBefore = wheelSpinsEarned(user.id);
+    const pointsBefore = totalPoints(user.id);
+    const spinsBefore = wheelSpinsEarned(user.id);
     const added = addStepCompletion(user.id, step.id);
     if (!added) {
       return NextResponse.json({ ok: false, error: "already" });
     }
-    const spinsGained = wheelSpinsEarned(user.id) - earnedBefore;
+    const pointsAfter = totalPoints(user.id);
+    const spinsGained = wheelSpinsEarned(user.id) - spinsBefore;
     const { newlyEarnedBadges } = evaluateBadges(user.id);
     return NextResponse.json({
       ok: true,
       type: "step",
-      target: { id: step.id, title: step.title },
+      target: { id: step.id, title: step.title, points: step.points },
+      pointsGained: pointsAfter - pointsBefore,
+      totalPoints: pointsAfter,
       wheelSpinsGained: spinsGained,
       wheelSpinsAvailable: wheelSpinsAvailable(user.id),
+      nextWheelAt: POINTS_PER_WHEEL_SPIN - (pointsAfter % POINTS_PER_WHEEL_SPIN),
       newBadges: newlyEarnedBadges,
     });
   }
 
-  // challenge type (e.g. panna_qr)
   const ch = getChallengeById(qr.targetId);
   if (!ch) {
     return NextResponse.json({ ok: false, error: "invalid" });
@@ -67,6 +69,7 @@ export async function POST(req: Request) {
   if (hasChallengeAttempt(user.id, ch.id)) {
     return NextResponse.json({ ok: false, error: "already" });
   }
+  const spinsBefore = wheelSpinsEarned(user.id);
   addChallengeAttempt({
     id: `att-${user.id}-${ch.id}-${Date.now()}`,
     userId: user.id,
@@ -76,11 +79,17 @@ export async function POST(req: Request) {
     awardedPoints: ch.points,
     createdAt: new Date().toISOString(),
   });
+  const spinsGained = wheelSpinsEarned(user.id) - spinsBefore;
+  const pts = totalPoints(user.id);
   const { newlyEarnedBadges } = evaluateBadges(user.id);
   return NextResponse.json({
     ok: true,
     type: "challenge",
     target: { id: ch.id, title: ch.title, points: ch.points },
+    pointsGained: ch.points,
+    totalPoints: pts,
+    wheelSpinsGained: spinsGained,
+    wheelSpinsAvailable: wheelSpinsAvailable(user.id),
     newBadges: newlyEarnedBadges,
   });
 }

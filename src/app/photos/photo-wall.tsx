@@ -23,12 +23,16 @@ export function PhotoWall({
   dict,
   isLoggedIn,
   isLeaderView,
+  photosRemaining = 10,
+  photosLimit = 10,
 }: {
   photos: PhotoCard[];
   locale: Locale;
   dict: Dictionary;
   isLoggedIn: boolean;
   isLeaderView?: boolean;
+  photosRemaining?: number;
+  photosLimit?: number;
 }) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -46,14 +50,20 @@ export function PhotoWall({
     reader.readAsDataURL(file);
   }
 
+  const canUpload = photosRemaining > 0;
+
   function upload() {
-    if (!isLoggedIn || !preview) return;
+    if (!isLoggedIn || !preview || !canUpload) return;
     startTransition(async () => {
-      await addPhotoAction({ caption, hashtag, imageDataUrl: preview });
-      setCaption("");
-      setPreview(null);
-      if (inputRef.current) inputRef.current.value = "";
-      router.refresh();
+      try {
+        await addPhotoAction({ caption, hashtag, imageDataUrl: preview });
+        setCaption("");
+        setPreview(null);
+        if (inputRef.current) inputRef.current.value = "";
+        router.refresh();
+      } catch {
+        /* limit or server error */
+      }
     });
   }
 
@@ -70,7 +80,13 @@ export function PhotoWall({
           <div className="brand-section-label !text-brand-green mb-2">
             {dict.photo.upload}
           </div>
-          <p className="text-xs text-white/50 mb-3">{dict.photo.privateNote}</p>
+          <p className="text-xs text-white/50 mb-2">{dict.photo.privateNote}</p>
+          <p className="mb-3 font-mono text-sm text-brand-green">
+            {photosRemaining} / {photosLimit} {dict.photo.photosLeft}
+          </p>
+          {!canUpload ? (
+            <p className="mb-3 text-sm text-brand-orange">{dict.photo.limitReached}</p>
+          ) : null}
           <input
             ref={inputRef}
             type="file"
@@ -109,10 +125,19 @@ export function PhotoWall({
             />
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
-            <Button type="button" onClick={() => inputRef.current?.click()} variant="outline">
+            <Button
+              type="button"
+              onClick={() => inputRef.current?.click()}
+              variant="outline"
+              disabled={!canUpload}
+            >
               {preview ? dict.photo.changePhoto : dict.photo.pickPhoto}
             </Button>
-            <Button onClick={upload} disabled={isPending || !preview} variant="primary">
+            <Button
+              onClick={upload}
+              disabled={isPending || !preview || !canUpload}
+              variant="primary"
+            >
               {isPending ? "..." : dict.photo.upload}
             </Button>
           </div>

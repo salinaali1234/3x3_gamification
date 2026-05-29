@@ -12,6 +12,8 @@ type ScanResult =
       ok: true;
       type: "step" | "challenge";
       target: { id: string; title: { nl: string; en: string }; points?: number };
+      pointsGained?: number;
+      totalPoints?: number;
       wheelSpinsGained?: number;
       wheelSpinsAvailable?: number;
       newBadges: { id: string; emoji: string; name: { nl: string; en: string } }[];
@@ -102,20 +104,28 @@ export function ScanClient({
             <h3 className="font-display text-2xl">
               {result.target.title[locale]}
             </h3>
-            {result.type === "step" && result.wheelSpinsGained ? (
-              <div className="mt-2 font-display text-3xl text-brand-orange">
-                +{result.wheelSpinsGained}{" "}
-                {result.wheelSpinsGained === 1 ? "wheel spin" : "wheel spins"}
-              </div>
-            ) : result.target.points ? (
+            {result.pointsGained ? (
               <div className="mt-2 font-display text-3xl text-brand-green">
-                +{result.target.points} pts
+                +{result.pointsGained} pts
               </div>
             ) : null}
-            {result.type === "step" && result.wheelSpinsAvailable !== undefined ? (
-              <p className="mt-2 text-sm text-white/60">
-                <Link href="/wheel" className="text-brand-green hover:underline">
-                  {dict.wheel.spinsAvailable}: {result.wheelSpinsAvailable} →
+            {result.totalPoints !== undefined ? (
+              <p className="mt-1 text-sm text-white/60">
+                {locale === "nl" ? "Totaal" : "Total"}: {result.totalPoints} pts
+              </p>
+            ) : null}
+            {result.wheelSpinsGained ? (
+              <p className="mt-2 text-sm text-brand-orange">
+                +{result.wheelSpinsGained}{" "}
+                {result.wheelSpinsGained === 1 ? "wheel spin" : "wheel spins"}!{" "}
+                <Link href="/wheel" className="underline hover:text-brand-green">
+                  {dict.wheel.title} →
+                </Link>
+              </p>
+            ) : result.wheelSpinsAvailable !== undefined ? (
+              <p className="mt-2 text-sm text-white/50">
+                <Link href="/wheel" className="hover:text-brand-green">
+                  {dict.wheel.spinsAvailable}: {result.wheelSpinsAvailable}
                 </Link>
               </p>
             ) : null}

@@ -66,9 +66,9 @@ export const dictionaries = {
       stat4: "Rewards in de shop",
     },
     journey: {
-      title: "From the streets to the top",
+      title: "Main Quest — Grand Tour",
       subtitle:
-        "Tien stappen door het event. Elke code geeft voortgang richting wheel spins — geen punten, wel prijzen.",
+        "Bezoek alle grote POI’s op het terrein. Elke main quest levert 100+ punten op voor je prize journey.",
       stepLocked: "Vergrendeld",
       stepDone: "Voltooid",
       stepCurrent: "Volgende stap",
@@ -156,6 +156,13 @@ export const dictionaries = {
       title: "Plattegrond",
       subtitle:
         "Zoek waar je bent op het festival. Typ een locatie of code om het op de kaart te vinden.",
+      sectionLabel: "02 // plattegrond",
+      homeTitle: "Festival plattegrond",
+      homeSubtitle:
+        "Zie alle main quest locaties en waar je nu bent. Oranje stippen = main quest.",
+      openFullMap: "Volledige kaart",
+      youAreHere: "Jij bent hier",
+      mainQuestHint: "Oranje = main quest (100+ pts). Side quests vind je bij Challenges.",
       imageAlt: "Festival plattegrond TWOFIFTYK",
       searchLabel: "Zoeken",
       searchPlaceholder: "Bijv. FOOD, DJ, Rabobank…",
@@ -190,18 +197,20 @@ export const dictionaries = {
       progress: "Journey {done}/{total} — volgende spin rond stap {next}",
     },
     photo: {
-      title: "Mijn foto's",
+      title: "Disposable camera",
       subtitle:
-        "Upload foto's van je event — alleen jij ziet ze hier. Geen publieke feed.",
+        "Digitale wegwerpcamera: max 10 foto's per sessie. Winnaars worden na het World Tour-weekend op socials bekendgemaakt.",
       leaderTitle: "Alle deelnemersfoto's",
       leaderSubtitle:
-        "Als leader/admin zie je alle geüploade foto's van het festival.",
+        "Als leader/admin zie je alle contest-foto's voor de jury na het event.",
       leaderViewNote:
-        "Leader view: je ziet foto's van alle deelnemers. Deelnemers zien alleen hun eigen galerij.",
+        "Leader view: jury-overzicht. Deelnemers zien alleen hun eigen 10 shots.",
       adminGalleryLink: "Admin fotogalerij",
       privateNote:
-        "Je foto's zijn privé. Andere deelnemers kunnen ze niet zien.",
-      upload: "Foto uploaden",
+        "Jouw 10 shots zijn privé tot de jury. Leg de beste 3x3 Unites-momenten vast.",
+      photosLeft: "foto's over",
+      limitReached: "Je hebt al 10 foto's geüpload deze sessie.",
+      upload: "Foto maken",
       uploadCaption: "Caption (optioneel)",
       pickPhoto: "Kies foto",
       changePhoto: "Andere foto",
@@ -407,9 +416,9 @@ export const dictionaries = {
       stat4: "Rewards in shop",
     },
     journey: {
-      title: "From the streets to the top",
+      title: "Main Quest — Grand Tour",
       subtitle:
-        "Ten steps through the event. Each code progresses you toward wheel spins — no points, real prizes.",
+        "Visit every major POI on site. Each main quest earns 100+ points toward your prize journey.",
       stepLocked: "Locked",
       stepDone: "Done",
       stepCurrent: "Next up",
@@ -497,6 +506,13 @@ export const dictionaries = {
       title: "Site map",
       subtitle:
         "Find where you are at the festival. Search by location name or code.",
+      sectionLabel: "02 // map",
+      homeTitle: "Festival map",
+      homeSubtitle:
+        "See all main quest locations and where you are now. Orange dots = main quest.",
+      openFullMap: "Full map",
+      youAreHere: "You are here",
+      mainQuestHint: "Orange = main quest (100+ pts). Side quests are under Challenges.",
       imageAlt: "Festival site map TWOFIFTYK",
       searchLabel: "Search",
       searchPlaceholder: "e.g. FOOD, DJ, Rabobank…",
@@ -531,18 +547,20 @@ export const dictionaries = {
       progress: "Journey {done}/{total} — next spin around step {next}",
     },
     photo: {
-      title: "My photos",
+      title: "Disposable camera",
       subtitle:
-        "Upload photos from the event — only you can see them here. No public feed.",
+        "Digital disposable camera: max 10 photos per session. Winners announced on socials after World Tour weekend.",
       leaderTitle: "All participant photos",
       leaderSubtitle:
-        "As a leader/admin you can view every photo uploaded at the festival.",
+        "As leader/admin view all contest photos for post-event judging.",
       leaderViewNote:
-        "Leader view: you see all participants' photos. Participants only see their own gallery.",
+        "Leader view: jury overview. Participants only see their own 10 shots.",
       adminGalleryLink: "Admin photo gallery",
       privateNote:
-        "Your photos are private. Other participants cannot see them.",
-      upload: "Upload photo",
+        "Your 10 shots are private until judging. Capture the best 3x3 Unites moments.",
+      photosLeft: "photos left",
+      limitReached: "You already uploaded 10 photos this session.",
+      upload: "Take photo",
       uploadCaption: "Caption (optional)",
       pickPhoto: "Choose photo",
       changePhoto: "Change photo",

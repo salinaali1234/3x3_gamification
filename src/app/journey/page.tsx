@@ -91,7 +91,7 @@ export default async function JourneyPage() {
                   <div className="text-right shrink-0">
                     <div
                       className={cn(
-                        "font-display text-2xl",
+                        "font-display text-2xl tabular-nums",
                         isDone
                           ? "text-brand-green"
                           : isLockedFinal
@@ -99,9 +99,9 @@ export default async function JourneyPage() {
                           : "text-brand-orange"
                       )}
                     >
-                      🎡
+                      +{step.points}
                     </div>
-                    <div className="brand-section-label">spin</div>
+                    <div className="brand-section-label">pts</div>
                   </div>
                 </div>
                 {isAvailable && step.verifyMethod === "photo" && user ? (
