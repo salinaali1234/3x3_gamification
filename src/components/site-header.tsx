@@ -31,6 +31,8 @@ export async function SiteHeader({
     { href: "/photos", label: t.nav.photos },
     { href: "/leaderboard", label: t.nav.leaderboard },
     { href: "/rewards", label: t.nav.rewards },
+    { href: "/faq", label: t.nav.faq },
+    { href: "/rules", label: t.nav.rules },
   ];
 
   return (
@@ -80,10 +82,6 @@ export async function SiteHeader({
             user={user}
             points={user ? points : null}
             pointsLabel={t.common.pointsShort}
-            faqHref="/faq"
-            faqLabel={t.nav.faq}
-            rulesHref="/rules"
-            rulesLabel={t.nav.rules}
             profileLabel={t.nav.profile}
             dashboardLabel="Dashboard"
             adminLabel={t.nav.admin}

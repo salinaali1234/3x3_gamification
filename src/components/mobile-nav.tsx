@@ -18,10 +18,6 @@ export function MobileNav({
   user,
   points,
   pointsLabel,
-  faqHref,
-  faqLabel,
-  rulesHref,
-  rulesLabel,
   profileLabel,
   dashboardLabel,
   adminLabel,
@@ -34,10 +30,6 @@ export function MobileNav({
   user: Profile | null;
   points: number | null;
   pointsLabel: string;
-  faqHref: string;
-  faqLabel: string;
-  rulesHref: string;
-  rulesLabel: string;
   profileLabel: string;
   dashboardLabel: string;
   adminLabel: string;
@@ -227,28 +219,6 @@ export function MobileNav({
                 </li>
               </>
             )}
-          </ul>
-
-          <p className="mt-5 mb-2 brand-section-label shrink-0">Info</p>
-          <ul className="flex flex-col gap-0.5">
-            <li>
-              <Link
-                href={faqHref}
-                onClick={() => setOpen(false)}
-                className="block rounded px-4 py-3.5 text-base text-white/85 hover:bg-white/5"
-              >
-                {faqLabel}
-              </Link>
-            </li>
-            <li>
-              <Link
-                href={rulesHref}
-                onClick={() => setOpen(false)}
-                className="block rounded px-4 py-3.5 text-base text-white/85 hover:bg-white/5"
-              >
-                {rulesLabel}
-              </Link>
-            </li>
           </ul>
 
           <div className="mt-6 pt-4 border-t border-white/10 shrink-0">
