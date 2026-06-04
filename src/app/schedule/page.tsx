@@ -22,7 +22,7 @@ export default async function SchedulePage() {
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8 py-10">
-      <div className="brand-section-label mb-2">3x3 unites // schedule</div>
+      <div className="brand-section-label mb-2">3X3 UNITES // schedule</div>
       <h1 className="font-display text-5xl">{t.schedule.title}</h1>
       <p className="mt-3 text-white/70 max-w-2xl">{t.schedule.subtitle}</p>
 

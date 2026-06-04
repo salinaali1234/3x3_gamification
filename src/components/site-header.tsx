@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import type { Profile } from "@/lib/data/types";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import type { Locale } from "@/lib/i18n/config";
-import { totalPoints } from "@/lib/data/store";
+import { getTotalPoints } from "@/lib/data/user-game";
 import { LocaleSwitcher } from "./locale-switcher";
 import { UserMenu } from "./user-menu";
 import { Logo3x3 } from "./logo";
@@ -18,21 +18,17 @@ export async function SiteHeader({
 }) {
   await cookies();
   const t = getDictionary(locale);
-  const points = user ? totalPoints(user.id) : 0;
+  const points = user ? await getTotalPoints(user.id) : 0;
 
   const navItems = [
     { href: "/", label: t.nav.home },
     { href: "/journey", label: t.nav.journey },
     { href: "/challenges", label: t.nav.challenges },
-    { href: "/map", label: t.nav.map },
     { href: "/schedule", label: t.nav.schedule },
     { href: "/wheel", label: t.nav.wheel },
-    { href: "/scan", label: t.nav.codes },
     { href: "/photos", label: t.nav.photos },
-    { href: "/leaderboard", label: t.nav.leaderboard },
     { href: "/rewards", label: t.nav.rewards },
-    { href: "/faq", label: t.nav.faq },
-    { href: "/rules", label: t.nav.rules },
+    { href: "/faq", label: t.nav.faqRules },
   ];
 
   return (
@@ -40,7 +36,7 @@ export async function SiteHeader({
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 sm:gap-6 px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
-          aria-label="3x3 Unites home"
+          aria-label="3X3 Unites home"
           className="flex shrink-0 items-center gap-2 group"
         >
           <Logo3x3 className="h-7 sm:h-8 w-auto text-brand-white group-hover:text-brand-green transition-colors" />

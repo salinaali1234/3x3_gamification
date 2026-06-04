@@ -1,12 +1,9 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/session";
-import {
-  addRewardClaim,
-  getRewardById,
-  totalPoints,
-  userClaims,
-} from "@/lib/data/store";
+import { addRewardClaim, getRewardById, totalPoints, userClaims } from "@/lib/data/store";
 import { generateVoucherCode } from "@/lib/utils";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { claimRewardDb } from "@/lib/supabase/game";
 
 export async function POST(
   _req: Request,
@@ -21,6 +18,19 @@ export async function POST(
   if (!reward) {
     return NextResponse.json({ ok: false, error: "not_found" }, { status: 404 });
   }
+
+  if (isSupabaseConfigured()) {
+    const code = generateVoucherCode();
+    const result = await claimRewardDb(reward.id, code);
+    if (!result) {
+      return NextResponse.json({ ok: false, error: "db_error" }, { status: 500 });
+    }
+    if (!result.ok) {
+      return NextResponse.json({ ok: false, error: result.error });
+    }
+    return NextResponse.json({ ok: true, code: result.code });
+  }
+
   if (reward.stock <= 0) {
     return NextResponse.json({ ok: false, error: "out_of_stock" });
   }
@@ -28,8 +38,6 @@ export async function POST(
     return NextResponse.json({ ok: false, error: "already_claimed" });
   }
   const points = totalPoints(user.id);
-  // For mockup: claims subtract from a "spent" pool tracked separately; for simplicity
-  // we treat claiming as a record only (points unchanged) but still enforce affordability.
   if (points < reward.costPoints) {
     return NextResponse.json({ ok: false, error: "not_enough_points" });
   }

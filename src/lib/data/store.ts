@@ -14,6 +14,7 @@ import {
   SEED_SIDE_EVENTS,
   SEED_LIVE_MATCHES,
 } from "./seed";
+import { computeWheelSpinsEarned } from "@/lib/wheel/spins";
 import type {
   Badge,
   Challenge,
@@ -239,15 +240,32 @@ export function totalPoints(userId: string): number {
   return journeyPoints(userId) + challengePoints(userId) + matchScorePoints(userId);
 }
 
-/** 1 wheel spin per 200 points earned (+ spin-again prizes) */
+/** @deprecated Wheel spins no longer use points thresholds. */
 export const POINTS_PER_WHEEL_SPIN = 200;
 
+export function journeyStepsCompleted(userId: string): number {
+  const store = getStore();
+  const doneIds = new Set(
+    store.stepCompletions.filter((c) => c.userId === userId).map((c) => c.stepId)
+  );
+  return store.journeySteps.filter((s) => doneIds.has(s.id)).length;
+}
+
+export function allJourneyStepsComplete(userId: string): boolean {
+  const store = getStore();
+  return journeyStepsCompleted(userId) >= store.journeySteps.length;
+}
+
 export function wheelSpinsEarned(userId: string): number {
-  const fromPoints = Math.floor(totalPoints(userId) / POINTS_PER_WHEEL_SPIN);
-  const spinAgainBonus = getStore().wheelSpins.filter(
+  const store = getStore();
+  const spinAgainBonus = store.wheelSpins.filter(
     (s) => s.userId === userId && s.prizeId === "wp-spin-again"
   ).length;
-  return fromPoints + spinAgainBonus;
+  return computeWheelSpinsEarned(
+    journeyStepsCompleted(userId),
+    store.journeySteps.length,
+    spinAgainBonus
+  );
 }
 
 export function wheelSpinsUsed(userId: string): number {
@@ -376,7 +394,7 @@ export function awardBadge(userId: string, badgeId: string) {
   return true;
 }
 
-export const PHOTOS_PER_SESSION = 10;
+export const PHOTOS_PER_SESSION = 3;
 
 export function userPhotoCount(userId: string): number {
   return getStore().photos.filter((p) => p.userId === userId).length;

@@ -19,6 +19,7 @@ export const dictionaries = {
       logout: "Uitloggen",
       faq: "FAQ",
       rules: "Regels",
+      faqRules: "FAQ & Regels",
     },
     common: {
       points: "punten",
@@ -40,27 +41,51 @@ export const dictionaries = {
       yourRank: "Jouw positie",
       noResults: "Nog niks hier",
     },
+    welcome: {
+      lead: "3X3 Unites viert 10 jaar street basketball met een weekend vol sport, cultuur en community op het festivalterrein. Deze site is je digitale gids én speelveld — ontdek het terrein, verdien punten en doe mee aan het festival-spel.",
+      leadShort:
+        "3X3 Unites viert 10 jaar street basketball op het World Tour-weekend. Maak een account om mee te spelen: verken het terrein, verdien punten en win rewards.",
+      festivalTitle: "Het festival",
+      festivalBody:
+        "Het World Tour-weekend brengt 3x3 Street League, shows, talks, partner-activaties en de 3X3 Unites community samen. Of je nu komt kijken, spelen of ontdekken — er is overal iets te doen.",
+      venueTitle: "Het terrein",
+      venueBody:
+        "Van The Streets en de Dome tot de 3X3 Leader Centre, Food Court, Community Corner en Hekken Installatie: negen main quest-locaties vormen je route over het festival. Gebruik de plattegrond hieronder om te zien waar alles staat.",
+      gameTitle: "Het spel",
+      gameBody:
+        "Volg de Main Quest Grand Tour voor grote punten, doe side challenges op locatie, maak 3 contest-foto’s en draai aan het wheel als je alle main quests hebt voltooid. Punten wissel je in voor echte festival rewards.",
+    },
     home: {
-      eyebrow: "3X3 UNITES // STREETS TO THE TOP",
-      title: "From the streets\nto the top.",
+      eyebrow: "3X3 UNITES // WORLD TOUR WEEKEND",
+      titleLine1: "Welkom op",
+      titleLine2: "het festival.",
+      titleLoggedIn1: "Welkom terug",
+      titleLoggedIn2: "op het terrein.",
       subtitle:
-        "Tien stappen. Eén journey. Verdien wheel spins, doe side challenges voor punten en speel naar de top.",
-      ctaJoin: "Start de journey",
-      ctaScan: "Voer een code in",
+        "Ontdek het 3X3 Unites festivalterrein, volg de Main Quest, speel side challenges en verdien punten voor exclusieve rewards — alles via je telefoon.",
+      subtitleLoggedIn:
+        "Ga verder met je Main Quest, side challenges en punten. De plattegrond staat hieronder.",
+      ctaJoin: "Account maken",
+      ctaLogin: "Inloggen",
+      ctaPlay: "Start Main Quest",
+      ctaScan: "Side challenges",
       ctaMap: "Bekijk plattegrond",
+      mapBelow: "Hieronder is de map",
+      scrollToMap: "Naar de map",
+      sectionWelcome: "Over het weekend",
       sectionLeaderboard: "Top spelers",
       sectionLatestBadges: "Nieuwste badges",
-      sectionHowItWorks: "Hoe werkt het",
+      sectionHowItWorks: "Zo speel je mee",
       hiwStep1Title: "Maak een account",
       hiwStep1Body:
-        "Registreer gratis op de site met e-mail en wachtwoord — geen ticket nodig om mee te doen.",
-      hiwStep2Title: "Codes & speel",
+        "Registreer gratis met e-mail en wachtwoord. Geen ticket nodig — iedereen op het terrein kan meedoen.",
+      hiwStep2Title: "Verken & speel",
       hiwStep2Body:
-        "Journey codes geven wheel spins. Side challenges geven punten voor de reward shop.",
-      hiwStep3Title: "Claim je reward",
+        "Bezoek main quest-locaties voor grote punten, doe side challenges en voer codes in bij activaties op het terrein.",
+      hiwStep3Title: "Win rewards",
       hiwStep3Body:
-        "Wissel je punten in voor een food voucher, merch, of een handtekening van een topspeler.",
-      stat1: "Stappen in de journey",
+        "Verzamel punten voor de reward shop, draai aan de wheel en upload 3 contest-foto’s. Fysieke prijzen haal je op locatie op.",
+      stat1: "Main quest stops",
       stat2: "Side challenges",
       stat3: "Badges te verdienen",
       stat4: "Rewards in de shop",
@@ -74,7 +99,7 @@ export const dictionaries = {
       stepCurrent: "Volgende stap",
       stepActions: "Open volgende stap",
       leaderHubLocked:
-        "Leader Hub ontgrendelt zodra alle andere main quests klaar zijn.",
+        "3X3 Leader Hub ontgrendelt zodra alle andere main quests klaar zijn.",
       photoPreview: "Voorbeeld",
       takePhoto: "Foto maken",
       retakePhoto: "Opnieuw",
@@ -106,14 +131,15 @@ export const dictionaries = {
     challenges: {
       title: "Side challenges",
       subtitle:
-        "Extra punten verdienen? Doe mee aan trivia, polls, score-invoer en photo challenges.",
+        "Voer codes in of doe mee aan trivia, polls, score-invoer en photo challenges voor extra punten.",
+      enterCode: "Code invoeren",
       types: {
         trivia: "Trivia",
         poll: "Live poll",
         score_input: "Score invoer",
         photo: "Photo",
         bingo: "Bingo",
-        panna_qr: "Panna code",
+        panna_qr: "Codes",
       },
       attemptSuccess: "Top! Punten toegevoegd.",
       attemptWrong: "Helaas, probeer een andere challenge.",
@@ -129,13 +155,22 @@ export const dictionaries = {
       bannerTitle: "Top spelers",
     },
     rewards: {
-      title: "Rewards",
-      subtitle: "Wissel je punten in voor exclusieve rewards.",
+      title: "Battle Pass",
+      subtitle:
+        "Verdien punten op het terrein en unlock festival rewards tier voor tier — claim op locatie met je voucher.",
+      battlePassSeason: "World Tour Weekend",
+      tier: "Tier",
+      progress: "Voortgang",
+      ptsToNext: "Nog {n} pts tot volgende tier",
+      maxTier: "Alle tiers bereikt",
+      lockedTier: "Nog niet bereikt",
+      unlockedTier: "Klaar om te claimen",
       cost: "Kosten",
       stock: "Op voorraad",
       notEnoughPoints: "Niet genoeg punten",
       outOfStock: "Uitverkocht",
       yourVoucher: "Jouw voucher code",
+      redeemHint: "Toon deze code bij de reward desk op het terrein.",
     },
     scan: {
       title: "Voer een code in",
@@ -150,7 +185,7 @@ export const dictionaries = {
       already: "Je had deze code al ingevoerd",
       photoRequired: "Deze stap heeft een foto nodig.",
       openJourney: "Open journey",
-      leaderHubLocked: "Leader Hub kan pas na alle andere main quests.",
+      leaderHubLocked: "3X3 Leader Hub kan pas na alle andere main quests.",
     },
     map: {
       title: "Plattegrond",
@@ -163,7 +198,7 @@ export const dictionaries = {
       openFullMap: "Volledige kaart",
       youAreHere: "Jij bent hier",
       mainQuestHint: "Oranje = main quest (100+ pts). Side quests vind je bij Challenges.",
-      imageAlt: "Festival plattegrond TWOFIFTYK",
+      imageAlt: "Festival plattegrond 3X3 Unites",
       searchLabel: "Zoeken",
       searchPlaceholder: "Bijv. FOOD, DJ, Rabobank…",
       searchHint: "Zoek op naam, locatiecode (RABO, FOOD) of journey-code (JOURNEY-01).",
@@ -182,34 +217,52 @@ export const dictionaries = {
     wheel: {
       title: "Spin the wheel",
       subtitle:
-        "Verdien spins via de journey en draai aan het rad voor directe prijzen.",
+        "Voltooi alle main quests van de journey — daarna kun je één keer gratis draaien voor een festivalprijs.",
       spinsAvailable: "Beschikbare spins",
       spinCta: "Draai aan het rad!",
       spinning: "Draait…",
-      noSpins: "Geen spins meer — voltooi meer journey-stappen.",
+      noSpins: "Nog geen spin — voltooi eerst alle main quests op /journey.",
+      noSpinsUsed: "Je hebt je wheel-spin al gebruikt. Win je 'Nog een spin!' voor een extra draai.",
       youWon: "Gewonnen!",
       spinsLeft: "Spins over",
-      howToEarn: "Hoe verdien je spins?",
-      earnSteps: "Elke 2 journey-stappen = 1 spin",
-      earnHalfway: "5 stappen voltooid = +1 bonus spin",
-      earnComplete: "Alle 10 stappen = +2 bonus spins",
-      earnAllChallenges: "Alle side challenges = +1 bonus spin",
-      progress: "Journey {done}/{total} — volgende spin rond stap {next}",
+      howToEarn: "Hoe krijg je een spin?",
+      earnSteps: "Voltooi alle main quest-stappen op /journey (codes of foto).",
+      earnComplete: "Zodra elke main quest op ✓ staat, ontgrendel je 1 wheel-spin.",
+      earnSpinAgain: "Prijs 'Nog een spin!' geeft één extra draai (zolang voorraad strekt).",
+      progress: "Main quest {done}/{total} — nog {remaining} stappen tot je wheel-spin",
+      progressComplete: "Alle main quests voltooid — je wheel-spin staat klaar!",
+      prizesTitle: "Mogelijke prijzen",
+      prizesNote: "Willekeurige verdeling op basis van gewicht; geen lege vakjes. Voorraad beperkt.",
+      legalTitle: "Promotioneel kansspel — regels (NL)",
+      legalIntro:
+        "Het wheel is een promotioneel kansspel ter promotie van 3X3 Unites en het World Tour-weekend op het festivalterrein (Amsterdam). In Amsterdam geldt hetzelfde landelijke kader: de Gedragscode Promotionele Kansspelen van de Kansspelautoriteit (KSA). Geen aparte gemeentevergunning nodig zolang aan deze code wordt voldaan.",
+      legalBullets: [
+        "Gratis deelname: geen betaling of ticket vereist voor het wheel (gratis account).",
+        "1 spin na voltooiing van alle main quests; side challenges geven geen extra spins.",
+        "Prijzen worden willekeurig toegekend (gewichten hieronder); elke spin levert altijd een prijs.",
+        "Fysieke prijzen haal je op locatie op; toon je winst in de app. Voorraad beperkt.",
+        "Deelnemers jonger dan 16 jaar: alleen met toestemming van ouder/verzorger.",
+        "Eén account per persoon; geen codes delen om te valsspelen.",
+        "Indicatieve totale waarde wheel-prijzenpakket: onder €450 (geen KSA-vergunning nodig).",
+        "Bij individuele prijzen boven €449 kan kansspelbelasting gelden — betaald door 3X3 Unites.",
+        "Organisator: 3X3 Unites · Locatie: World Tour-weekend, Amsterdam · Toezicht: Kansspelautoriteit.",
+      ],
+      acceptTerms: "Door te draaien ga je akkoord met deze spelregels en de algemene voorwaarden op /faq#rules.",
     },
     photo: {
       title: "Disposable camera",
       subtitle:
-        "Digitale wegwerpcamera: max 10 foto's per sessie. Winnaars worden na het World Tour-weekend op socials bekendgemaakt.",
+        "Digitale wegwerpcamera: max 3 foto's per sessie. Winnaars worden na het World Tour-weekend op socials bekendgemaakt.",
       leaderTitle: "Alle deelnemersfoto's",
       leaderSubtitle:
         "Als leader/admin zie je alle contest-foto's voor de jury na het event.",
       leaderViewNote:
-        "Leader view: jury-overzicht. Deelnemers zien alleen hun eigen 10 shots.",
+        "Leader view: jury-overzicht. Deelnemers zien alleen hun eigen 3 shots.",
       adminGalleryLink: "Admin fotogalerij",
       privateNote:
-        "Jouw 10 shots zijn privé tot de jury. Leg de beste 3x3 Unites-momenten vast.",
+        "Jouw 3 shots zijn privé tot de jury. Leg de beste 3X3 Unites-momenten vast.",
       photosLeft: "foto's over",
-      limitReached: "Je hebt al 10 foto's geüpload deze sessie.",
+      limitReached: "Je hebt al 3 foto's geüpload deze sessie.",
       upload: "Foto maken",
       uploadCaption: "Caption (optioneel)",
       pickPhoto: "Kies foto",
@@ -219,19 +272,19 @@ export const dictionaries = {
     },
     faq: {
       title: "Veelgestelde vragen",
-      subtitle: "Alles wat je moet weten over de 3x3 Unites gamification.",
+      subtitle: "Alles wat je moet weten over de 3X3 Unites gamification.",
       items: [
         {
           q: "Hoe verdien ik punten?",
-          a: "Punten verdien je via side challenges en door de juiste wedstrijdscore in te vullen. Main journey quests geven wheel spins, geen shop-punten.",
+          a: "Punten verdien je via side challenges en door de juiste wedstrijdscore in te vullen. Main journey quests geven geen shop-punten, maar zijn nodig om het wheel te ontgrendelen.",
         },
         {
           q: "Wat zijn wheel spins?",
-          a: "Elke 2 voltooide main quests = 1 spin. Bonus spins bij 5 quests, alle 8 quests, of alle side challenges. Draai op /wheel voor directe prijzen.",
+          a: "Voltooi alle main quests op /journey — dan krijg je 1 gratis wheel-spin. Side challenges geven geen spins. Win je 'Nog een spin!' op het rad, dan mag je nog een keer draaien.",
         },
         {
           q: "Moet ik de journey in volgorde doen?",
-          a: "Nee — kies zelf welke main quest je wanneer doet. Alleen Leader Hub (laatste quest) ontgrendelt als de andere 7 klaar zijn.",
+          a: "Nee — kies zelf welke main quest je wanneer doet. Alleen 3X3 Leader Hub (laatste quest) ontgrendelt als de andere 7 klaar zijn.",
         },
         {
           q: "Hoe voer ik een code in?",
@@ -266,9 +319,9 @@ export const dictionaries = {
         {
           title: "Main journey",
           bullets: [
-            "8 main quests — voltooi ze met codes of een foto (Practice Court).",
-            "Leader Hub alleen beschikbaar na de andere 7 quests.",
-            "Main quests geven wheel spins, geen leaderboard-punten.",
+            "9 main quests — voltooi ze met codes of een foto waar nodig.",
+            "Voltooi alle main quests om 1 wheel-spin te ontgrendelen.",
+            "Main quests geven geen battle pass-punten; die verdien je via side challenges.",
           ],
         },
         {
@@ -282,9 +335,21 @@ export const dictionaries = {
         {
           title: "Wheel & foto's",
           bullets: [
-            "Elke spin levert altijd een prijs — geen lege vakjes.",
+            "Wheel = promotioneel kansspel (KSA-gedragscode). Gratis na voltooiing van alle main quests.",
+            "Elke spin levert een prijs — geen lege vakjes. Voorraad en gewichten staan op /wheel.",
+            "Deelnemers <16 jaar alleen met ouderlijke toestemming. Fysieke prijs op locatie ophalen.",
             "Foto's zijn privé; alleen jij ziet je eigen uploads.",
             "Leaders/admins mogen alle foto's inzien voor moderatie.",
+          ],
+        },
+        {
+          title: "Wheel — juridisch (Amsterdam / NL)",
+          bullets: [
+            "Organisator: 3X3 Unites · Locatie: World Tour-weekend, Amsterdam.",
+            "Geen inleg; promotioneel kansspel ter bevordering van het festival.",
+            "Willekeurige prijsverdeling; volledige regels en prijslijst op /wheel en hierboven.",
+            "Indicatief prijzenpakket < €450 — geen vergunning vereist onder KSA-gedragscode.",
+            "Kansspelautoriteit kan deelnemers- en prijsadministratie opvragen.",
           ],
         },
       ],
@@ -317,9 +382,10 @@ export const dictionaries = {
       printHint: "Print en hang op bij de locatie. Deelnemers typen deze code in de app.",
     },
     login: {
-      title: "Welkom terug",
+      title: "Welkom op het festival",
       subtitle: "Selecteer een demo-account om in te loggen.",
-      subtitleAuth: "Log in met je e-mail en wachtwoord, of maak een nieuw account.",
+      subtitleAuth:
+        "Maak een account of log in om mee te spelen met de 3X3 Unites gamification op het terrein.",
       asNew: "Nieuw hier? Maak een gratis account aan.",
       demoHint: "Demo-modus: kies een testaccount (alleen zonder Supabase).",
       tabLogin: "Inloggen",
@@ -369,6 +435,7 @@ export const dictionaries = {
       logout: "Log out",
       faq: "FAQ",
       rules: "Rules",
+      faqRules: "FAQ & Rules",
     },
     common: {
       points: "points",
@@ -390,27 +457,51 @@ export const dictionaries = {
       yourRank: "Your rank",
       noResults: "Nothing here yet",
     },
+    welcome: {
+      lead: "3X3 Unites celebrates 10 years of street basketball with a weekend of sport, culture and community on the festival grounds. This site is your digital guide and game — explore the venue, earn points and join the festival experience.",
+      leadShort:
+        "3X3 Unites celebrates 10 years of street basketball at the World Tour weekend. Create an account to play: explore the grounds, earn points and win rewards.",
+      festivalTitle: "The festival",
+      festivalBody:
+        "The World Tour weekend brings 3x3 Street League, shows, talks, partner activations and the 3X3 Unites community together. Whether you come to watch, play or discover — there is something everywhere.",
+      venueTitle: "The venue",
+      venueBody:
+        "From The Streets and the Dome to the 3X3 Leader Centre, Food Court, Community Corner and Hekken Installatie: nine main quest locations form your route across the festival. Use the map below to see where everything is.",
+      gameTitle: "The game",
+      gameBody:
+        "Follow the Main Quest Grand Tour for big points, complete side challenges on site, take 3 contest photos and spin the wheel once you've finished all main quests. Trade points for real festival rewards.",
+    },
     home: {
-      eyebrow: "3X3 UNITES // STREETS TO THE TOP",
-      title: "From the streets\nto the top.",
+      eyebrow: "3X3 UNITES // WORLD TOUR WEEKEND",
+      titleLine1: "Welcome to",
+      titleLine2: "the festival.",
+      titleLoggedIn1: "Welcome back",
+      titleLoggedIn2: "on site.",
       subtitle:
-        "Ten steps. One journey. Earn wheel spins, do side challenges for points and climb the leaderboard.",
-      ctaJoin: "Start the journey",
-      ctaScan: "Enter a code",
+        "Explore the 3X3 Unites festival grounds, follow the Main Quest, play side challenges and earn points for exclusive rewards — all from your phone.",
+      subtitleLoggedIn:
+        "Continue your Main Quest, side challenges and points. The map is below.",
+      ctaJoin: "Create account",
+      ctaLogin: "Log in",
+      ctaPlay: "Start Main Quest",
+      ctaScan: "Side challenges",
       ctaMap: "View map",
+      mapBelow: "The map is below",
+      scrollToMap: "Scroll to map",
+      sectionWelcome: "About the weekend",
       sectionLeaderboard: "Top players",
       sectionLatestBadges: "Latest badges",
-      sectionHowItWorks: "How it works",
+      sectionHowItWorks: "How to play",
       hiwStep1Title: "Create an account",
       hiwStep1Body:
-        "Register for free on the site with email and password — no ticket required to play.",
-      hiwStep2Title: "Codes & play",
+        "Register for free with email and password. No ticket required — everyone on site can join.",
+      hiwStep2Title: "Explore & play",
       hiwStep2Body:
-        "Journey codes earn wheel spins. Side challenges earn points for the reward shop.",
-      hiwStep3Title: "Claim your reward",
+        "Visit main quest locations for big points, complete side challenges and enter codes at on-site activations.",
+      hiwStep3Title: "Win rewards",
       hiwStep3Body:
-        "Trade points for a food voucher, merch, or an autograph from a top player.",
-      stat1: "Steps in the journey",
+        "Collect points for the reward shop, spin the wheel and upload 3 contest photos. Pick up physical prizes on site.",
+      stat1: "Main quest stops",
       stat2: "Side challenges",
       stat3: "Badges to earn",
       stat4: "Rewards in shop",
@@ -424,7 +515,7 @@ export const dictionaries = {
       stepCurrent: "Next up",
       stepActions: "Open next step",
       leaderHubLocked:
-        "Leader Hub unlocks once all other main quests are done.",
+        "3X3 Leader Hub unlocks once all other main quests are done.",
       photoPreview: "Preview",
       takePhoto: "Take photo",
       retakePhoto: "Retake",
@@ -456,14 +547,15 @@ export const dictionaries = {
     challenges: {
       title: "Side challenges",
       subtitle:
-        "Want extra points? Take on trivia, polls, score input and photo challenges.",
+        "Want extra points? Enter codes or take on trivia, polls, score input and photo challenges.",
+      enterCode: "Enter code",
       types: {
         trivia: "Trivia",
         poll: "Live poll",
         score_input: "Score input",
         photo: "Photo",
         bingo: "Bingo",
-        panna_qr: "Panna code",
+        panna_qr: "Codes",
       },
       attemptSuccess: "Nice! Points added.",
       attemptWrong: "Not quite, try another challenge.",
@@ -479,13 +571,22 @@ export const dictionaries = {
       bannerTitle: "Top players",
     },
     rewards: {
-      title: "Rewards",
-      subtitle: "Trade your points for exclusive rewards.",
+      title: "Battle Pass",
+      subtitle:
+        "Earn points on site and unlock festival rewards tier by tier — claim on location with your voucher.",
+      battlePassSeason: "World Tour Weekend",
+      tier: "Tier",
+      progress: "Progress",
+      ptsToNext: "{n} pts to next tier",
+      maxTier: "All tiers reached",
+      lockedTier: "Not reached yet",
+      unlockedTier: "Ready to claim",
       cost: "Cost",
       stock: "In stock",
       notEnoughPoints: "Not enough points",
       outOfStock: "Out of stock",
       yourVoucher: "Your voucher code",
+      redeemHint: "Show this code at the reward desk on site.",
     },
     scan: {
       title: "Enter a code",
@@ -500,7 +601,7 @@ export const dictionaries = {
       already: "You already entered this code",
       photoRequired: "This step needs a photo.",
       openJourney: "Open journey",
-      leaderHubLocked: "Leader Hub only unlocks after all other main quests.",
+      leaderHubLocked: "3X3 Leader Hub only unlocks after all other main quests.",
     },
     map: {
       title: "Site map",
@@ -513,7 +614,7 @@ export const dictionaries = {
       openFullMap: "Full map",
       youAreHere: "You are here",
       mainQuestHint: "Orange = main quest (100+ pts). Side quests are under Challenges.",
-      imageAlt: "Festival site map TWOFIFTYK",
+      imageAlt: "Festival site map 3X3 Unites",
       searchLabel: "Search",
       searchPlaceholder: "e.g. FOOD, DJ, Rabobank…",
       searchHint: "Search by name, location code (RABO, FOOD) or journey code (JOURNEY-01).",
@@ -532,34 +633,52 @@ export const dictionaries = {
     wheel: {
       title: "Spin the wheel",
       subtitle:
-        "Earn spins through the journey and spin the wheel for instant prizes.",
+        "Complete every main quest on the journey — then you get one free spin for a festival prize.",
       spinsAvailable: "Spins available",
       spinCta: "Spin the wheel!",
       spinning: "Spinning…",
-      noSpins: "No spins left — complete more journey steps.",
+      noSpins: "No spin yet — finish all main quests on /journey first.",
+      noSpinsUsed: "You've used your wheel spin. Win 'Spin again!' for an extra turn.",
       youWon: "You won!",
       spinsLeft: "Spins left",
-      howToEarn: "How to earn spins",
-      earnSteps: "Every 2 journey steps = 1 spin",
-      earnHalfway: "5 steps completed = +1 bonus spin",
-      earnComplete: "All 10 steps = +2 bonus spins",
-      earnAllChallenges: "All side challenges = +1 bonus spin",
-      progress: "Journey {done}/{total} — next spin around step {next}",
+      howToEarn: "How do you earn a spin?",
+      earnSteps: "Complete all main quest steps on /journey (codes or photo).",
+      earnComplete: "When every main quest shows ✓, you unlock 1 wheel spin.",
+      earnSpinAgain: "'Spin again!' prize grants one extra spin (while stock lasts).",
+      progress: "Main quest {done}/{total} — {remaining} steps left until your wheel spin",
+      progressComplete: "All main quests complete — your wheel spin is ready!",
+      prizesTitle: "Possible prizes",
+      prizesNote: "Random allocation by weight; no empty slots. Limited stock.",
+      legalTitle: "Promotional game of chance — rules (NL law)",
+      legalIntro:
+        "The wheel is a promotional game of chance for 3X3 Unites and the World Tour weekend on the festival grounds (Amsterdam). Amsterdam follows the national framework: the KSA Code of Conduct for Promotional Games of Chance. No separate municipal permit is required when you comply with this code.",
+      legalBullets: [
+        "Free entry: no payment or ticket required for the wheel (free account).",
+        "1 spin after completing all main quests; side challenges do not grant spins.",
+        "Prizes are awarded at random (weights below); every spin wins a prize.",
+        "Collect physical prizes on site; show your win in the app. Limited stock.",
+        "Participants under 16: parental/guardian consent required.",
+        "One account per person; do not share codes to cheat.",
+        "Indicative total wheel prize package: under €450 (no KSA permit required).",
+        "Individual prizes above €449 may trigger gaming tax — paid by 3X3 Unites.",
+        "Organiser: 3X3 Unites · Venue: World Tour weekend, Amsterdam · Supervisor: Kansspelautoriteit.",
+      ],
+      acceptTerms: "By spinning you agree to these rules and the terms at /faq#rules.",
     },
     photo: {
       title: "Disposable camera",
       subtitle:
-        "Digital disposable camera: max 10 photos per session. Winners announced on socials after World Tour weekend.",
+        "Digital disposable camera: max 3 photos per session. Winners announced on socials after World Tour weekend.",
       leaderTitle: "All participant photos",
       leaderSubtitle:
         "As leader/admin view all contest photos for post-event judging.",
       leaderViewNote:
-        "Leader view: jury overview. Participants only see their own 10 shots.",
+        "Leader view: jury overview. Participants only see their own 3 shots.",
       adminGalleryLink: "Admin photo gallery",
       privateNote:
-        "Your 10 shots are private until judging. Capture the best 3x3 Unites moments.",
+        "Your 3 shots are private until judging. Capture the best 3X3 Unites moments.",
       photosLeft: "photos left",
-      limitReached: "You already uploaded 10 photos this session.",
+      limitReached: "You already uploaded 3 photos this session.",
       upload: "Take photo",
       uploadCaption: "Caption (optional)",
       pickPhoto: "Choose photo",
@@ -569,19 +688,19 @@ export const dictionaries = {
     },
     faq: {
       title: "FAQ",
-      subtitle: "Everything you need to know about 3x3 Unites gamification.",
+      subtitle: "Everything you need to know about 3X3 Unites gamification.",
       items: [
         {
           q: "How do I earn points?",
-          a: "Points come from side challenges and correct match scores. Main journey quests give wheel spins, not shop points.",
+          a: "Points come from side challenges and correct match scores. Main journey quests don't give shop points, but you need them to unlock the wheel.",
         },
         {
           q: "What are wheel spins?",
-          a: "Every 2 main quests = 1 spin. Bonus spins at 5 quests, all 8 quests, or all side challenges. Spin at /wheel for instant prizes.",
+          a: "Complete all main quests on /journey — then you get 1 free wheel spin. Side challenges don't grant spins. If you win 'Spin again!' on the wheel, you may spin once more.",
         },
         {
           q: "Do I have to do the journey in order?",
-          a: "No — pick any main quest anytime. Leader Hub (final quest) unlocks only after the other 7 are done.",
+          a: "No — pick any main quest anytime. 3X3 Leader Hub (final quest) unlocks only after the other 7 are done.",
         },
         {
           q: "How do I enter a code?",
@@ -616,9 +735,9 @@ export const dictionaries = {
         {
           title: "Main journey",
           bullets: [
-            "8 main quests — complete with codes or a photo (Practice Court).",
-            "Leader Hub only unlocks after the other 7 quests.",
-            "Main quests award wheel spins, not leaderboard points.",
+            "9 main quests — complete with codes or a photo where required.",
+            "Complete all main quests to unlock 1 wheel spin.",
+            "Main quests don't give battle pass points; earn those via side challenges.",
           ],
         },
         {
@@ -632,9 +751,21 @@ export const dictionaries = {
         {
           title: "Wheel & photos",
           bullets: [
-            "Every spin wins a prize — no empty slots.",
+            "Wheel = promotional game of chance (KSA code). Free after all main quests are done.",
+            "Every spin wins a prize — no empty slots. Stock and weights are on /wheel.",
+            "Participants under 16 need parental consent. Collect physical prizes on site.",
             "Photos are private; only you see your uploads.",
             "Leaders/admins may view all photos for moderation.",
+          ],
+        },
+        {
+          title: "Wheel — legal (Amsterdam / NL)",
+          bullets: [
+            "Organiser: 3X3 Unites · Venue: World Tour weekend, Amsterdam.",
+            "No stake; promotional game to promote the festival.",
+            "Random prize allocation; full rules and prize list on /wheel and above.",
+            "Indicative prize package < €450 — no permit required under KSA code.",
+            "Kansspelautoriteit may request participant and prize records.",
           ],
         },
       ],
@@ -666,9 +797,10 @@ export const dictionaries = {
       printHint: "Print and place at the location. Participants type this code in the app.",
     },
     login: {
-      title: "Welcome back",
+      title: "Welcome to the festival",
       subtitle: "Pick a demo account to log in.",
-      subtitleAuth: "Sign in with your email and password, or create a new account.",
+      subtitleAuth:
+        "Create an account or sign in to play the 3X3 Unites gamification on site.",
       asNew: "New here? Create a free account.",
       demoHint: "Demo mode: pick a test account (only without Supabase).",
       tabLogin: "Log in",

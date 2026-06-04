@@ -10,7 +10,7 @@ export default async function MapPage() {
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-      <div className="brand-section-label mb-2">3x3 unites // plattegrond</div>
+      <div className="brand-section-label mb-2">3X3 UNITES // plattegrond</div>
       <h1 className="font-display text-5xl">{t.map.title}</h1>
       <p className="mt-3 text-white/70 max-w-2xl">{t.map.subtitle}</p>
       <MapClient locale={locale} dict={t} />

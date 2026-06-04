@@ -28,7 +28,7 @@ export default async function AdminLayout({
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-      <div className="brand-section-label mb-2">3x3 unites // admin</div>
+      <div className="brand-section-label mb-2">3X3 UNITES // admin</div>
       <h1 className="font-display text-5xl">{t.admin.title}</h1>
 
       <nav className="mt-6 flex flex-wrap gap-2 border-b border-white/10 pb-2 overflow-x-auto">

@@ -1,7 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { addPhoto, canUploadPhoto, PHOTOS_PER_SESSION } from "@/lib/data/store";
+import {
+  PHOTOS_PER_SESSION,
+  canUserUploadPhoto,
+  uploadPhoto,
+} from "@/lib/data/photo-service";
 import { evaluateBadges } from "@/lib/award-points";
 import { requireUser } from "@/lib/session";
 
@@ -15,18 +19,18 @@ export async function addPhotoAction({
   imageDataUrl: string;
 }) {
   const user = await requireUser();
-  if (!canUploadPhoto(user.id)) {
+  if (!(await canUserUploadPhoto(user.id))) {
     throw new Error(`photo_limit:${PHOTOS_PER_SESSION}`);
   }
-  const id = `photo-${Date.now()}`;
-  addPhoto({
-    id,
-    userId: user.id,
-    imageUrl: imageDataUrl,
-    caption: caption.trim(),
-    hashtag: hashtag.trim().toLowerCase() || "3x3unites",
-    createdAt: new Date().toISOString(),
-  });
+
+  const result = await uploadPhoto(user.id, imageDataUrl, caption, hashtag);
+  if (!result.ok) {
+    if (result.error === "photo_limit") {
+      throw new Error(`photo_limit:${PHOTOS_PER_SESSION}`);
+    }
+    throw new Error(result.error);
+  }
+
   evaluateBadges(user.id);
   revalidatePath("/photos");
   revalidatePath("/profile");

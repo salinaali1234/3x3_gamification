@@ -14,7 +14,7 @@ export default async function LeaderboardPage() {
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8 py-10">
-      <div className="brand-section-label mb-2">3x3 unites // leaderboard</div>
+      <div className="brand-section-label mb-2">3X3 UNITES // leaderboard</div>
       <h1 className="font-display text-5xl sm:text-6xl">{t.leaderboard.title}</h1>
       <p className="mt-3 text-white/70">{t.leaderboard.subtitle}</p>
 

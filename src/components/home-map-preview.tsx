@@ -19,7 +19,10 @@ export function HomeMapPreview({
   const mainQuestPois = FESTIVAL_MAP_POIS.filter((p) => p.redeemCode?.startsWith("JOURNEY-"));
 
   return (
-    <section className="border-b border-white/10 bg-brand-offwhite text-brand-black">
+    <section
+      id="festival-map"
+      className="border-b border-white/10 bg-brand-offwhite text-brand-black scroll-mt-20"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
           <div>

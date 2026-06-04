@@ -38,8 +38,8 @@ export const FESTIVAL_MAP_POIS: MapPoi[] = [
     mapCode: "STREETS",
     name: { nl: "The Streets", en: "The Streets" },
     description: {
-      nl: "Street League courts — main quest (100 pts).",
-      en: "Street League courts — main quest (100 pts).",
+      nl: "3x3 Street League courts — main quest (100 pts).",
+      en: "3x3 Street League courts — main quest (100 pts).",
     },
     category: "court",
     x: 22,
@@ -50,7 +50,7 @@ export const FESTIVAL_MAP_POIS: MapPoi[] = [
   {
     id: "poi-odido-dome",
     mapCode: "DOME",
-    name: { nl: "Odido Dome", en: "Odido Dome" },
+    name: { nl: "Dome", en: "Dome" },
     description: {
       nl: "Talks, AI experience & rave — main quest.",
       en: "Talks, AI experience & rave — main quest.",
@@ -120,10 +120,10 @@ export const FESTIVAL_MAP_POIS: MapPoi[] = [
   {
     id: "poi-leader-center",
     mapCode: "LEADER-CTR",
-    name: { nl: "Leader Center", en: "Leader Center" },
+    name: { nl: "3X3 Leader Centre", en: "3X3 Leader Centre" },
     description: {
-      nl: "Clinics & trial leader course — main quest.",
-      en: "Clinics & trial leader course — main quest.",
+      nl: "Clinics & Rembrandt 3X3 Leader course — main quest.",
+      en: "Clinics & Rembrandt 3X3 Leader course — main quest.",
     },
     category: "activation",
     x: 58,
@@ -150,8 +150,8 @@ export const FESTIVAL_MAP_POIS: MapPoi[] = [
     mapCode: "HEKKEN",
     name: { nl: "Hekken Installatie", en: "Fence Installation" },
     description: {
-      nl: "10 years 3x3 Unites — spot the leader.",
-      en: "10 years 3x3 Unites — spot the leader.",
+      nl: "10 years 3X3 Unites — spot the 3X3 Leader.",
+      en: "10 years 3X3 Unites — spot the 3X3 Leader.",
     },
     category: "culture",
     x: 50,
@@ -162,7 +162,7 @@ export const FESTIVAL_MAP_POIS: MapPoi[] = [
   {
     id: "poi-leader-hub",
     mapCode: "LEADER-HUB",
-    name: { nl: "Leader Hub", en: "Leader Hub" },
+    name: { nl: "3X3 Leader Hub", en: "3X3 Leader Hub" },
     description: {
       nl: "Leader storytelling signup — side quest.",
       en: "Leader storytelling signup — side quest.",
@@ -177,8 +177,8 @@ export const FESTIVAL_MAP_POIS: MapPoi[] = [
     mapCode: "KIDS",
     name: { nl: "Kids Area", en: "Kids Area" },
     description: {
-      nl: "Kids challenges & paint wall — side quests.",
-      en: "Kids challenges & paint wall — side quests.",
+      nl: "Kids challenges & The Paint Wall — side quests.",
+      en: "Kids challenges & The Paint Wall — side quests.",
     },
     category: "entertainment",
     x: 82,

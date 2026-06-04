@@ -16,6 +16,8 @@ type ScanResult =
       totalPoints?: number;
       wheelSpinsGained?: number;
       wheelSpinsAvailable?: number;
+      journeyStepsRemaining?: number;
+      journeyComplete?: boolean;
       newBadges: { id: string; emoji: string; name: { nl: string; en: string } }[];
     }
   | { ok: false; error: string };
@@ -25,11 +27,13 @@ export function ScanClient({
   dict,
   hint,
   initialCode = "",
+  showMapLink = false,
 }: {
   locale: Locale;
   dict: Dictionary;
   hint?: string;
   initialCode?: string;
+  showMapLink?: boolean;
 }) {
   const [code, setCode] = useState(initialCode);
   const [submitting, setSubmitting] = useState(false);
@@ -88,11 +92,13 @@ export function ScanClient({
             {locale === "nl" ? "Hint: probeer" : "Hint: try"} {hint}
           </p>
         ) : null}
-        <p className="mt-4 text-xs text-white/40">
-          <Link href="/map" className="text-brand-green hover:underline">
-            {dict.scan.findOnMap} →
-          </Link>
-        </p>
+        {showMapLink ? (
+          <p className="mt-4 text-xs text-white/40">
+            <Link href="/#festival-map" className="text-brand-green hover:underline">
+              {dict.scan.findOnMap} →
+            </Link>
+          </p>
+        ) : null}
       </div>
 
       {result ? (
@@ -116,10 +122,25 @@ export function ScanClient({
             ) : null}
             {result.wheelSpinsGained ? (
               <p className="mt-2 text-sm text-brand-orange">
+                {result.journeyComplete
+                  ? locale === "nl"
+                    ? "Alle main quests voltooid — je wheel-spin staat klaar! "
+                    : "All main quests complete — your wheel spin is ready! "
+                  : null}
                 +{result.wheelSpinsGained}{" "}
                 {result.wheelSpinsGained === 1 ? "wheel spin" : "wheel spins"}!{" "}
                 <Link href="/wheel" className="underline hover:text-brand-green">
                   {dict.wheel.title} →
+                </Link>
+              </p>
+            ) : result.journeyStepsRemaining !== undefined &&
+              result.journeyStepsRemaining > 0 ? (
+              <p className="mt-2 text-sm text-white/50">
+                {locale === "nl"
+                  ? `Nog ${result.journeyStepsRemaining} main quest(s) tot wheel-spin. `
+                  : `${result.journeyStepsRemaining} main quest(s) left until wheel spin. `}
+                <Link href="/journey" className="text-brand-green hover:underline">
+                  Journey →
                 </Link>
               </p>
             ) : result.wheelSpinsAvailable !== undefined ? (

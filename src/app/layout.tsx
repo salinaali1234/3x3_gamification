@@ -27,9 +27,9 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "3x3 Unites — From the Streets to the Top",
+  title: "3X3 Unites — Welcome to the Festival",
   description:
-    "Gamification platform for the 3x3 Unites basketball event. Enter codes, explore the festival map, complete challenges, climb the leaderboard.",
+    "Gamification platform for the 3X3 Unites World Tour weekend. Explore the festival grounds, complete the Main Quest, earn points and win festival rewards.",
   formatDetection: { telephone: false },
 };
 

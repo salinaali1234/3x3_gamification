@@ -3,12 +3,11 @@ import { redirect } from "next/navigation";
 import { getLocaleFromCookieValue } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getCurrentUser } from "@/lib/session";
+import { getTotalPoints, getUserClaims } from "@/lib/data/user-game";
 import {
   getBadgeById,
   getRewardById,
-  totalPoints,
   userBadgesFor,
-  userClaims,
 } from "@/lib/data/store";
 import { BadgeSticker } from "@/components/ui/badge-sticker";
 import { Avatar } from "@/components/ui/avatar";
@@ -24,12 +23,12 @@ export default async function ProfilePage() {
   const badges = userBadgesFor(user.id)
     .map((ub) => getBadgeById(ub.badgeId))
     .filter(Boolean);
-  const claims = userClaims(user.id);
-  const points = totalPoints(user.id);
+  const claims = await getUserClaims(user.id);
+  const points = await getTotalPoints(user.id);
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8 py-10">
-      <div className="brand-section-label mb-2">3x3 unites // profile</div>
+      <div className="brand-section-label mb-2">3X3 UNITES // profile</div>
       <h1 className="font-display text-5xl">{t.profile.title}</h1>
 
       <div className="mt-8 flex items-center gap-4">

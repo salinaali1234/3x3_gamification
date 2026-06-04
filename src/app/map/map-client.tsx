@@ -139,7 +139,7 @@ export function MapClient({
                   {dict.map.journeyCode}: {selected.redeemCode}
                 </p>
                 <Link
-                  href={`/scan?code=${encodeURIComponent(selected.redeemCode)}`}
+                  href={`/challenges?code=${encodeURIComponent(selected.redeemCode)}`}
                   className="inline-flex items-center gap-1 rounded-full bg-brand-green text-brand-black px-4 py-2 text-sm font-medium hover:bg-brand-green/90"
                 >
                   {dict.map.enterCode} →

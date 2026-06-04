@@ -10,6 +10,8 @@ import {
 } from "@/lib/data/store";
 import { evaluateBadges } from "@/lib/award-points";
 import { getCurrentUser } from "@/lib/session";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { completeJourneyStepDb } from "@/lib/supabase/game";
 
 const Body = z.object({
   stepId: z.string().min(1),
@@ -36,6 +38,28 @@ export async function POST(req: Request) {
   }
   if (!canCompleteStep(user.id, step.id)) {
     return NextResponse.json({ ok: false, error: "leader_hub_locked" });
+  }
+
+  if (isSupabaseConfigured()) {
+    const result = await completeJourneyStepDb(step.id);
+    if (!result) {
+      return NextResponse.json({ ok: false, error: "db_error" }, { status: 500 });
+    }
+    if (!result.ok) {
+      return NextResponse.json({ ok: false, error: result.error });
+    }
+    addStepPhotoUpload(user.id, step.id, parsed.data.photoDataUrl.slice(0, 64));
+    const { newlyEarnedBadges } = evaluateBadges(user.id);
+    return NextResponse.json({
+      ok: true,
+      type: "step",
+      target: { id: step.id, title: step.title },
+      pointsGained: result.points_gained,
+      totalPoints: result.total_points,
+      wheelSpinsGained: result.wheel_spins_gained,
+      wheelSpinsAvailable: result.wheel_spins_available,
+      newBadges: newlyEarnedBadges,
+    });
   }
 
   const earnedBefore = wheelSpinsEarned(user.id);

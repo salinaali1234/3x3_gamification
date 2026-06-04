@@ -1,28 +1,51 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { getLocaleFromCookieValue } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getCurrentUser } from "@/lib/session";
-import { listChallenges, userAttempts } from "@/lib/data/store";
+import { listChallenges, listJourneySteps } from "@/lib/data/store";
+import { getCompletedChallengeIds, getCompletedStepIds } from "@/lib/data/user-game";
 import { accentClass, cn } from "@/lib/utils";
+import { ScanClient } from "@/app/scan/scan-client";
 
-export default async function ChallengesPage() {
+export default async function ChallengesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ code?: string }>;
+}) {
   const cookieStore = await cookies();
   const locale = getLocaleFromCookieValue(cookieStore.get("locale")?.value);
   const t = getDictionary(locale);
   const user = await getCurrentUser();
+  if (!user) redirect("/login");
+
+  const params = await searchParams;
+  const initialCode = params.code?.toUpperCase() ?? "";
   const challenges = listChallenges();
-  const done = user
-    ? new Set(userAttempts(user.id).map((a) => a.challengeId))
-    : new Set();
+  const done = await getCompletedChallengeIds(user.id);
+  const completedSteps = await getCompletedStepIds(user.id);
+  const steps = listJourneySteps();
+  const hint = steps.find((s) => !completedSteps.has(s.id))?.code;
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-      <div className="brand-section-label mb-2">3x3 unites // challenges</div>
+      <div className="brand-section-label mb-2">3X3 UNITES // challenges</div>
       <h1 className="font-display text-5xl sm:text-6xl">{t.challenges.title}</h1>
       <p className="mt-3 text-white/70 max-w-2xl">{t.challenges.subtitle}</p>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 rounded-md border border-brand-green/30 bg-brand-green/5 p-5 sm:p-6">
+        <h2 className="font-display text-2xl text-brand-green">{t.challenges.enterCode}</h2>
+        <ScanClient
+          locale={locale}
+          dict={t}
+          hint={hint}
+          initialCode={initialCode}
+          showMapLink
+        />
+      </div>
+
+      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {challenges.map((c) => {
           const isDone = done.has(c.id);
           return (
@@ -67,14 +90,6 @@ export default async function ChallengesPage() {
           );
         })}
       </div>
-
-      {!user ? (
-        <p className="mt-8 text-sm text-white/50">
-          {locale === "nl"
-            ? "Log in om challenges te doen."
-            : "Log in to attempt challenges."}
-        </p>
-      ) : null}
     </div>
   );
 }

@@ -6,10 +6,9 @@ import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getCurrentUser } from "@/lib/session";
 import {
   getChallengeById,
-  hasChallengeAttempt,
   pollResults,
-  userAttempts,
 } from "@/lib/data/store";
+import { getUserAttempts, hasChallengeAttempt } from "@/lib/data/user-game";
 import { ChallengeRunner } from "./challenge-runner";
 import { accentClass } from "@/lib/utils";
 
@@ -27,8 +26,10 @@ export default async function ChallengeDetailPage({
   const challenge = getChallengeById(id);
   if (!challenge) notFound();
 
-  const alreadyDone = hasChallengeAttempt(user.id, challenge.id);
-  const previous = userAttempts(user.id).find((a) => a.challengeId === challenge.id);
+  const alreadyDone = await hasChallengeAttempt(user.id, challenge.id);
+  const previous = (await getUserAttempts(user.id)).find(
+    (a) => a.challengeId === challenge.id
+  );
   const pollVotes = challenge.type === "poll" ? pollResults(challenge.id) : [];
 
   return (

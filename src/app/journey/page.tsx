@@ -3,7 +3,8 @@ import Link from "next/link";
 import { getLocaleFromCookieValue } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getCurrentUser } from "@/lib/session";
-import { canCompleteStep, listJourneySteps, userCompletions } from "@/lib/data/store";
+import { canCompleteStep, listJourneySteps } from "@/lib/data/store";
+import { getCompletedStepIds } from "@/lib/data/user-game";
 import { ButtonLink } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { PhotoStepUploader } from "./photo-step";
@@ -14,13 +15,13 @@ export default async function JourneyPage() {
   const t = getDictionary(locale);
   const user = await getCurrentUser();
   const steps = listJourneySteps();
-  const done = user ? new Set(userCompletions(user.id).map((c) => c.stepId)) : new Set();
+  const done = user ? await getCompletedStepIds(user.id) : new Set<string>();
   const finalStep = steps.find((s) => s.isFinal);
   const finalLocked = !!user && !!finalStep && !canCompleteStep(user.id, finalStep.id);
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8 py-10">
-      <div className="brand-section-label mb-2">3x3 unites // journey</div>
+      <div className="brand-section-label mb-2">3X3 UNITES // journey</div>
       <h1 className="font-display text-5xl sm:text-6xl">
         {t.journey.title}
       </h1>
@@ -110,13 +111,13 @@ export default async function JourneyPage() {
                 {isAvailable && step.verifyMethod !== "photo" ? (
                   <div className="mt-4 flex flex-wrap gap-2">
                     <ButtonLink
-                      href={`/scan?code=${encodeURIComponent(step.code)}`}
+                      href={`/challenges?code=${encodeURIComponent(step.code)}`}
                       variant="orange"
                       size="sm"
                     >
                       {t.scan.title}
                     </ButtonLink>
-                    <ButtonLink href="/map" variant="outline" size="sm">
+                    <ButtonLink href="/#festival-map" variant="outline" size="sm">
                       {t.nav.map}
                     </ButtonLink>
                   </div>

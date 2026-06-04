@@ -4,13 +4,12 @@ import Link from "next/link";
 import { getLocaleFromCookieValue } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getCurrentUser } from "@/lib/session";
+import { getProfileById } from "@/lib/data/store";
 import {
-  getProfileById,
-  listPhotos,
-  listPhotosForUser,
   PHOTOS_PER_SESSION,
-  userPhotoCount,
-} from "@/lib/data/store";
+  getUserPhotoCount,
+  listPhotosForDisplay,
+} from "@/lib/data/photo-service";
 import { PhotoWall } from "./photo-wall";
 
 export default async function PhotosPage() {
@@ -21,7 +20,8 @@ export default async function PhotosPage() {
   if (!user) redirect("/login");
 
   const isLeader = user.role === "admin";
-  const source = isLeader ? listPhotos() : listPhotosForUser(user.id);
+  const source = await listPhotosForDisplay(isLeader ? undefined : user.id);
+  const photoCount = await getUserPhotoCount(user.id);
 
   const photos = source.map((p) => {
     const profile = getProfileById(p.userId);
@@ -37,7 +37,7 @@ export default async function PhotosPage() {
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-      <div className="brand-section-label mb-2">3x3 unites // photos</div>
+      <div className="brand-section-label mb-2">3X3 UNITES // photos</div>
       <h1 className="font-display text-5xl sm:text-6xl">
         {isLeader ? t.photo.leaderTitle : t.photo.title}
       </h1>
@@ -58,7 +58,7 @@ export default async function PhotosPage() {
         dict={t}
         isLoggedIn
         isLeaderView={isLeader}
-        photosRemaining={Math.max(0, PHOTOS_PER_SESSION - userPhotoCount(user.id))}
+        photosRemaining={Math.max(0, PHOTOS_PER_SESSION - photoCount)}
         photosLimit={PHOTOS_PER_SESSION}
       />
     </div>

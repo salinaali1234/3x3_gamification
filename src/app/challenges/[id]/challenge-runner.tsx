@@ -150,8 +150,8 @@ export function ChallengeRunner({
         <div className="rounded-md border border-brand-orange/40 bg-brand-orange/5 p-5 text-sm">
           <p className="mb-3">
             {locale === "nl"
-              ? "Deze challenge wordt voltooid door de verstopte code in te voeren."
-              : "Complete this challenge by entering the hidden code."}
+              ? "Deze challenge wordt voltooid door de verstopte codes in te voeren."
+              : "Complete this challenge by entering the hidden codes."}
           </p>
           <p className="text-white/70">
             <strong>{locale === "nl" ? "Hint:" : "Hint:"}</strong>{" "}

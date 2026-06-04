@@ -7,13 +7,20 @@ import {
   getJourneyStepById,
   getQrCode,
   hasChallengeAttempt,
-  POINTS_PER_WHEEL_SPIN,
+  journeyStepsCompleted,
+  listJourneySteps,
   totalPoints,
   wheelSpinsAvailable,
   wheelSpinsEarned,
 } from "@/lib/data/store";
+import { journeyStepsUntilWheelSpin } from "@/lib/wheel/spins";
 import { evaluateBadges } from "@/lib/award-points";
 import { getCurrentUser } from "@/lib/session";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
+import {
+  completeChallengeScanDb,
+  completeJourneyStepDb,
+} from "@/lib/supabase/game";
 
 const Body = z.object({ code: z.string().min(1) });
 
@@ -40,6 +47,33 @@ export async function POST(req: Request) {
     if (step.verifyMethod === "photo") {
       return NextResponse.json({ ok: false, error: "photo_required" });
     }
+
+    if (isSupabaseConfigured()) {
+      const result = await completeJourneyStepDb(step.id);
+      if (!result) {
+        return NextResponse.json({ ok: false, error: "db_error" }, { status: 500 });
+      }
+      if (!result.ok) {
+        return NextResponse.json({ ok: false, error: result.error });
+      }
+      const { newlyEarnedBadges } = evaluateBadges(user.id);
+      return NextResponse.json({
+        ok: true,
+        type: "step",
+        target: { id: step.id, title: step.title, points: step.points },
+        pointsGained: result.points_gained,
+        totalPoints: result.total_points,
+        wheelSpinsGained: result.wheel_spins_gained,
+        wheelSpinsAvailable: result.wheel_spins_available,
+        journeyStepsRemaining: journeyStepsUntilWheelSpin(
+          Number(result.journey_steps_done ?? 0),
+          Number(result.journey_steps_total ?? listJourneySteps().length)
+        ),
+        journeyComplete: result.journey_complete,
+        newBadges: newlyEarnedBadges,
+      });
+    }
+
     const pointsBefore = totalPoints(user.id);
     const spinsBefore = wheelSpinsEarned(user.id);
     const added = addStepCompletion(user.id, step.id);
@@ -47,6 +81,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: false, error: "already" });
     }
     const pointsAfter = totalPoints(user.id);
+    const totalSteps = listJourneySteps().length;
+    const stepsDone = journeyStepsCompleted(user.id);
     const spinsGained = wheelSpinsEarned(user.id) - spinsBefore;
     const { newlyEarnedBadges } = evaluateBadges(user.id);
     return NextResponse.json({
@@ -57,7 +93,8 @@ export async function POST(req: Request) {
       totalPoints: pointsAfter,
       wheelSpinsGained: spinsGained,
       wheelSpinsAvailable: wheelSpinsAvailable(user.id),
-      nextWheelAt: POINTS_PER_WHEEL_SPIN - (pointsAfter % POINTS_PER_WHEEL_SPIN),
+      journeyStepsRemaining: journeyStepsUntilWheelSpin(stepsDone, totalSteps),
+      journeyComplete: stepsDone >= totalSteps,
       newBadges: newlyEarnedBadges,
     });
   }
@@ -66,6 +103,28 @@ export async function POST(req: Request) {
   if (!ch) {
     return NextResponse.json({ ok: false, error: "invalid" });
   }
+
+  if (isSupabaseConfigured()) {
+    const result = await completeChallengeScanDb(ch.id);
+    if (!result) {
+      return NextResponse.json({ ok: false, error: "db_error" }, { status: 500 });
+    }
+    if (!result.ok) {
+      return NextResponse.json({ ok: false, error: result.error });
+    }
+    const { newlyEarnedBadges } = evaluateBadges(user.id);
+    return NextResponse.json({
+      ok: true,
+      type: "challenge",
+      target: { id: ch.id, title: ch.title, points: ch.points },
+      pointsGained: result.points_gained,
+      totalPoints: result.total_points,
+      wheelSpinsGained: result.wheel_spins_gained,
+      wheelSpinsAvailable: result.wheel_spins_available,
+      newBadges: newlyEarnedBadges,
+    });
+  }
+
   if (hasChallengeAttempt(user.id, ch.id)) {
     return NextResponse.json({ ok: false, error: "already" });
   }

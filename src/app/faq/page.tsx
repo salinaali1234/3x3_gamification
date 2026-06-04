@@ -9,11 +9,26 @@ export default async function FaqPage() {
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 lg:px-8 py-10">
-      <div className="brand-section-label mb-2">3x3 unites // faq</div>
+      <div className="brand-section-label mb-2">3X3 UNITES // faq & rules</div>
       <h1 className="font-display text-5xl">{t.faq.title}</h1>
       <p className="mt-3 text-white/70">{t.faq.subtitle}</p>
 
-      <dl className="mt-10 space-y-6">
+      <nav className="mt-6 flex flex-wrap gap-2 text-sm font-mono uppercase tracking-wider">
+        <a
+          href="#faq"
+          className="rounded border border-brand-green/40 bg-brand-green/10 px-3 py-1.5 text-brand-green"
+        >
+          FAQ
+        </a>
+        <a
+          href="#rules"
+          className="rounded border border-white/15 px-3 py-1.5 text-white/70 hover:border-brand-orange/40 hover:text-brand-orange"
+        >
+          {t.nav.rules}
+        </a>
+      </nav>
+
+      <dl id="faq" className="mt-10 scroll-mt-24 space-y-6">
         {t.faq.items.map((item, i) => (
           <div
             key={i}
@@ -24,6 +39,29 @@ export default async function FaqPage() {
           </div>
         ))}
       </dl>
+
+      <section id="rules" className="mt-16 scroll-mt-24 border-t border-white/10 pt-12">
+        <h2 className="font-display text-4xl">{t.rules.title}</h2>
+        <p className="mt-3 text-white/70">{t.rules.subtitle}</p>
+
+        <div className="mt-10 space-y-8">
+          {t.rules.sections.map((section, i) => (
+            <div
+              key={i}
+              className="rounded-md border border-white/10 bg-white/[0.02] p-6"
+            >
+              <h3 className="font-display text-2xl text-brand-orange mb-4">
+                {section.title}
+              </h3>
+              <ul className="list-disc pl-5 space-y-2 text-sm text-white/70">
+                {section.bullets.map((bullet, j) => (
+                  <li key={j}>{bullet}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

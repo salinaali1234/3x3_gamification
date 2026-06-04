@@ -1,14 +1,14 @@
 import Image from "next/image";
 import { cookies } from "next/headers";
 import { getLocaleFromCookieValue } from "@/lib/i18n/config";
-import { getDictionary } from "@/lib/i18n/dictionaries";
-import { getProfileById, listPhotos } from "@/lib/data/store";
+import { getProfileById } from "@/lib/data/store";
+import { listPhotosForDisplay } from "@/lib/data/photo-service";
 
 export default async function AdminPhotos() {
   const cookieStore = await cookies();
   const locale = getLocaleFromCookieValue(cookieStore.get("locale")?.value);
-  const t = getDictionary(locale);
-  const photos = listPhotos().map((p) => ({
+  const allPhotos = await listPhotosForDisplay();
+  const photos = allPhotos.map((p) => ({
     ...p,
     userName: getProfileById(p.userId)?.displayName ?? "Unknown",
   }));

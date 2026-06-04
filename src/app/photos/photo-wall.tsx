@@ -23,8 +23,8 @@ export function PhotoWall({
   dict,
   isLoggedIn,
   isLeaderView,
-  photosRemaining = 10,
-  photosLimit = 10,
+  photosRemaining = 3,
+  photosLimit = 3,
 }: {
   photos: PhotoCard[];
   locale: Locale;

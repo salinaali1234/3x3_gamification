@@ -10,8 +10,8 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           <Logo3x3 />
           <p className="mt-3 text-white/50 max-w-xs">
             {locale === "nl"
-              ? "Een gamification platform voor 3x3 Unites events. Mockup met dummy data."
-              : "A gamification platform for 3x3 Unites events. Mockup with dummy data."}
+              ? "Een gamification platform voor 3X3 Unites events. Mockup met dummy data."
+              : "A gamification platform for 3X3 Unites events. Mockup with dummy data."}
           </p>
         </div>
         <div>
@@ -23,12 +23,11 @@ export function SiteFooter({ locale }: { locale: Locale }) {
             <li><Link href="/challenges" className="hover:text-brand-green">Challenges</Link></li>
             <li><Link href="/leaderboard" className="hover:text-brand-green">Leaderboard</Link></li>
             <li><Link href="/rewards" className="hover:text-brand-green">Rewards</Link></li>
-            <li><Link href="/faq" className="hover:text-brand-green">FAQ</Link></li>
-            <li><Link href="/rules" className="hover:text-brand-green">{locale === "nl" ? "Regels" : "Rules"}</Link></li>
+            <li><Link href="/faq" className="hover:text-brand-green">{locale === "nl" ? "FAQ & Regels" : "FAQ & Rules"}</Link></li>
           </ul>
         </div>
         <div>
-          <div className="brand-section-label mb-2">3x3 unites</div>
+          <div className="brand-section-label mb-2">3X3 UNITES</div>
           <p className="text-white/60">
             {locale === "nl"
               ? "Ontwikkeld als mockup. Gegevens zijn fictief."
@@ -38,7 +37,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
       </div>
       <div className="border-t border-white/5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 text-xs text-white/40 font-mono uppercase tracking-widest flex justify-between">
-          <span>3X3 UNITES // STREETS TO THE TOP</span>
+          <span>3X3 UNITES // WORLD TOUR WEEKEND</span>
           <span>v0.1 mockup</span>
         </div>
       </div>

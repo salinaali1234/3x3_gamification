@@ -4,10 +4,12 @@ import {
   addChallengeAttempt,
   addPollVote,
   getChallengeById,
-  hasChallengeAttempt,
 } from "@/lib/data/store";
+import { hasChallengeAttempt } from "@/lib/data/user-game";
 import { evaluateBadges } from "@/lib/award-points";
 import { getCurrentUser } from "@/lib/session";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { submitChallengeAttemptDb } from "@/lib/supabase/game";
 
 const Body = z.object({ answer: z.unknown() });
 
@@ -29,7 +31,7 @@ export async function POST(
   if (!challenge) {
     return NextResponse.json({ ok: false, error: "not_found" }, { status: 404 });
   }
-  if (hasChallengeAttempt(user.id, challenge.id)) {
+  if (await hasChallengeAttempt(user.id, challenge.id)) {
     return NextResponse.json({ ok: false, error: "already" });
   }
 
@@ -47,12 +49,14 @@ export async function POST(
     case "poll": {
       const idx = typeof answer === "number" ? answer : -1;
       if (idx >= 0 && idx < challenge.payload.data.options.length) {
-        addPollVote({
-          userId: user.id,
-          challengeId: challenge.id,
-          optionIndex: idx,
-          votedAt: new Date().toISOString(),
-        });
+        if (!isSupabaseConfigured()) {
+          addPollVote({
+            userId: user.id,
+            challengeId: challenge.id,
+            optionIndex: idx,
+            votedAt: new Date().toISOString(),
+          });
+        }
         correct = true;
         awarded = challenge.points;
       }
@@ -75,6 +79,29 @@ export async function POST(
       correct = false;
       awarded = 0;
       break;
+  }
+
+  if (isSupabaseConfigured()) {
+    const result = await submitChallengeAttemptDb(
+      challenge.id,
+      answer,
+      correct,
+      awarded
+    );
+    if (!result) {
+      return NextResponse.json({ ok: false, error: "db_error" }, { status: 500 });
+    }
+    if (!result.ok) {
+      return NextResponse.json({ ok: false, error: result.error });
+    }
+    const { newlyEarnedBadges } = evaluateBadges(user.id);
+    return NextResponse.json({
+      ok: true,
+      correct,
+      awarded,
+      totalPoints: result.total_points,
+      newBadges: newlyEarnedBadges,
+    });
   }
 
   addChallengeAttempt({

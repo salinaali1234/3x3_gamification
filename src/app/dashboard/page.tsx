@@ -5,14 +5,17 @@ import { getLocaleFromCookieValue } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getCurrentUser } from "@/lib/session";
 import {
+  getStepCompletions,
+  getTotalPoints,
+  getWheelSpinsAvailable,
+  getUserAttempts,
+} from "@/lib/data/user-game";
+import {
   leaderboard,
   listJourneySteps,
   listLiveMatches,
-  totalPoints,
-  wheelSpinsAvailable,
   userAttempts,
   userBadgesFor,
-  userCompletions,
   userMatchSubmissions,
   getBadgeById,
   getChallengeById,
@@ -32,15 +35,15 @@ export default async function DashboardPage() {
   if (!user) redirect("/login");
 
   const steps = listJourneySteps();
-  const completions = userCompletions(user.id);
+  const completions = await getStepCompletions(user.id);
   const completedIds = new Set(completions.map((c) => c.stepId));
   const nextStep = steps.find((s) => !completedIds.has(s.id));
-  const points = totalPoints(user.id);
-  const spins = wheelSpinsAvailable(user.id);
+  const points = await getTotalPoints(user.id);
+  const spins = await getWheelSpinsAvailable(user.id);
   const badges = userBadgesFor(user.id)
     .map((ub) => getBadgeById(ub.badgeId))
     .filter(Boolean);
-  const attempts = userAttempts(user.id);
+  const attempts = await getUserAttempts(user.id);
   const doneChallengeIds = new Set(attempts.map((a) => a.challengeId));
   const recommendedChallenge = listChallenges().find(
     (c) => !doneChallengeIds.has(c.id)
@@ -59,7 +62,7 @@ export default async function DashboardPage() {
         dict={t}
       />
       <div className="brand-section-label mb-2">
-        3x3 unites // dashboard
+        3X3 UNITES // dashboard
       </div>
       <h1 className="font-display text-5xl sm:text-6xl">
         Yo,{" "}
@@ -113,7 +116,7 @@ export default async function DashboardPage() {
             <div className="flex flex-col gap-2 sm:items-end">
               <span className="font-display text-3xl text-brand-orange">🎡 spin</span>
               <div className="flex flex-wrap gap-2">
-                <ButtonLink href="/scan" variant="orange">
+                <ButtonLink href="/challenges" variant="orange">
                   {t.scan.title}
                 </ButtonLink>
                 <ButtonLink href="/wheel" variant="outline">

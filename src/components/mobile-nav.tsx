@@ -90,7 +90,7 @@ export function MobileNav({
           className="absolute right-0 top-0 z-[101] flex h-full w-[min(88vw,380px)] flex-col overflow-y-auto bg-brand-black border-l border-white/10 shadow-2xl px-5 pb-8 pt-[max(env(safe-area-inset-top),1rem)]"
         >
           <div className="flex items-center justify-between shrink-0">
-            <span className="brand-section-label">3x3 unites</span>
+            <span className="brand-section-label">3X3 UNITES</span>
             <button
               type="button"
               onClick={() => setOpen(false)}
