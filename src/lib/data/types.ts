@@ -57,6 +57,32 @@ export type LiveMatch = {
   finalScore: string | null;
 };
 
+export type ScheduleSession = {
+  id: string;
+  day: FestivalDay;
+  number: number;
+  title: Bilingual;
+  location: Bilingual;
+  tagline?: Bilingual;
+};
+
+export type ScheduleItemKind =
+  | "doors"
+  | "match"
+  | "show"
+  | "break"
+  | "ceremony"
+  | "end";
+
+export type ScheduleItem = {
+  id: string;
+  sessionId: string;
+  startTime: string;
+  title: Bilingual;
+  kind: ScheduleItemKind;
+  court?: string;
+};
+
 export type WheelPrize = {
   id: string;
   label: Bilingual;

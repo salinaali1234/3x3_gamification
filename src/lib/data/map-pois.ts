@@ -148,10 +148,10 @@ export const FESTIVAL_MAP_POIS: MapPoi[] = [
   {
     id: "poi-hekken",
     mapCode: "HEKKEN",
-    name: { nl: "Hekken Installatie", en: "Fence Installation" },
+    name: { nl: "Leader exhibition", en: "Leader exhibition" },
     description: {
-      nl: "10 years 3X3 Unites — spot the 3X3 Leader.",
-      en: "10 years 3X3 Unites — spot the 3X3 Leader.",
+      nl: "10 years 3X3 Unites — spot the 3X3 Leader at the Leader exhibition.",
+      en: "10 years 3X3 Unites — spot the 3X3 Leader at the Leader exhibition.",
     },
     category: "culture",
     x: 50,

@@ -200,11 +200,11 @@ export const SEED_JOURNEY_STEPS: JourneyStep[] = [
     id: "step-hekken",
     order: 9,
     code: "JOURNEY-HEKKEN",
-    title: { nl: "Hekken Installatie", en: "Fence Installation" },
-    location: { nl: "Hekken installatie (3 structuren)", en: "Fence installation (3 structures)" },
+    title: { nl: "Leader exhibition", en: "Leader exhibition" },
+    location: { nl: "Leader exhibition (3 structuren)", en: "Leader exhibition (3 structures)" },
     description: {
-      nl: "Spot the 3X3 Leader op de Hekken Installatie — 10 jaar 3X3 Unites storytelling.",
-      en: "Spot the 3X3 Leader on the Hekken Installatie — 10 years of 3X3 Unites storytelling.",
+      nl: "Spot the 3X3 Leader op de Leader exhibition — 10 jaar 3X3 Unites storytelling.",
+      en: "Spot the 3X3 Leader at the Leader exhibition — 10 years of 3X3 Unites storytelling.",
     },
     qrCode: "JOURNEY-HEKKEN",
     accent: "blue",
@@ -213,97 +213,7 @@ export const SEED_JOURNEY_STEPS: JourneyStep[] = [
   },
 ];
 
-export const SEED_SIDE_EVENTS: import("./types").SideEvent[] = [
-  {
-    id: "se-rabiya-friday",
-    day: "friday",
-    startTime: "16:00",
-    endTime: "17:30",
-    title: { nl: "Rabiya × 3x3 Activation", en: "Rabiya × 3x3 Activation" },
-    description: {
-      nl: "Speciale activatie met Rabiya — meet & greet, signing en mini-clinic.",
-      en: "Special activation with Rabiya — meet & greet, signing and a mini clinic.",
-    },
-    location: { nl: "Rabobank Court", en: "Rabobank Court" },
-    host: "Rabiya",
-    kind: "activation",
-  },
-  {
-    id: "se-merch-drop",
-    day: "friday",
-    startTime: "18:00",
-    endTime: "20:00",
-    title: { nl: "Merch Drop", en: "Merch Drop" },
-    description: {
-      nl: "De nieuwe drop bij de Merch zone. Side event — geen main quest.",
-      en: "The new drop at the Merch zone. Side event — not a main quest.",
-    },
-    location: { nl: "Merch zone", en: "Merch zone" },
-    kind: "activation",
-  },
-  {
-    id: "se-dj-set-saturday",
-    day: "saturday",
-    startTime: "20:00",
-    endTime: "22:00",
-    title: { nl: "DJ Set @ Main Stage", en: "DJ Set @ Main Stage" },
-    description: {
-      nl: "Live DJ — vote op het volgende nummer in de side challenge.",
-      en: "Live DJ — vote on the next track in the side challenge.",
-    },
-    location: { nl: "Main stage — DJ booth", en: "Main stage — DJ booth" },
-    kind: "show",
-  },
-  {
-    id: "se-finals-sunday",
-    day: "sunday",
-    startTime: "16:00",
-    endTime: "18:00",
-    title: { nl: "Finals & Ceremony", en: "Finals & Ceremony" },
-    description: {
-      nl: "De finales en prijsuitreiking. Live match scores in de app.",
-      en: "The finals and award ceremony. Live match scores in the app.",
-    },
-    location: { nl: "Center court — podium", en: "Center court — podium" },
-    kind: "match",
-  },
-];
-
-export const SEED_LIVE_MATCHES: import("./types").LiveMatch[] = [
-  {
-    id: "match-qf1",
-    day: "saturday",
-    startTime: "14:00",
-    label: {
-      nl: "Quarterfinal 1 — Amsterdam vs Utrecht",
-      en: "Quarterfinal 1 — Amsterdam vs Utrecht",
-    },
-    teamA: "Amsterdam",
-    teamB: "Utrecht",
-    finalScore: "21-18",
-  },
-  {
-    id: "match-qf2",
-    day: "saturday",
-    startTime: "15:00",
-    label: {
-      nl: "Quarterfinal 2 — Rotterdam vs Den Haag",
-      en: "Quarterfinal 2 — Rotterdam vs Den Haag",
-    },
-    teamA: "Rotterdam",
-    teamB: "Den Haag",
-    finalScore: null,
-  },
-  {
-    id: "match-final",
-    day: "sunday",
-    startTime: "17:00",
-    label: { nl: "Finale", en: "Finals" },
-    teamA: "TBD",
-    teamB: "TBD",
-    finalScore: null,
-  },
-];
+export const SEED_SIDE_EVENTS: import("./types").SideEvent[] = [];
 
 export const SEED_CHALLENGES: Challenge[] = [
   {
@@ -470,10 +380,10 @@ export const SEED_CHALLENGES: Challenge[] = [
   {
     id: "ch-hekken",
     type: "trivia",
-    title: { nl: "Hekken installatie quiz", en: "Fencing installation quiz" },
+    title: { nl: "Leader exhibition quiz", en: "Leader exhibition quiz" },
     description: {
-      nl: "Welke leader staat op het hekken installatie artwork?",
-      en: "Which leader is on the fencing installation artwork?",
+      nl: "Welke 3X3 Leader staat op het Leader exhibition artwork?",
+      en: "Which 3X3 Leader is on the Leader exhibition artwork?",
     },
     points: 25,
     accent: "blue",
@@ -481,8 +391,8 @@ export const SEED_CHALLENGES: Challenge[] = [
       type: "trivia",
       data: {
         question: {
-          nl: "Welke leader staat op het hekken artwork?",
-          en: "Which leader is on the fencing artwork?",
+          nl: "Welke 3X3 Leader staat op het Leader exhibition artwork?",
+          en: "Which 3X3 Leader is on the Leader exhibition artwork?",
         },
         options: [
           { nl: "Worthy de Jong", en: "Worthy de Jong" },

@@ -20,8 +20,7 @@ export default async function RewardsPage() {
   return (
     <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
       <div className="brand-section-label mb-2">3X3 UNITES // battle pass</div>
-      <h1 className="font-display text-5xl sm:text-6xl">{t.rewards.title}</h1>
-      <p className="mt-3 text-white/70">{t.rewards.subtitle}</p>
+      <p className="max-w-2xl text-white/70">{t.rewards.subtitle}</p>
 
       <RewardsList
         rewards={rewards}

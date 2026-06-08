@@ -30,55 +30,113 @@ export default async function HomePage() {
 
   return (
     <div className="flex-1">
-      <section className="relative overflow-hidden border-b border-white/10">
-        <div className="absolute inset-0 grid-overlay opacity-60" />
-        <div className="absolute -top-32 -right-32 h-[480px] w-[480px] rounded-full bg-brand-orange/20 blur-3xl" />
-        <div className="absolute -bottom-40 -left-32 h-[420px] w-[420px] rounded-full bg-brand-green/20 blur-3xl" />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-16 lg:pt-24 lg:pb-20">
-          <div className="brand-section-label mb-6">{t.home.eyebrow}</div>
-          <h1 className="font-display text-5xl xs:text-6xl sm:text-7xl lg:text-8xl leading-[0.95] break-words">
-            <span className="text-brand-white">
-              {user ? t.home.titleLoggedIn1 : t.home.titleLine1}
+      {/* Festival poster hero */}
+      <section className="relative overflow-hidden border-b border-white/10 bg-brand-black">
+        <div className="absolute inset-0 fence-pattern opacity-50 pointer-events-none" />
+        <div
+          className="absolute -right-20 top-0 h-72 w-72 bg-brand-green/10 blur-3xl pointer-events-none"
+          aria-hidden
+        />
+
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-0 lg:pt-16">
+          <div className="flex flex-wrap items-center gap-2 mb-8">
+            <span className="bg-brand-green px-2.5 py-1 font-mono text-[11px] font-bold uppercase tracking-widest text-brand-black">
+              3X3 UNITES
             </span>
-            <br />
-            <span className="text-brand-green">
-              {user ? t.home.titleLoggedIn2 : t.home.titleLine2}
+            <span className="font-mono text-[11px] uppercase tracking-widest text-white/50">
+              {t.home.festivalDates} · {t.home.festivalLocation}
             </span>
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg text-white/70">
-            {user ? t.home.subtitleLoggedIn : t.home.subtitle}
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            {user ? (
-              <>
-                <ButtonLink href="/journey" variant="primary" size="lg">
-                  {t.home.ctaPlay} →
-                </ButtonLink>
-                <ButtonLink href="/challenges" variant="outline" size="lg">
-                  {t.home.ctaScan}
-                </ButtonLink>
-              </>
-            ) : (
-              <>
-                <ButtonLink href="/login?tab=register" variant="primary" size="lg">
-                  {t.home.ctaJoin} →
-                </ButtonLink>
-                <ButtonLink href="/login" variant="outline" size="lg">
-                  {t.home.ctaLogin}
-                </ButtonLink>
-              </>
-            )}
-            <ButtonLink href="#festival-map" variant="outline" size="lg">
-              {t.home.scrollToMap} ↓
-            </ButtonLink>
           </div>
-          <div className="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <Stat number={steps.length} label={t.home.stat1} accent="orange" />
-            <Stat number={challenges.length} label={t.home.stat2} accent="green" />
-            <Stat number={badges.length} label={t.home.stat3} accent="blue" />
-            <Stat number={rewards.length} label={t.home.stat4} accent="green" />
+
+          <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-16">
+            <div>
+              <h1 className="font-display uppercase leading-[0.82] tracking-tight">
+                <span className="block text-[clamp(4rem,16vw,11rem)] text-brand-white">
+                  {t.home.posterLine1}
+                </span>
+                <span className="block text-[clamp(4rem,16vw,11rem)] text-brand-green">
+                  {t.home.posterLine2}
+                </span>
+                <span className="block text-[clamp(3rem,12vw,8rem)] text-brand-white">
+                  {t.home.posterLine3}
+                </span>
+              </h1>
+
+              <p className="mt-6 max-w-xl font-mono text-xs sm:text-sm uppercase tracking-widest text-white/55">
+                {t.home.festivalSeries}
+              </p>
+
+              <p className="mt-4 max-w-2xl text-base sm:text-lg text-white/70">
+                {user ? t.home.subtitleLoggedIn : t.home.subtitle}
+              </p>
+
+              <p className="mt-3 font-display text-2xl sm:text-3xl uppercase text-brand-orange leading-none">
+                {user ? (
+                  <>
+                    {t.home.titleLoggedIn1}{" "}
+                    <span className="text-brand-green">{t.home.titleLoggedIn2}</span>
+                  </>
+                ) : (
+                  <>
+                    {t.home.titleLine1}{" "}
+                    <span className="text-brand-green">{t.home.titleLine2}</span>
+                  </>
+                )}
+              </p>
+
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                {user ? (
+                  <>
+                    <ButtonLink href="/journey" variant="primary" size="lg">
+                      {t.home.ctaPlay} →
+                    </ButtonLink>
+                    <ButtonLink href="/challenges" variant="outline" size="lg">
+                      {t.home.ctaScan}
+                    </ButtonLink>
+                  </>
+                ) : (
+                  <>
+                    <ButtonLink href="/login?tab=register" variant="primary" size="lg">
+                      {t.home.ctaJoin} →
+                    </ButtonLink>
+                    <ButtonLink href="/login" variant="outline" size="lg">
+                      {t.home.ctaLogin}
+                    </ButtonLink>
+                  </>
+                )}
+                <ButtonLink href="#festival-map" variant="outline" size="lg">
+                  {t.home.scrollToMap} ↓
+                </ButtonLink>
+              </div>
+            </div>
+
+            <div className="hidden lg:flex flex-col gap-3 pb-8 min-w-[200px]">
+              <PosterSideBlock label={t.home.festivalDates} accent />
+              <PosterSideBlock label={t.home.festivalLocation} />
+              <PosterSideBlock label={t.home.jubilee} small />
+            </div>
+          </div>
+
+          {/* PLAY · UNITE · EMPOWER */}
+          <div className="mt-10 grid grid-cols-3 border border-white/15">
+            <Pillar label={t.home.pillarPlay} accent="green" />
+            <Pillar label={t.home.pillarUnite} accent="orange" />
+            <Pillar label={t.home.pillarEmpower} accent="blue" />
+          </div>
+
+          <p className="mt-6 font-display text-xl sm:text-2xl uppercase tracking-wide text-white/80">
+            {t.home.posterRaw}
+          </p>
+
+          <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-px bg-white/10 border border-white/10">
+            <PosterStat number={steps.length} label={t.home.stat1} accent="orange" />
+            <PosterStat number={challenges.length} label={t.home.stat2} accent="green" />
+            <PosterStat number={badges.length} label={t.home.stat3} accent="blue" />
+            <PosterStat number={rewards.length} label={t.home.stat4} accent="green" />
           </div>
         </div>
+
+        <div className="mt-10 h-1.5 w-full bg-gradient-to-r from-brand-green via-brand-orange to-brand-blue" />
       </section>
 
       <section className="border-b border-white/10 bg-brand-black">
@@ -180,7 +238,54 @@ export default async function HomePage() {
   );
 }
 
-function Stat({
+function PosterSideBlock({
+  label,
+  accent,
+  small,
+}: {
+  label: string;
+  accent?: boolean;
+  small?: boolean;
+}) {
+  return (
+    <div
+      className={`border px-4 py-3 ${
+        accent ? "border-brand-green/40 bg-brand-green/10" : "border-white/12 bg-white/[0.03]"
+      }`}
+    >
+      <p
+        className={`font-mono uppercase tracking-widest leading-snug ${
+          small ? "text-[10px] text-white/50" : "text-xs text-white/70"
+        } ${accent ? "text-brand-green" : ""}`}
+      >
+        {label}
+      </p>
+    </div>
+  );
+}
+
+function Pillar({
+  label,
+  accent,
+}: {
+  label: string;
+  accent: "green" | "orange" | "blue";
+}) {
+  const colors = {
+    green: "bg-brand-green text-brand-black",
+    orange: "bg-brand-orange text-brand-black",
+    blue: "bg-brand-blue text-brand-black",
+  };
+  return (
+    <div
+      className={`py-3 text-center font-display text-xl sm:text-2xl uppercase tracking-wider ${colors[accent]}`}
+    >
+      {label}
+    </div>
+  );
+}
+
+function PosterStat({
   number,
   label,
   accent,
@@ -195,11 +300,11 @@ function Stat({
     blue: "text-brand-blue",
   }[accent];
   return (
-    <div className="border border-white/10 rounded-md p-4 bg-white/[0.02]">
-      <div className={`font-display text-5xl leading-none ${accentText}`}>
+    <div className="bg-brand-black px-4 py-5 sm:py-6">
+      <div className={`font-display text-4xl sm:text-5xl leading-none tabular-nums ${accentText}`}>
         {number}
       </div>
-      <div className="mt-2 text-xs uppercase tracking-wider text-white/60">
+      <div className="mt-2 font-mono text-[10px] sm:text-[11px] uppercase tracking-widest text-white/50">
         {label}
       </div>
     </div>

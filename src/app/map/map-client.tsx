@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import {
@@ -31,6 +32,8 @@ export function MapClient({
 }) {
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const poiFromUrl = searchParams.get("poi");
 
   const results = useMemo(() => searchMapPois(query), [query]);
   const selected =
@@ -40,6 +43,12 @@ export function MapClient({
     setSelectedId(poi.id);
     setQuery(poi.mapCode);
   }
+
+  useEffect(() => {
+    if (!poiFromUrl) return;
+    const poi = FESTIVAL_MAP_POIS.find((p) => p.id === poiFromUrl);
+    if (poi) selectPoi(poi);
+  }, [poiFromUrl]);
 
   return (
     <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">

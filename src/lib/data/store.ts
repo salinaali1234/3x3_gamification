@@ -12,8 +12,12 @@ import {
   SEED_REWARDS,
   SEED_WHEEL_PRIZES,
   SEED_SIDE_EVENTS,
-  SEED_LIVE_MATCHES,
 } from "./seed";
+import {
+  SEED_LIVE_MATCHES,
+  SEED_SCHEDULE_ITEMS,
+  SEED_SCHEDULE_SESSIONS,
+} from "./schedule-seed";
 import { computeWheelSpinsEarned } from "@/lib/wheel/spins";
 import type {
   Badge,
@@ -21,6 +25,8 @@ import type {
   ChallengeAttempt,
   JourneyStep,
   LiveMatch,
+  ScheduleItem,
+  ScheduleSession,
   Photo,
   PhotoLike,
   PollVote,
@@ -53,6 +59,8 @@ type Store = {
   wheelSpins: WheelSpin[];
   sideEvents: SideEvent[];
   liveMatches: LiveMatch[];
+  scheduleSessions: ScheduleSession[];
+  scheduleItems: ScheduleItem[];
   /** map of matchId -> userId -> score */
   matchScoreSubmissions: Array<{
     userId: string;
@@ -101,6 +109,8 @@ function buildStore(): Store {
     wheelSpins: [],
     sideEvents: SEED_SIDE_EVENTS,
     liveMatches: SEED_LIVE_MATCHES,
+    scheduleSessions: SEED_SCHEDULE_SESSIONS,
+    scheduleItems: SEED_SCHEDULE_ITEMS,
     matchScoreSubmissions: [],
     stepPhotoUploads: [],
   };
@@ -114,6 +124,8 @@ export function getStore(): Store {
   // Migrate older in-memory stores from previous dev sessions (HMR keeps globals).
   if (!s.sideEvents) s.sideEvents = SEED_SIDE_EVENTS;
   if (!s.liveMatches) s.liveMatches = SEED_LIVE_MATCHES;
+  if (!s.scheduleSessions) s.scheduleSessions = SEED_SCHEDULE_SESSIONS;
+  if (!s.scheduleItems) s.scheduleItems = SEED_SCHEDULE_ITEMS;
   if (!s.matchScoreSubmissions) s.matchScoreSubmissions = [];
   if (!s.stepPhotoUploads) s.stepPhotoUploads = [];
   if (!s.wheelPrizes) s.wheelPrizes = SEED_WHEEL_PRIZES;
@@ -450,6 +462,14 @@ export function listLiveMatches() {
 
 export function getLiveMatchById(id: string) {
   return getStore().liveMatches.find((m) => m.id === id);
+}
+
+export function listScheduleSessions() {
+  return getStore().scheduleSessions;
+}
+
+export function listScheduleItems() {
+  return getStore().scheduleItems;
 }
 
 export function userMatchSubmissions(userId: string) {

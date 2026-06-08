@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { Suspense } from "react";
 import { getLocaleFromCookieValue } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { MapClient } from "./map-client";
@@ -13,7 +14,9 @@ export default async function MapPage() {
       <div className="brand-section-label mb-2">3X3 UNITES // plattegrond</div>
       <h1 className="font-display text-5xl">{t.map.title}</h1>
       <p className="mt-3 text-white/70 max-w-2xl">{t.map.subtitle}</p>
-      <MapClient locale={locale} dict={t} />
+      <Suspense fallback={<div className="mt-8 text-white/45 font-mono text-sm">Loading map…</div>}>
+        <MapClient locale={locale} dict={t} />
+      </Suspense>
     </div>
   );
 }
