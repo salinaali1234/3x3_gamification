@@ -163,8 +163,7 @@ function ScheduleRow({
   return (
     <li
       className={cn(
-        "flex gap-4 px-4 py-3 sm:px-5 sm:py-3.5 transition-colors duration-300",
-        isLive ? "items-center" : "items-start",
+        "flex flex-wrap items-start gap-x-4 gap-y-2 px-4 py-3 sm:flex-nowrap sm:items-center sm:px-5 sm:py-3.5 transition-colors duration-300",
         isEnd && !isLive && "bg-white/[0.02]",
         isLive &&
           "border-l-[3px] border-l-brand-orange bg-brand-orange/[0.12] shadow-[inset_0_0_0_1px_rgba(255,103,1,0.25)]"
@@ -180,7 +179,7 @@ function ScheduleRow({
         {item.startTime}
       </time>
 
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1 basis-[calc(100%-4.25rem)] sm:basis-auto">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <span
             className={cn(
@@ -206,7 +205,7 @@ function ScheduleRow({
       </div>
 
       {isLive ? (
-        <span className="shrink-0 inline-flex items-center gap-1.5 self-center rounded-full border border-brand-orange/60 bg-brand-orange px-3 py-1.5 font-mono text-xs font-bold uppercase leading-none text-brand-black shadow-[0_0_12px_rgba(255,103,1,0.35)]">
+        <span className="ml-auto flex shrink-0 items-center gap-1.5 rounded-full border border-brand-orange/60 bg-brand-orange px-3 py-2 font-mono text-xs font-bold uppercase leading-none text-brand-black shadow-[0_0_12px_rgba(255,103,1,0.35)]">
           <span className="relative flex h-2 w-2 shrink-0">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-black/40" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-black" />

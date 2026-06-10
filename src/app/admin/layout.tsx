@@ -24,6 +24,8 @@ export default async function AdminLayout({
     { href: "/admin/qr-codes", label: t.admin.codes },
     { href: "/admin/photos", label: t.admin.photos },
     { href: "/admin/rewards", label: t.admin.rewards },
+    { href: "/admin/redemptions", label: t.admin.redemptions },
+    { href: "/admin/matches", label: t.admin.matches },
   ];
 
   return (

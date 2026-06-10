@@ -6,6 +6,7 @@ import { getCurrentUser } from "@/lib/session";
 import {
   getWheelSpinsAvailable,
   getWheelSpinsEarned,
+  getWheelSpinsUsed,
   getStepCompletions,
 } from "@/lib/data/user-game";
 import { listJourneySteps, listWheelPrizes } from "@/lib/data/store";
@@ -24,6 +25,7 @@ export default async function WheelPage() {
   const stepsDone = (await getStepCompletions(user.id)).length;
   const spins = await getWheelSpinsAvailable(user.id);
   const earned = await getWheelSpinsEarned(user.id);
+  const used = await getWheelSpinsUsed(user.id);
   const remaining = journeyStepsUntilWheelSpin(stepsDone, totalSteps);
   const prizes = listWheelPrizes();
 
@@ -48,6 +50,7 @@ export default async function WheelPage() {
         dict={t}
         spinsAvailable={spins}
         spinsEarned={earned}
+        spinsUsed={used}
         stepsDone={stepsDone}
         stepsTotal={totalSteps}
         prizes={prizes}

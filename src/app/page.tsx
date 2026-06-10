@@ -4,12 +4,12 @@ import { getLocaleFromCookieValue } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getCurrentUser } from "@/lib/session";
 import {
-  leaderboard,
   listBadges,
   listChallenges,
   listJourneySteps,
   listRewards,
 } from "@/lib/data/store";
+import { getLeaderboard } from "@/lib/data/user-game";
 import { ButtonLink } from "@/components/ui/button";
 import { SectionLabel } from "@/components/ui/section-label";
 import { LeaderboardBanner } from "@/components/leaderboard-banner";
@@ -22,7 +22,7 @@ export default async function HomePage() {
   const locale = getLocaleFromCookieValue(cookieStore.get("locale")?.value);
   const t = getDictionary(locale);
   const user = await getCurrentUser();
-  const top = leaderboard(5);
+  const top = await getLeaderboard(5);
   const steps = listJourneySteps();
   const challenges = listChallenges();
   const badges = listBadges();
@@ -84,27 +84,27 @@ export default async function HomePage() {
                 )}
               </p>
 
-              <div className="mt-8 flex flex-wrap items-center gap-3">
+              <div className="mt-8 flex flex-col sm:flex-row sm:flex-wrap gap-3">
                 {user ? (
                   <>
-                    <ButtonLink href="/journey" variant="primary" size="lg">
+                    <ButtonLink href="/journey" variant="primary" size="lg" className="w-full sm:w-auto">
                       {t.home.ctaPlay} →
                     </ButtonLink>
-                    <ButtonLink href="/challenges" variant="outline" size="lg">
+                    <ButtonLink href="/challenges" variant="outline" size="lg" className="w-full sm:w-auto">
                       {t.home.ctaScan}
                     </ButtonLink>
                   </>
                 ) : (
                   <>
-                    <ButtonLink href="/login?tab=register" variant="primary" size="lg">
+                    <ButtonLink href="/login?tab=register" variant="primary" size="lg" className="w-full sm:w-auto">
                       {t.home.ctaJoin} →
                     </ButtonLink>
-                    <ButtonLink href="/login" variant="outline" size="lg">
+                    <ButtonLink href="/login" variant="outline" size="lg" className="w-full sm:w-auto">
                       {t.home.ctaLogin}
                     </ButtonLink>
                   </>
                 )}
-                <ButtonLink href="#festival-map" variant="outline" size="lg">
+                <ButtonLink href="#festival-map" variant="outline" size="lg" className="w-full sm:w-auto">
                   {t.home.scrollToMap} ↓
                 </ButtonLink>
               </div>
@@ -278,7 +278,7 @@ function Pillar({
   };
   return (
     <div
-      className={`py-3 text-center font-display text-xl sm:text-2xl uppercase tracking-wider ${colors[accent]}`}
+      className={`py-3 px-1 text-center font-display text-base sm:text-xl md:text-2xl uppercase tracking-wide sm:tracking-wider ${colors[accent]}`}
     >
       {label}
     </div>

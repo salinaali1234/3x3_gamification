@@ -57,7 +57,7 @@ export default async function JourneyPage() {
             <li key={step.id} className="relative pl-16 sm:pl-24 pb-6 last:pb-0">
               <span
                 className={cn(
-                  "absolute left-2 sm:left-6 top-1 flex h-8 w-8 items-center justify-center rounded-full border-2 font-display text-sm",
+                  "absolute left-2 sm:left-6 top-1 flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border-2 font-display text-sm sm:text-base tabular-nums",
                   isDone
                     ? "bg-brand-green text-brand-black border-brand-black"
                     : isLockedFinal
@@ -89,35 +89,34 @@ export default async function JourneyPage() {
                       {step.description[locale]}
                     </p>
                   </div>
-                  <div className="text-right shrink-0">
-                    <div
-                      className={cn(
-                        "font-display text-2xl tabular-nums",
-                        isDone
-                          ? "text-brand-green"
-                          : isLockedFinal
-                          ? "text-white/40"
-                          : "text-brand-orange"
-                      )}
-                    >
-                      +{step.points}
+                  <div className="text-right shrink-0 max-w-[7rem]">
+                    <div className="font-mono text-[10px] uppercase tracking-widest text-white/45">
+                      {t.journey.stepRewardLabel}
                     </div>
-                    <div className="brand-section-label">pts</div>
+                    <div className="mt-1 font-display text-lg leading-tight text-brand-orange">
+                      {t.journey.stepWheelHint}
+                    </div>
                   </div>
                 </div>
                 {isAvailable && step.verifyMethod === "photo" && user ? (
                   <PhotoStepUploader stepId={step.id} locale={locale} dict={t} />
                 ) : null}
                 {isAvailable && step.verifyMethod !== "photo" ? (
-                  <div className="mt-4 flex flex-wrap gap-2">
+                  <div className="mt-4 flex flex-col sm:flex-row flex-wrap gap-2">
                     <ButtonLink
                       href={`/challenges?code=${encodeURIComponent(step.code)}`}
                       variant="orange"
                       size="sm"
+                      className="w-full sm:w-auto"
                     >
                       {t.scan.title}
                     </ButtonLink>
-                    <ButtonLink href="/#festival-map" variant="outline" size="sm">
+                    <ButtonLink
+                      href="/#festival-map"
+                      variant="outline"
+                      size="sm"
+                      className="w-full sm:w-auto"
+                    >
                       {t.nav.map}
                     </ButtonLink>
                   </div>

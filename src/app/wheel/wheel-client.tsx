@@ -8,19 +8,32 @@ import type { Locale } from "@/lib/i18n/config";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+type SpinPrize = {
+  id: string;
+  label: { nl: string; en: string } | string;
+  emoji: string;
+};
+
 type SpinResult =
   | {
       ok: true;
-      prize: { id: string; label: { nl: string; en: string }; emoji: string };
+      prize: SpinPrize;
+      pickupCode?: string;
       spinsRemaining: number;
     }
   | { ok: false; error: string };
+
+function prizeLabel(prize: SpinPrize, locale: Locale): string {
+  if (typeof prize.label === "string") return prize.label;
+  return prize.label[locale];
+}
 
 export function WheelClient({
   locale,
   dict,
   spinsAvailable: initialSpins,
   spinsEarned,
+  spinsUsed,
   stepsDone,
   stepsTotal,
   prizes,
@@ -29,6 +42,7 @@ export function WheelClient({
   dict: Dictionary;
   spinsAvailable: number;
   spinsEarned: number;
+  spinsUsed: number;
   stepsDone: number;
   stepsTotal: number;
   prizes: WheelPrize[];
@@ -72,7 +86,7 @@ export function WheelClient({
           <span className="font-mono uppercase tracking-wider text-white/50">
             Main quest
           </span>
-          <span className="font-mono tabular-nums text-brand-green">
+          <span className="font-mono tabular-nums text-brand-green px-1 tracking-wide">
             {stepsDone}/{stepsTotal}
           </span>
         </div>
@@ -97,12 +111,12 @@ export function WheelClient({
         </p>
       </div>
 
-      <div className="flex items-center justify-center gap-6 rounded-md border border-brand-orange/40 bg-brand-orange/10 p-6">
-        <div>
+      <div className="flex items-center justify-center gap-6 rounded-md border border-brand-orange/40 bg-brand-orange/10 px-6 py-7 sm:px-8 sm:py-8">
+        <div className="min-w-[4.5rem] text-center">
           <div className="brand-section-label !text-brand-orange">
             {dict.wheel.spinsAvailable}
           </div>
-          <div className="font-mono text-6xl text-brand-orange tabular-nums leading-none">
+          <div className="mt-1 font-mono text-6xl text-brand-orange tabular-nums leading-tight tracking-wide py-1">
             {spinsAvailable}
           </div>
         </div>
@@ -128,15 +142,21 @@ export function WheelClient({
           disabled={spinning || spinsAvailable < 1}
           variant="primary"
           size="lg"
+          className="w-full max-w-xs sm:w-auto sm:max-w-none"
         >
           {spinning ? dict.wheel.spinning : dict.wheel.spinCta}
         </Button>
         {spinsAvailable < 1 ? (
           <p className="mt-3 text-sm text-white/50">
             {!journeyComplete
-              ? dict.wheel.noSpins
-              : spinsEarned > 0
+              ? dict.wheel.noSpinsNeedJourney.replace(
+                  "{remaining}",
+                  String(remaining)
+                )
+              : spinsUsed > 0
               ? dict.wheel.noSpinsUsed
+                  .replace("{used}", String(spinsUsed))
+                  .replace("{earned}", String(spinsEarned))
               : dict.wheel.noSpins}
           </p>
         ) : (
@@ -152,7 +172,18 @@ export function WheelClient({
           <div className="brand-section-label !text-brand-green mb-1">
             {dict.wheel.youWon}
           </div>
-          <h3 className="font-display text-3xl">{result.prize.label[locale]}</h3>
+          <h3 className="font-display text-3xl">{prizeLabel(result.prize, locale)}</h3>
+          {result.pickupCode ? (
+            <div className="mt-4 mx-auto max-w-sm rounded border border-dashed border-brand-green/50 bg-brand-green/[0.04] p-4">
+              <div className="font-mono text-[10px] uppercase tracking-widest text-brand-green">
+                {dict.wheel.pickupCode}
+              </div>
+              <div className="mt-1 font-mono text-xl tabular-nums tracking-wide text-brand-green select-all">
+                {result.pickupCode}
+              </div>
+              <p className="mt-2 text-xs text-white/50">{dict.wheel.pickupHint}</p>
+            </div>
+          ) : null}
           <p className="mt-2 text-sm text-white/60">
             {dict.wheel.spinsLeft}: {result.spinsRemaining}
           </p>

@@ -12,9 +12,9 @@ export function PointsPill({
   className?: string;
 }) {
   const sizes = {
-    sm: "h-6 text-xs px-2",
-    md: "h-8 text-sm px-3",
-    lg: "h-10 text-base px-4",
+    sm: "h-7 text-xs px-2.5",
+    md: "h-9 text-sm px-3.5",
+    lg: "h-11 text-base px-5",
   };
   const accents = {
     green: "bg-brand-green text-brand-black",
@@ -24,7 +24,7 @@ export function PointsPill({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 rounded-full font-medium tabular-nums",
+        "inline-flex items-center gap-1.5 rounded-full font-medium tabular-nums tracking-wide",
         sizes[size],
         accents[accent],
         className

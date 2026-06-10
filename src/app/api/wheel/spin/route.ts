@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { getCurrentUser } from "@/lib/session";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { spinWheelDb } from "@/lib/supabase/game";
@@ -8,8 +9,7 @@ import {
   wheelSpinsAvailable,
   wheelSpinsEarned,
 } from "@/lib/data/store";
-import type { Locale } from "@/lib/i18n/config";
-import { cookies } from "next/headers";
+import { getLocaleFromCookieValue } from "@/lib/i18n/config";
 
 export async function POST() {
   const user = await getCurrentUser();
@@ -26,7 +26,7 @@ export async function POST() {
       return NextResponse.json({ ok: false, error: result.error });
     }
     const cookieStore = await cookies();
-    const locale = (cookieStore.get("3x3_locale")?.value ?? "nl") as Locale;
+    const locale = getLocaleFromCookieValue(cookieStore.get("locale")?.value);
     const prize = result.prize as {
       id: string;
       emoji: string;
@@ -40,6 +40,7 @@ export async function POST() {
         label: locale === "nl" ? prize.label_nl : prize.label_en,
         emoji: prize.emoji,
       },
+      pickupCode: result.pickup_code as string | undefined,
       spinsRemaining: result.spins_remaining,
       spinsEarned: result.spins_earned,
     });
@@ -50,11 +51,12 @@ export async function POST() {
   }
 
   const prize = pickWheelPrize();
-  recordWheelSpin(user.id, prize.id);
+  const spin = recordWheelSpin(user.id, prize.id);
 
   return NextResponse.json({
     ok: true,
     prize: { id: prize.id, label: prize.label, emoji: prize.emoji },
+    pickupCode: spin.pickupCode,
     spinsRemaining: wheelSpinsAvailable(user.id),
     spinsEarned: wheelSpinsEarned(user.id),
   });

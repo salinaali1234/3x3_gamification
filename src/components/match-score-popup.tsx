@@ -90,14 +90,19 @@ export function MatchScorePopup({ matches, alreadyDone, locale, dict }: Props) {
         ) : (
           <div className="mt-3 space-y-2">
             <p className="text-xs text-white/60">{dict.matchPopup.subtitle}</p>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
                 value={score}
                 onChange={(e) => setScore(e.target.value)}
                 placeholder="21-18"
-                className="flex-1 rounded border border-white/15 bg-brand-black px-3 py-2 font-mono focus:border-brand-green focus:outline-none"
+                className="w-full sm:flex-1 min-w-0 rounded border border-white/15 bg-brand-black px-3 py-3 font-mono text-base focus:border-brand-green focus:outline-none"
               />
-              <Button onClick={submit} disabled={!score || submitting} variant="primary">
+              <Button
+                onClick={submit}
+                disabled={!score || submitting}
+                variant="primary"
+                className="w-full sm:w-auto sm:shrink-0"
+              >
                 {submitting ? "…" : dict.matchPopup.submit}
               </Button>
             </div>

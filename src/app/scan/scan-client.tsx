@@ -66,7 +66,7 @@ export function ScanClient({
       <div className="rounded-md border border-white/15 bg-white/[0.02] p-6">
         <label className="brand-section-label">{dict.scan.codeLabel}</label>
         <p className="mt-1 text-sm text-white/60">{dict.scan.subtitle}</p>
-        <div className="mt-4 flex gap-2">
+        <div className="mt-4 flex flex-col sm:flex-row gap-2">
           <input
             type="text"
             value={code}
@@ -76,13 +76,14 @@ export function ScanClient({
             autoFocus
             autoComplete="off"
             spellCheck={false}
-            className="flex-1 rounded border border-white/15 bg-brand-black px-4 py-3 font-mono text-lg tracking-widest placeholder:text-white/30 focus:border-brand-green focus:outline-none"
+            className="w-full sm:flex-1 min-w-0 rounded border border-white/15 bg-brand-black px-4 py-3 font-mono text-base sm:text-lg tracking-widest placeholder:text-white/30 focus:border-brand-green focus:outline-none"
           />
           <Button
             onClick={() => submit(code)}
             disabled={submitting || !code}
             variant="primary"
             size="lg"
+            className="w-full sm:w-auto sm:shrink-0"
           >
             {submitting ? "..." : dict.scan.submit}
           </Button>
@@ -110,12 +111,15 @@ export function ScanClient({
             <h3 className="font-display text-2xl">
               {result.target.title[locale]}
             </h3>
-            {result.pointsGained ? (
+            {result.pointsGained && result.type === "challenge" ? (
               <div className="mt-2 font-display text-3xl text-brand-green">
                 +{result.pointsGained} pts
               </div>
             ) : null}
-            {result.totalPoints !== undefined ? (
+            {result.type === "step" ? (
+              <p className="mt-2 text-sm text-white/60">{dict.journey.stepCompletedHint}</p>
+            ) : null}
+            {result.totalPoints !== undefined && result.type === "challenge" ? (
               <p className="mt-1 text-sm text-white/60">
                 {locale === "nl" ? "Totaal" : "Total"}: {result.totalPoints} pts
               </p>

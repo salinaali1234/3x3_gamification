@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/session";
-import { addRewardClaim, getRewardById, totalPoints, userClaims } from "@/lib/data/store";
+import { addRewardClaim, challengePoints, getRewardById, matchScorePoints, userClaims } from "@/lib/data/store";
 import { generateVoucherCode } from "@/lib/utils";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { claimRewardDb } from "@/lib/supabase/game";
@@ -37,7 +37,7 @@ export async function POST(
   if (userClaims(user.id).some((c) => c.rewardId === reward.id)) {
     return NextResponse.json({ ok: false, error: "already_claimed" });
   }
-  const points = totalPoints(user.id);
+  const points = challengePoints(user.id) + matchScorePoints(user.id);
   if (points < reward.costPoints) {
     return NextResponse.json({ ok: false, error: "not_enough_points" });
   }

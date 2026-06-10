@@ -3,12 +3,8 @@ import { redirect } from "next/navigation";
 import { getLocaleFromCookieValue } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getCurrentUser } from "@/lib/session";
-import { getTotalPoints, getUserClaims } from "@/lib/data/user-game";
-import {
-  getBadgeById,
-  getRewardById,
-  userBadgesFor,
-} from "@/lib/data/store";
+import { getTotalPoints, getUserClaims, getUserBadges, getUserWheelSpins } from "@/lib/data/user-game";
+import { getRewardById } from "@/lib/data/store";
 import { BadgeSticker } from "@/components/ui/badge-sticker";
 import { Avatar } from "@/components/ui/avatar";
 import { SectionLabel } from "@/components/ui/section-label";
@@ -20,10 +16,9 @@ export default async function ProfilePage() {
   const t = getDictionary(locale);
   const user = await getCurrentUser();
   if (!user) redirect("/login");
-  const badges = userBadgesFor(user.id)
-    .map((ub) => getBadgeById(ub.badgeId))
-    .filter(Boolean);
+  const badges = await getUserBadges(user.id);
   const claims = await getUserClaims(user.id);
+  const wheelSpins = await getUserWheelSpins(user.id);
   const points = await getTotalPoints(user.id);
 
   return (
@@ -84,23 +79,68 @@ export default async function ProfilePage() {
               return (
                 <li
                   key={c.id}
-                  className="flex items-center justify-between gap-3 rounded-md border border-white/10 bg-white/[0.02] p-4"
+                  className="flex flex-col gap-2 rounded-md border border-white/10 bg-white/[0.02] p-4"
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="text-3xl">{rw.emoji}</span>
-                    <div>
-                      <div className="font-medium">{rw.name[locale]}</div>
-                      <div className="font-mono text-xs text-brand-green">
-                        {c.voucherCode}
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="text-3xl shrink-0">{rw.emoji}</span>
+                      <div className="min-w-0">
+                        <div className="font-medium truncate">{rw.name[locale]}</div>
+                        <div className="font-mono text-xs text-brand-green break-all">
+                          {c.voucherCode}
+                        </div>
                       </div>
                     </div>
+                    <span className="text-xs text-white/40 font-mono shrink-0">
+                      {new Date(c.claimedAt).toLocaleDateString(locale)}
+                    </span>
                   </div>
-                  <span className="text-xs text-white/40 font-mono">
-                    {new Date(c.claimedAt).toLocaleDateString(locale)}
-                  </span>
+                  <p className="text-xs text-white/50">
+                    {c.redeemedAt ? t.rewards.redeemed : t.rewards.pendingPickup}
+                  </p>
                 </li>
               );
             })}
+          </ul>
+        )}
+      </section>
+
+      <section className="mt-10">
+        <SectionLabel number="04" className="mb-4">
+          {t.profile.wheelPrizes}
+        </SectionLabel>
+        {wheelSpins.length === 0 ? (
+          <p className="text-white/60 text-sm">{t.common.noResults}</p>
+        ) : (
+          <ul className="grid gap-2 sm:grid-cols-2">
+            {wheelSpins.map((spin) => (
+              <li
+                key={spin.id}
+                className="flex flex-col gap-2 rounded-md border border-white/10 bg-white/[0.02] p-4"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className="text-3xl shrink-0">{spin.emoji}</span>
+                    <div className="min-w-0">
+                      <div className="font-medium truncate">
+                        {locale === "nl" ? spin.labelNl : spin.labelEn}
+                      </div>
+                      {spin.pickupCode ? (
+                        <div className="font-mono text-xs text-brand-orange break-all">
+                          {spin.pickupCode}
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                  <span className="text-xs text-white/40 font-mono shrink-0">
+                    {new Date(spin.createdAt).toLocaleDateString(locale)}
+                  </span>
+                </div>
+                <p className="text-xs text-white/50">
+                  {spin.redeemedAt ? t.wheel.wheelRedeemed : t.wheel.wheelPending}
+                </p>
+              </li>
+            ))}
           </ul>
         )}
       </section>

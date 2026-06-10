@@ -12,7 +12,7 @@ export const dictionaries = {
       schedule: "Schedule",
       photos: "Photos",
       leaderboard: "Leaderboard",
-      rewards: "Rewards",
+      rewards: "Challenge Pass",
       profile: "Profiel",
       admin: "Admin",
       login: "Inloggen",
@@ -53,7 +53,7 @@ export const dictionaries = {
         "Van The Streets en de Dome tot de 3X3 Leader Centre, Food Court, Community Corner en de Leader exhibition: negen main quest-locaties vormen je route over het festival. Gebruik de plattegrond hieronder om te zien waar alles staat.",
       gameTitle: "Het spel",
       gameBody:
-        "Volg de Main Quest Grand Tour voor grote punten, doe side challenges op locatie, maak 3 contest-foto’s en draai aan het wheel als je alle main quests hebt voltooid. Punten wissel je in voor echte festival rewards.",
+        "Volg de Main Quest Grand Tour over het terrein, doe side challenges voor Challenge Pass-punten, maak 3 contest-foto’s en draai aan het wheel als je alle main quests hebt voltooid.",
     },
     home: {
       eyebrow: "3X3 UNITES // WORLD TOUR WEEKEND",
@@ -92,19 +92,23 @@ export const dictionaries = {
         "Registreer gratis met e-mail en wachtwoord. Geen ticket nodig — iedereen op het terrein kan meedoen.",
       hiwStep2Title: "Verken & speel",
       hiwStep2Body:
-        "Bezoek main quest-locaties voor grote punten, doe side challenges en voer codes in bij activaties op het terrein.",
+        "Bezoek main quest-locaties voor je wheel-spin, doe side challenges voor punten en voer codes in bij activaties op het terrein.",
       hiwStep3Title: "Win rewards",
       hiwStep3Body:
         "Verzamel punten voor de reward shop, draai aan de wheel en upload 3 contest-foto’s. Fysieke prijzen haal je op locatie op.",
       stat1: "Main quest stops",
       stat2: "Side challenges",
       stat3: "Badges te verdienen",
-      stat4: "Rewards in de shop",
+      stat4: "Challenge Pass tiers",
     },
     journey: {
       title: "Main Quest — Grand Tour",
       subtitle:
-        "Bezoek alle grote POI’s op het terrein. Elke main quest levert 100+ punten op voor je prize journey.",
+        "Bezoek alle grote POI’s op het terrein. Main quests geven geen punten — voltooi ze allemaal om je wheel-spin te ontgrendelen.",
+      stepRewardLabel: "Beloning",
+      stepWheelHint: "Wheel-spin",
+      stepCompletedHint:
+        "Main quest voltooid! Geen punten, wel voortgang richting je wheel-spin.",
       stepLocked: "Vergrendeld",
       stepDone: "Voltooid",
       stepCurrent: "Volgende stap",
@@ -174,10 +178,14 @@ export const dictionaries = {
       bannerTitle: "Top spelers",
     },
     rewards: {
-      title: "Battle Pass",
+      title: "Challenge Pass",
       subtitle:
         "Verdien punten op het terrein en unlock festival rewards tier voor tier — claim op locatie met je voucher.",
-      battlePassSeason: "World Tour Weekend",
+      passSeason: "World Tour Weekend",
+      loginToViewPass: "om je challenge pass te zien.",
+      passPointsLabel: "Challenge pass punten",
+      passPointsHint: "Alleen van side challenges en correcte match scores — niet van main quests.",
+      tierAtPoints: "Tier {tier} · {points} pts",
       tier: "Tier",
       progress: "Voortgang",
       ptsToNext: "Nog {n} pts tot volgende tier",
@@ -190,6 +198,9 @@ export const dictionaries = {
       outOfStock: "Uitverkocht",
       yourVoucher: "Jouw voucher code",
       redeemHint: "Toon deze code bij de reward desk op het terrein.",
+      redeemed: "Opgehaald op locatie",
+      pendingPickup: "Nog niet opgehaald — toon je code bij de balie",
+      pickupCode: "Afhaalcode",
       tiersReached: "{n} van {total} tiers bereikt",
       tiersClaimedCount: "{n} geclaimd",
       ptsNeeded: "Nog {n} pts nodig",
@@ -222,7 +233,7 @@ export const dictionaries = {
         "Zie alle main quest locaties en waar je nu bent. Oranje stippen = main quest.",
       openFullMap: "Volledige kaart",
       youAreHere: "Jij bent hier",
-      mainQuestHint: "Oranje = main quest (100+ pts). Side quests vind je bij Challenges.",
+      mainQuestHint: "Oranje = main quest (wheel-spin). Side quests = Challenge Pass-punten.",
       imageAlt: "Festival plattegrond 3X3 Unites",
       searchLabel: "Zoeken",
       searchPlaceholder: "Bijv. FOOD, DJ, Rabobank…",
@@ -247,7 +258,10 @@ export const dictionaries = {
       spinCta: "Draai aan het rad!",
       spinning: "Draait…",
       noSpins: "Nog geen spin — voltooi eerst alle main quests op /journey.",
-      noSpinsUsed: "Je hebt je wheel-spin al gebruikt. Win je 'Nog een spin!' voor een extra draai.",
+      noSpinsUsed:
+        "Je hebt al {used} van {earned} spin(s) gebruikt. Geen spins meer beschikbaar.",
+      noSpinsNeedJourney:
+        "Nog {remaining} main quest(s) te gaan voordat je je gratis wheel-spin krijgt.",
       youWon: "Gewonnen!",
       spinsLeft: "Spins over",
       howToEarn: "Hoe krijg je een spin?",
@@ -273,6 +287,10 @@ export const dictionaries = {
         "Organisator: 3X3 Unites · Locatie: World Tour-weekend, Amsterdam · Toezicht: Kansspelautoriteit.",
       ],
       acceptTerms: "Door te draaien ga je akkoord met deze spelregels en de algemene voorwaarden op /faq#rules.",
+      pickupCode: "Afhaalcode",
+      pickupHint: "Toon deze code bij de prijzenbalie om je wheel-prijs op te halen.",
+      wheelRedeemed: "Wheel-prijs opgehaald",
+      wheelPending: "Nog niet opgehaald — toon je afhaalcode op locatie",
     },
     photo: {
       title: "Disposable camera",
@@ -327,6 +345,10 @@ export const dictionaries = {
           q: "Waar vind ik het programma?",
           a: "Bekijk /schedule voor het volledige stadionprogramma per sessie (19–21 juni 2026).",
         },
+        {
+          q: "Waar en hoe claim ik rewards?",
+          a: "Challenge Pass: ga naar /rewards, verdien genoeg punten via side challenges en match scores, en tik op Claim bij een tier — je krijgt een vouchercode in de app. Wheel: voltooi alle main quests, draai op /wheel en noteer je afhaalcode (WHEEL-…). Fysieke prijzen haal je op bij de 3X3 Unites reward desk / prijzenbalie op het terrein: toon je voucher- of afhaalcode (ook op /profile). Crew controleert de code en geeft pas uit als alles klopt.",
+        },
       ],
     },
     rules: {
@@ -346,15 +368,27 @@ export const dictionaries = {
           bullets: [
             "9 main quests — voltooi ze met codes of een foto waar nodig.",
             "Voltooi alle main quests om 1 wheel-spin te ontgrendelen.",
-            "Main quests geven geen battle pass-punten; die verdien je via side challenges.",
+            "Main quests geven geen challenge pass-punten; die verdien je via side challenges.",
           ],
         },
         {
           title: "Side challenges & punten",
           bullets: [
             "Side challenges zijn vrij te kiezen — geen vaste volgorde.",
-            "Punten wissel je in bij Rewards zolang voorraad strekt.",
+            "Punten wissel je in op /rewards (Challenge Pass) zolang voorraad strekt — claim eerst in de app.",
             "Match score: 1 punt per correcte eindstand (max 1x per match).",
+          ],
+        },
+        {
+          title: "Rewards ophalen — waar & hoe",
+          bullets: [
+            "Challenge Pass (/rewards): heb genoeg punten → tik Claim bij een tier → je krijgt een unieke vouchercode in de app (ook op /profile).",
+            "Wheel (/wheel): voltooi alle 9 main quests → draai aan het rad → je krijgt een afhaalcode (WHEEL-…) op het scherm en in je profiel.",
+            "Fysieke prijs ophalen: ga naar de 3X3 Unites reward desk / prijzenbalie op het festivalterrein.",
+            "Toon je vouchercode (Challenge Pass) of afhaalcode (wheel) op je telefoon — ingelogd op je eigen account.",
+            "Crew controleert de code in het systeem en geeft de prijs pas uit als de claim geldig is en nog niet is opgehaald.",
+            "Zonder geldige code in de app geen fysieke uitgifte. Eén claim per tier; wheel-prijzen per spin zoals op /wheel.",
+            "Voorraad is beperkt — claim en haal op tijdens openingstijden van de balie.",
           ],
         },
         {
@@ -383,9 +417,11 @@ export const dictionaries = {
       title: "Profiel",
       yourBadges: "Jouw badges",
       claimedRewards: "Geclaimde rewards",
+      wheelPrizes: "Wheel-prijzen",
       displayName: "Weergavenaam",
       save: "Opslaan",
       saved: "Opgeslagen",
+      saveError: "Opslaan mislukt. Probeer het opnieuw.",
     },
     admin: {
       title: "Admin",
@@ -404,7 +440,33 @@ export const dictionaries = {
       photos: "Foto's",
       challenges: "Challenges",
       rewards: "Rewards",
+      matches: "Wedstrijden",
+      matchesHint:
+        "Vul de eindstand in (bijv. 21-18) zodra een wedstrijd klaar is. Deelnemers kunnen dan punten verdienen.",
+      matchTime: "Tijd",
+      matchTeams: "Wedstrijd",
+      finalScore: "Eindstand",
       printHint: "Print en hang op bij de locatie. Deelnemers typen deze code in de app.",
+      redemptions: "Uitgifte",
+      redemptionsHint:
+        "Zoek op vouchercode, wheel-afhaalcode, naam of e-mail. Markeer pas als uitgegeven wanneer de fysieke prijs is overhandigd.",
+      redemptionsSupabaseOnly: "Uitgifte-controle werkt alleen met Supabase (productie).",
+      redemptionsSearchPlaceholder: "Code, naam of e-mail…",
+      redemptionsSearch: "Zoeken",
+      redemptionsSearching: "Zoeken…",
+      redemptionsLookupHint:
+        "Tip: exacte codes werken het snelst (voucher of WHEEL-XXXXXX). Bij naam/e-mail zie je alle prijzen van die persoon.",
+      redemptionsNoResults: "Geen prijzen gevonden voor deze zoekopdracht.",
+      redemptionsKindReward: "Challenge Pass",
+      redemptionsKindWheel: "Wheel",
+      redemptionsClaimedAt: "Gewonnen/geclaimd",
+      redemptionsRedeemed: "Uitgegeven",
+      redemptionsPending: "Nog niet uitgegeven",
+      redemptionsMarkRedeemed: "Markeer als uitgegeven",
+      redemptionsRedeeming: "Bezig…",
+      redemptionsAlreadyRedeemed: "Deze prijs is al als uitgegeven gemarkeerd.",
+      redemptionsNotFound: "Code niet gevonden.",
+      redemptionsError: "Actie mislukt. Probeer opnieuw.",
     },
     login: {
       title: "Welkom op het festival",
@@ -439,6 +501,10 @@ export const dictionaries = {
       errorAuthFailed: "Inloggen mislukt. Probeer het opnieuw.",
       successConfirmEmail:
         "Account aangemaakt! Check je e-mail om je account te bevestigen, daarna kun je inloggen.",
+      consentLabel:
+        "Ik geef toestemming om mijn gegevens (naam, e-mailadres en spelvoortgang) op te slaan voor maximaal 6 maanden in verband met dit 3X3 Unites festivalspel. Meer info in de FAQ.",
+      errorConsentRequired:
+        "Vink het vakje aan om toestemming te geven voor het opslaan van je gegevens.",
       hint: "Je kunt codes invoeren, side challenges spelen en de wheel spinnen. Vraag op locatie naar de regels voor fysieke prijzen.",
     },
   },
@@ -453,7 +519,7 @@ export const dictionaries = {
       schedule: "Schedule",
       photos: "Photos",
       leaderboard: "Leaderboard",
-      rewards: "Rewards",
+      rewards: "Challenge Pass",
       profile: "Profile",
       admin: "Admin",
       login: "Log in",
@@ -494,7 +560,7 @@ export const dictionaries = {
         "From The Streets and the Dome to the 3X3 Leader Centre, Food Court, Community Corner and the Leader exhibition: nine main quest locations form your route across the festival. Use the map below to see where everything is.",
       gameTitle: "The game",
       gameBody:
-        "Follow the Main Quest Grand Tour for big points, complete side challenges on site, take 3 contest photos and spin the wheel once you've finished all main quests. Trade points for real festival rewards.",
+        "Follow the Main Quest Grand Tour across the site, earn Challenge Pass points from side challenges, take 3 contest photos and spin the wheel once you've finished all main quests.",
     },
     home: {
       eyebrow: "3X3 UNITES // WORLD TOUR WEEKEND",
@@ -533,19 +599,23 @@ export const dictionaries = {
         "Register for free with email and password. No ticket required — everyone on site can join.",
       hiwStep2Title: "Explore & play",
       hiwStep2Body:
-        "Visit main quest locations for big points, complete side challenges and enter codes at on-site activations.",
+        "Visit main quest locations for your wheel spin, complete side challenges for points and enter codes at on-site activations.",
       hiwStep3Title: "Win rewards",
       hiwStep3Body:
         "Collect points for the reward shop, spin the wheel and upload 3 contest photos. Pick up physical prizes on site.",
       stat1: "Main quest stops",
       stat2: "Side challenges",
       stat3: "Badges to earn",
-      stat4: "Rewards in shop",
+      stat4: "Challenge Pass tiers",
     },
     journey: {
       title: "Main Quest — Grand Tour",
       subtitle:
-        "Visit every major POI on site. Each main quest earns 100+ points toward your prize journey.",
+        "Visit every major POI on site. Main quests don't award points — complete them all to unlock your wheel spin.",
+      stepRewardLabel: "Reward",
+      stepWheelHint: "Wheel spin",
+      stepCompletedHint:
+        "Main quest complete! No points, but progress toward your wheel spin.",
       stepLocked: "Locked",
       stepDone: "Done",
       stepCurrent: "Next up",
@@ -615,10 +685,14 @@ export const dictionaries = {
       bannerTitle: "Top players",
     },
     rewards: {
-      title: "Battle Pass",
+      title: "Challenge Pass",
       subtitle:
         "Earn points on site and unlock festival rewards tier by tier — claim on location with your voucher.",
-      battlePassSeason: "World Tour Weekend",
+      passSeason: "World Tour Weekend",
+      loginToViewPass: "to view your challenge pass.",
+      passPointsLabel: "Challenge pass points",
+      passPointsHint: "From side challenges and correct match scores only — not main quests.",
+      tierAtPoints: "Tier {tier} · {points} pts",
       tier: "Tier",
       progress: "Progress",
       ptsToNext: "{n} pts to next tier",
@@ -631,6 +705,9 @@ export const dictionaries = {
       outOfStock: "Out of stock",
       yourVoucher: "Your voucher code",
       redeemHint: "Show this code at the reward desk on site.",
+      redeemed: "Picked up on site",
+      pendingPickup: "Not picked up yet — show your code at the desk",
+      pickupCode: "Pickup code",
       tiersReached: "{n} of {total} tiers reached",
       tiersClaimedCount: "{n} claimed",
       ptsNeeded: "{n} pts to go",
@@ -663,7 +740,7 @@ export const dictionaries = {
         "See all main quest locations and where you are now. Orange dots = main quest.",
       openFullMap: "Full map",
       youAreHere: "You are here",
-      mainQuestHint: "Orange = main quest (100+ pts). Side quests are under Challenges.",
+      mainQuestHint: "Orange = main quest (wheel spin). Side quests = Challenge Pass points.",
       imageAlt: "Festival site map 3X3 Unites",
       searchLabel: "Search",
       searchPlaceholder: "e.g. FOOD, DJ, Rabobank…",
@@ -688,7 +765,10 @@ export const dictionaries = {
       spinCta: "Spin the wheel!",
       spinning: "Spinning…",
       noSpins: "No spin yet — finish all main quests on /journey first.",
-      noSpinsUsed: "You've used your wheel spin. Win 'Spin again!' for an extra turn.",
+      noSpinsUsed:
+        "You've already used {used} of {earned} spin(s). No spins left.",
+      noSpinsNeedJourney:
+        "{remaining} main quest(s) left before you unlock your free wheel spin.",
       youWon: "You won!",
       spinsLeft: "Spins left",
       howToEarn: "How do you earn a spin?",
@@ -714,6 +794,10 @@ export const dictionaries = {
         "Organiser: 3X3 Unites · Venue: World Tour weekend, Amsterdam · Supervisor: Kansspelautoriteit.",
       ],
       acceptTerms: "By spinning you agree to these rules and the terms at /faq#rules.",
+      pickupCode: "Pickup code",
+      pickupHint: "Show this code at the prize desk to collect your wheel prize.",
+      wheelRedeemed: "Wheel prize collected",
+      wheelPending: "Not collected yet — show your pickup code on site",
     },
     photo: {
       title: "Disposable camera",
@@ -768,6 +852,10 @@ export const dictionaries = {
           q: "Where is the programme?",
           a: "See /schedule for the full stadium programme by session (June 19–21, 2026).",
         },
+        {
+          q: "Where and how do I claim rewards?",
+          a: "Challenge Pass: go to /rewards, earn enough points from side challenges and match scores, then tap Claim on a tier — you get a voucher code in the app. Wheel: complete all main quests, spin on /wheel and note your pickup code (WHEEL-…). Collect physical prizes at the 3X3 Unites reward desk / prize counter on site: show your voucher or pickup code (also on /profile). Crew verifies the code before handing anything out.",
+        },
       ],
     },
     rules: {
@@ -787,15 +875,27 @@ export const dictionaries = {
           bullets: [
             "9 main quests — complete with codes or a photo where required.",
             "Complete all main quests to unlock 1 wheel spin.",
-            "Main quests don't give battle pass points; earn those via side challenges.",
+            "Main quests don't give challenge pass points; earn those via side challenges.",
           ],
         },
         {
           title: "Side challenges & points",
           bullets: [
             "Side challenges are optional — no fixed order.",
-            "Redeem points at Rewards while stock lasts.",
+            "Redeem points on /rewards (Challenge Pass) while stock lasts — claim in the app first.",
             "Match score: 1 point per correct final score (once per match).",
+          ],
+        },
+        {
+          title: "Collecting rewards — where & how",
+          bullets: [
+            "Challenge Pass (/rewards): earn enough points → tap Claim on a tier → you get a unique voucher code in the app (also on /profile).",
+            "Wheel (/wheel): complete all 9 main quests → spin the wheel → you get a pickup code (WHEEL-…) on screen and in your profile.",
+            "Physical pickup: go to the 3X3 Unites reward desk / prize counter on the festival grounds.",
+            "Show your voucher code (Challenge Pass) or pickup code (wheel) on your phone — logged into your own account.",
+            "Crew checks the code in the system and only hands out the prize if the claim is valid and not yet collected.",
+            "No valid in-app code = no physical prize. One claim per tier; wheel prizes per spin as listed on /wheel.",
+            "Stock is limited — claim and collect during prize desk opening hours.",
           ],
         },
         {
@@ -824,9 +924,11 @@ export const dictionaries = {
       title: "Profile",
       yourBadges: "Your badges",
       claimedRewards: "Claimed rewards",
+      wheelPrizes: "Wheel prizes",
       displayName: "Display name",
       save: "Save",
       saved: "Saved",
+      saveError: "Could not save. Please try again.",
     },
     admin: {
       title: "Admin",
@@ -844,7 +946,33 @@ export const dictionaries = {
       photos: "Photos",
       challenges: "Challenges",
       rewards: "Rewards",
+      matches: "Matches",
+      matchesHint:
+        "Enter the final score (e.g. 21-18) once a match is done. Participants can then earn points.",
+      matchTime: "Time",
+      matchTeams: "Match",
+      finalScore: "Final score",
       printHint: "Print and place at the location. Participants type this code in the app.",
+      redemptions: "Redemptions",
+      redemptionsHint:
+        "Search by voucher code, wheel pickup code, name or email. Only mark as handed out when the physical prize was given.",
+      redemptionsSupabaseOnly: "Redemption tracking only works with Supabase (production).",
+      redemptionsSearchPlaceholder: "Code, name or email…",
+      redemptionsSearch: "Search",
+      redemptionsSearching: "Searching…",
+      redemptionsLookupHint:
+        "Tip: exact codes are fastest (voucher or WHEEL-XXXXXX). Name/email shows all prizes for that person.",
+      redemptionsNoResults: "No prizes found for this search.",
+      redemptionsKindReward: "Challenge Pass",
+      redemptionsKindWheel: "Wheel",
+      redemptionsClaimedAt: "Won/claimed",
+      redemptionsRedeemed: "Handed out",
+      redemptionsPending: "Not handed out",
+      redemptionsMarkRedeemed: "Mark as handed out",
+      redemptionsRedeeming: "Working…",
+      redemptionsAlreadyRedeemed: "This prize was already marked as handed out.",
+      redemptionsNotFound: "Code not found.",
+      redemptionsError: "Action failed. Please try again.",
     },
     login: {
       title: "Welcome to the festival",
@@ -879,6 +1007,10 @@ export const dictionaries = {
       errorAuthFailed: "Sign-in failed. Please try again.",
       successConfirmEmail:
         "Account created! Check your email to confirm, then you can log in.",
+      consentLabel:
+        "I consent to storing my data (name, email address and game progress) for up to 6 months in connection with this 3X3 Unites festival game. See the FAQ for details.",
+      errorConsentRequired:
+        "Please check the box to consent to storing your data.",
       hint: "You can enter codes, play side challenges and spin the wheel. Ask on site about rules for physical prizes.",
     },
   },

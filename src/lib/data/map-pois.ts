@@ -38,8 +38,8 @@ export const FESTIVAL_MAP_POIS: MapPoi[] = [
     mapCode: "STREETS",
     name: { nl: "The Streets", en: "The Streets" },
     description: {
-      nl: "3x3 Street League courts — main quest (100 pts).",
-      en: "3x3 Street League courts — main quest (100 pts).",
+      nl: "3x3 Street League courts — main quest.",
+      en: "3x3 Street League courts — main quest.",
     },
     category: "court",
     x: 22,

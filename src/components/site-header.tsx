@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import type { Profile } from "@/lib/data/types";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import type { Locale } from "@/lib/i18n/config";
-import { getTotalPoints } from "@/lib/data/user-game";
+import { getChallengePassPoints } from "@/lib/data/user-game";
 import { LocaleSwitcher } from "./locale-switcher";
 import { UserMenu } from "./user-menu";
 import { Logo3x3 } from "./logo";
@@ -18,7 +18,7 @@ export async function SiteHeader({
 }) {
   await cookies();
   const t = getDictionary(locale);
-  const points = user ? await getTotalPoints(user.id) : 0;
+  const points = user ? await getChallengePassPoints(user.id) : 0;
 
   const navItems = [
     { href: "/", label: t.nav.home },
@@ -59,14 +59,28 @@ export async function SiteHeader({
 
         <div className="ml-auto flex items-center gap-2 sm:gap-3">
           {user ? (
-            <div className="hidden sm:flex items-center gap-2 rounded-full border border-brand-green/40 bg-brand-green/10 pl-3 pr-1 py-1">
-              <span className="brand-section-label !text-brand-green">
-                {t.common.pointsShort}
-              </span>
-              <span className="font-display text-lg leading-none text-brand-green tabular-nums">
-                {points}
-              </span>
-            </div>
+            <>
+              <Link
+                href="/rewards"
+                className="flex sm:hidden items-center gap-2 rounded-full border border-brand-green/40 bg-brand-green/10 px-3.5 py-1.5 shrink-0"
+                aria-label={`${points} ${t.common.pointsShort}`}
+              >
+                <span className="font-display text-base leading-none text-brand-green tabular-nums tracking-wide px-0.5">
+                  {points}
+                </span>
+                <span className="font-mono text-[10px] uppercase tracking-wide text-brand-green/80">
+                  {t.common.pointsShort}
+                </span>
+              </Link>
+              <div className="hidden sm:flex items-center gap-2.5 rounded-full border border-brand-green/40 bg-brand-green/10 px-4 py-1.5">
+                <span className="brand-section-label !text-brand-green">
+                  {t.common.pointsShort}
+                </span>
+                <span className="font-display text-lg leading-none text-brand-green tabular-nums tracking-wide px-0.5">
+                  {points}
+                </span>
+              </div>
+            </>
           ) : null}
           <div className="hidden md:contents">
             <LocaleSwitcher current={locale} />

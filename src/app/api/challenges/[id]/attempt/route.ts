@@ -94,7 +94,7 @@ export async function POST(
     if (!result.ok) {
       return NextResponse.json({ ok: false, error: result.error });
     }
-    const { newlyEarnedBadges } = evaluateBadges(user.id);
+    const { newlyEarnedBadges } = await evaluateBadges(user.id);
     return NextResponse.json({
       ok: true,
       correct,
@@ -114,7 +114,7 @@ export async function POST(
     createdAt: new Date().toISOString(),
   });
 
-  const { newlyEarnedBadges } = evaluateBadges(user.id);
+  const { newlyEarnedBadges } = await evaluateBadges(user.id);
 
   return NextResponse.json({
     ok: true,

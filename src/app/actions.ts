@@ -119,6 +119,7 @@ export async function registerAction(
   const rawName = String(formData.get("displayName") ?? "").trim();
   const rawEmail = String(formData.get("email") ?? "").trim().toLowerCase();
   const rawPassword = String(formData.get("password") ?? "");
+  const dataConsent = formData.get("dataConsent") === "yes";
 
   if (rawName.length < 2) {
     return { ok: false, error: "name_too_short" };
@@ -132,6 +133,11 @@ export async function registerAction(
   if (rawPassword.length < 8) {
     return { ok: false, error: "password_weak" };
   }
+  if (!dataConsent) {
+    return { ok: false, error: "consent_required" };
+  }
+
+  const consentAt = new Date().toISOString();
 
   if (isSupabaseConfigured()) {
     const supabase = await createSupabaseServerClient();
@@ -143,7 +149,11 @@ export async function registerAction(
       email: rawEmail,
       password: rawPassword,
       options: {
-        data: { display_name: rawName },
+        data: {
+          display_name: rawName,
+          data_consent: true,
+          data_consent_at: consentAt,
+        },
       },
     });
 

@@ -2,7 +2,8 @@ import { cookies } from "next/headers";
 import { getLocaleFromCookieValue } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getCurrentUser } from "@/lib/session";
-import { leaderboard, getBadgeById } from "@/lib/data/store";
+import { getBadgeById } from "@/lib/data/store";
+import { getLeaderboard } from "@/lib/data/user-game";
 import { Avatar } from "@/components/ui/avatar";
 
 export default async function LeaderboardPage() {
@@ -10,7 +11,7 @@ export default async function LeaderboardPage() {
   const locale = getLocaleFromCookieValue(cookieStore.get("locale")?.value);
   const t = getDictionary(locale);
   const user = await getCurrentUser();
-  const rows = leaderboard(100);
+  const rows = await getLeaderboard(100);
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8 py-10">
@@ -90,7 +91,7 @@ export default async function LeaderboardPage() {
                       })}
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-right font-display text-xl tabular-nums">
+                  <td className="px-5 py-3 text-right font-display text-xl tabular-nums tracking-wide">
                     {r.points}
                   </td>
                 </tr>

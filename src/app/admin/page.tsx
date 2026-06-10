@@ -1,7 +1,8 @@
 import { cookies } from "next/headers";
 import { getLocaleFromCookieValue } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
-import { totalCounts, leaderboard } from "@/lib/data/store";
+import { totalCounts } from "@/lib/data/store";
+import { getLeaderboard } from "@/lib/data/user-game";
 import { Avatar } from "@/components/ui/avatar";
 
 export default async function AdminHome() {
@@ -9,7 +10,7 @@ export default async function AdminHome() {
   const locale = getLocaleFromCookieValue(cookieStore.get("locale")?.value);
   const t = getDictionary(locale);
   const counts = totalCounts();
-  const top = leaderboard(5);
+  const top = await getLeaderboard(5);
 
   return (
     <div className="space-y-8">

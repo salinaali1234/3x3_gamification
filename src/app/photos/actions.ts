@@ -31,7 +31,7 @@ export async function addPhotoAction({
     throw new Error(result.error);
   }
 
-  evaluateBadges(user.id);
+  await evaluateBadges(user.id);
   revalidatePath("/photos");
   revalidatePath("/profile");
   revalidatePath("/admin/photos");

@@ -19,6 +19,7 @@ import {
   SEED_SCHEDULE_SESSIONS,
 } from "./schedule-seed";
 import { computeWheelSpinsEarned } from "@/lib/wheel/spins";
+import { generateWheelPickupCode } from "@/lib/utils";
 import type {
   Badge,
   Challenge,
@@ -249,7 +250,7 @@ export function journeyPoints(userId: string): number {
 }
 
 export function totalPoints(userId: string): number {
-  return journeyPoints(userId) + challengePoints(userId) + matchScorePoints(userId);
+  return challengePoints(userId) + matchScorePoints(userId);
 }
 
 /** @deprecated Wheel spins no longer use points thresholds. */
@@ -317,6 +318,7 @@ export function recordWheelSpin(userId: string, prizeId: string): WheelSpin {
     userId,
     prizeId,
     createdAt: new Date().toISOString(),
+    pickupCode: generateWheelPickupCode(),
   };
   getStore().wheelSpins.push(spin);
   return spin;

@@ -65,14 +65,18 @@ export async function getUserGameState(userId: string): Promise<UserGameState | 
     .map((r) => slugFromJoin(r.challenges))
     .filter(Boolean) as string[];
   const wheelSpinsUsed = spinsRes.data?.length ?? 0;
-  const spinAgainBonus =
-    spinsRes.data?.filter((s) => s.prize_id === "wp-spin-again").length ?? 0;
+  const { data: earnedRpc } = await supabase.rpc("wheel_spins_earned", {
+    p_user_id: userId,
+  });
+  const wheelSpinsEarned =
+    typeof earnedRpc === "number"
+      ? earnedRpc
+      : computeWheelSpinsEarned(
+          completedStepSlugs.length,
+          journeyCountRes.count ?? 0,
+          spinsRes.data?.filter((s) => s.prize_id === "wp-spin-again").length ?? 0
+        );
   const totalJourneySteps = journeyCountRes.count ?? 0;
-  const wheelSpinsEarned = computeWheelSpinsEarned(
-    completedStepSlugs.length,
-    totalJourneySteps,
-    spinAgainBonus
-  );
   const claimedRewardSlugs = (claimsRes.data ?? [])
     .map((r) => slugFromJoin(r.rewards))
     .filter(Boolean) as string[];
@@ -134,6 +138,63 @@ export async function spinWheelDb() {
   const supabase = await createSupabaseServerClient();
   if (!supabase) return null;
   const { data, error } = await supabase.rpc("spin_wheel");
+  if (error) return { ok: false as const, error: error.message };
+  return data as Record<string, unknown>;
+}
+
+export type CodeLookup = {
+  targetType: "step" | "challenge";
+  targetSlug: string;
+};
+
+export async function lookupCodeDb(code: string): Promise<CodeLookup | null> {
+  await ensureGameReady();
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return null;
+
+  const normalized = code.trim().toUpperCase();
+  const { data: row, error } = await supabase
+    .from("codes")
+    .select("target_type, target_id, active")
+    .eq("code", normalized)
+    .maybeSingle();
+
+  if (error || !row || !row.active) return null;
+
+  if (row.target_type === "step") {
+    const { data: step } = await supabase
+      .from("journey_steps")
+      .select("slug")
+      .eq("id", row.target_id)
+      .maybeSingle();
+    if (!step?.slug) return null;
+    return { targetType: "step", targetSlug: step.slug as string };
+  }
+
+  const { data: challenge } = await supabase
+    .from("challenges")
+    .select("slug")
+    .eq("id", row.target_id)
+    .maybeSingle();
+  if (!challenge?.slug) return null;
+  return { targetType: "challenge", targetSlug: challenge.slug as string };
+}
+
+export async function submitMatchScoreDb(
+  matchId: string,
+  score: string,
+  correct: boolean,
+  awardedPoints: number
+) {
+  await ensureGameReady();
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return null;
+  const { data, error } = await supabase.rpc("submit_match_score", {
+    p_match_id: matchId,
+    p_score: score,
+    p_correct: correct,
+    p_awarded_points: awardedPoints,
+  });
   if (error) return { ok: false as const, error: error.message };
   return data as Record<string, unknown>;
 }

@@ -118,7 +118,7 @@ export function UserMenu({
     return (
       <Link
         href="/login"
-        className="shrink-0 rounded-full bg-brand-green px-3 py-1.5 text-sm font-medium text-brand-black hover:bg-brand-green/90 transition-colors sm:px-4"
+        className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-full bg-brand-green px-4 py-2 text-sm font-medium text-brand-black hover:bg-brand-green/90 transition-colors"
       >
         {t.nav.login}
       </Link>
@@ -175,21 +175,16 @@ export function UserMenu({
     ) : null;
 
   return (
-    <div className="relative shrink-0">
-      <button
-        ref={buttonRef}
-        type="button"
-        aria-label={`Profile menu — ${user.displayName}`}
-        aria-expanded={open}
-        aria-haspopup="menu"
-        onClick={() => setOpen((v) => !v)}
+    <div className="relative flex shrink-0 items-center">
+      <Link
+        href="/profile"
+        onClick={() => setOpen(false)}
         className={cn(
           "flex items-center rounded-full border p-0.5 transition-colors",
-          open
-            ? "border-brand-green/60 bg-brand-green/10"
-            : "border-white/15 hover:border-brand-green/50",
+          "border-white/15 hover:border-brand-green/50",
           "pr-1.5 sm:pr-2.5"
         )}
+        aria-label={`${t.nav.profile} — ${user.displayName}`}
       >
         <span
           className="flex h-9 w-9 items-center justify-center rounded-full font-display text-sm text-brand-black shrink-0"
@@ -200,6 +195,33 @@ export function UserMenu({
         <span className="hidden sm:inline max-w-[4.5rem] md:max-w-[5.5rem] truncate pl-1.5 text-sm text-white/80">
           {firstName}
         </span>
+      </Link>
+      <button
+        ref={buttonRef}
+        type="button"
+        aria-label="Account menu"
+        aria-expanded={open}
+        aria-haspopup="menu"
+        onClick={() => setOpen((v) => !v)}
+        className={cn(
+          "ml-1 inline-flex h-9 w-9 items-center justify-center rounded-full border transition-colors",
+          open
+            ? "border-brand-green/60 bg-brand-green/10 text-brand-green"
+            : "border-white/15 text-white/60 hover:border-brand-green/50 hover:text-white"
+        )}
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          aria-hidden="true"
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
       </button>
 
       {open ? (

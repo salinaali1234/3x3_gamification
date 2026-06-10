@@ -5,19 +5,17 @@ import { getLocaleFromCookieValue } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getCurrentUser } from "@/lib/session";
 import {
+  getLeaderboard,
   getStepCompletions,
   getTotalPoints,
   getWheelSpinsAvailable,
   getUserAttempts,
+  getUserBadges,
+  getUserMatchSubmissions,
+  listLiveMatches,
 } from "@/lib/data/user-game";
 import {
-  leaderboard,
   listJourneySteps,
-  listLiveMatches,
-  userAttempts,
-  userBadgesFor,
-  userMatchSubmissions,
-  getBadgeById,
   getChallengeById,
   listChallenges,
 } from "@/lib/data/store";
@@ -40,18 +38,16 @@ export default async function DashboardPage() {
   const nextStep = steps.find((s) => !completedIds.has(s.id));
   const points = await getTotalPoints(user.id);
   const spins = await getWheelSpinsAvailable(user.id);
-  const badges = userBadgesFor(user.id)
-    .map((ub) => getBadgeById(ub.badgeId))
-    .filter(Boolean);
+  const badges = await getUserBadges(user.id);
   const attempts = await getUserAttempts(user.id);
   const doneChallengeIds = new Set(attempts.map((a) => a.challengeId));
   const recommendedChallenge = listChallenges().find(
     (c) => !doneChallengeIds.has(c.id)
   );
-  const lb = leaderboard(100);
+  const lb = await getLeaderboard(100);
   const myRank = lb.findIndex((r) => r.userId === user.id);
-  const liveMatches = listLiveMatches();
-  const matchDoneIds = userMatchSubmissions(user.id).map((s) => s.matchId);
+  const liveMatches = await listLiveMatches();
+  const matchDoneIds = (await getUserMatchSubmissions(user.id)).map((s) => s.matchId);
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
@@ -115,11 +111,11 @@ export default async function DashboardPage() {
             </div>
             <div className="flex flex-col gap-2 sm:items-end">
               <span className="font-display text-3xl text-brand-orange">🎡 spin</span>
-              <div className="flex flex-wrap gap-2">
-                <ButtonLink href="/challenges" variant="orange">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:w-auto">
+                <ButtonLink href="/challenges" variant="orange" className="w-full sm:w-auto">
                   {t.scan.title}
                 </ButtonLink>
-                <ButtonLink href="/wheel" variant="outline">
+                <ButtonLink href="/wheel" variant="outline" className="w-full sm:w-auto">
                   {t.nav.wheel}
                 </ButtonLink>
               </div>
@@ -135,11 +131,11 @@ export default async function DashboardPage() {
                 ? "Bekijk je rewards of pak nog wat extra punten via challenges."
                 : "Go cash in your rewards or grab extra points via challenges."}
             </p>
-            <div className="mt-4 flex gap-3">
-              <ButtonLink href="/rewards" variant="primary">
+            <div className="mt-4 flex flex-col sm:flex-row gap-3">
+              <ButtonLink href="/rewards" variant="primary" className="w-full sm:w-auto">
                 {t.nav.rewards}
               </ButtonLink>
-              <ButtonLink href="/challenges" variant="outline">
+              <ButtonLink href="/challenges" variant="outline" className="w-full sm:w-auto">
                 {t.nav.challenges}
               </ButtonLink>
             </div>
@@ -296,9 +292,9 @@ function Tile({
     blue: "border-brand-blue/40 text-brand-blue",
   }[accent];
   return (
-    <div className={`rounded-md border ${colors} bg-white/[0.02] p-5`}>
+    <div className={`rounded-md border ${colors} bg-white/[0.02] p-5 sm:p-6`}>
       <div className="brand-section-label">{label}</div>
-      <div className={`font-display text-5xl mt-2 ${colors.split(" ")[1]}`}>
+      <div className={`font-display text-5xl mt-3 tabular-nums tracking-wide leading-tight py-0.5 ${colors.split(" ")[1]}`}>
         {value}
       </div>
       {mono ? (

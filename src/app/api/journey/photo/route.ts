@@ -49,17 +49,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: false, error: result.error });
     }
     addStepPhotoUpload(user.id, step.id, parsed.data.photoDataUrl.slice(0, 64));
-    const { newlyEarnedBadges } = evaluateBadges(user.id);
-    return NextResponse.json({
-      ok: true,
-      type: "step",
-      target: { id: step.id, title: step.title },
-      pointsGained: result.points_gained,
-      totalPoints: result.total_points,
-      wheelSpinsGained: result.wheel_spins_gained,
-      wheelSpinsAvailable: result.wheel_spins_available,
-      newBadges: newlyEarnedBadges,
-    });
+    const { newlyEarnedBadges } = await evaluateBadges(user.id);
+      return NextResponse.json({
+        ok: true,
+        type: "step",
+        target: { id: step.id, title: step.title },
+        pointsGained: 0,
+        wheelSpinsGained: result.wheel_spins_gained,
+        wheelSpinsAvailable: result.wheel_spins_available,
+        newBadges: newlyEarnedBadges,
+      });
   }
 
   const earnedBefore = wheelSpinsEarned(user.id);
@@ -69,12 +68,13 @@ export async function POST(req: Request) {
   }
   addStepPhotoUpload(user.id, step.id, parsed.data.photoDataUrl.slice(0, 64));
   const spinsGained = wheelSpinsEarned(user.id) - earnedBefore;
-  const { newlyEarnedBadges } = evaluateBadges(user.id);
+  const { newlyEarnedBadges } = await evaluateBadges(user.id);
 
   return NextResponse.json({
     ok: true,
     type: "step",
     target: { id: step.id, title: step.title },
+    pointsGained: 0,
     wheelSpinsGained: spinsGained,
     wheelSpinsAvailable: wheelSpinsAvailable(user.id),
     newBadges: newlyEarnedBadges,

@@ -114,17 +114,21 @@ export function MobileNav({
           </div>
 
           {user ? (
-            <div className="mt-4 shrink-0 flex items-center gap-3 rounded-md border border-white/10 bg-white/[0.03] px-4 py-3">
+            <Link
+              href="/profile"
+              onClick={() => setOpen(false)}
+              className="mt-4 shrink-0 flex items-center gap-3 rounded-md border border-white/10 bg-white/[0.03] px-4 py-3 hover:border-brand-green/30 hover:bg-brand-green/5 transition-colors"
+            >
               <Avatar name={user.displayName} color={user.avatarColor} size="md" />
               <div className="min-w-0 flex-1">
                 <p className="font-medium truncate">{user.displayName}</p>
                 {points !== null ? (
-                  <p className="text-sm text-brand-green tabular-nums">
-                    {points} {pointsLabel}
+                  <p className="text-sm text-brand-green tabular-nums tracking-wide">
+                    <span className="px-0.5">{points}</span> {pointsLabel}
                   </p>
                 ) : null}
               </div>
-            </div>
+            </Link>
           ) : null}
 
           <p className="mt-5 mb-2 brand-section-label shrink-0">Menu</p>
@@ -203,7 +207,7 @@ export function MobileNav({
                   <Link
                     href="/login"
                     onClick={() => setOpen(false)}
-                    className="block rounded px-4 py-3.5 text-base font-medium bg-brand-green text-brand-black hover:bg-brand-green/90"
+                    className="flex min-h-11 items-center justify-center rounded px-4 py-3 text-base font-medium bg-brand-green text-brand-black hover:bg-brand-green/90"
                   >
                     {loginLabel}
                   </Link>
@@ -212,7 +216,7 @@ export function MobileNav({
                   <Link
                     href="/login?tab=register"
                     onClick={() => setOpen(false)}
-                    className="block rounded px-4 py-3.5 text-base text-white border border-white/20 hover:border-brand-green hover:text-brand-green"
+                    className="flex min-h-11 items-center justify-center rounded px-4 py-3 text-base text-white border border-white/20 hover:border-brand-green hover:text-brand-green"
                   >
                     {registerLabel}
                   </Link>

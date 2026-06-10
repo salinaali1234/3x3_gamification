@@ -95,6 +95,8 @@ export type WheelSpin = {
   userId: string;
   prizeId: string;
   createdAt: string;
+  pickupCode?: string;
+  redeemedAt?: string | null;
 };
 
 export type StepCompletion = {
@@ -236,6 +238,7 @@ export type RewardClaim = {
   rewardId: string;
   claimedAt: string;
   voucherCode: string;
+  redeemedAt?: string | null;
 };
 
 export type QrCode = {

@@ -47,7 +47,7 @@ export function LoginTabs({
           aria-selected={tab === "existing"}
           onClick={() => setTab("existing")}
           className={cn(
-            "flex-1 sm:flex-none rounded-full px-4 py-2 transition-colors",
+            "min-h-11 flex-1 sm:flex-none rounded-full px-4 py-2.5 transition-colors",
             tab === "existing"
               ? "bg-brand-green text-brand-black"
               : "text-white/70 hover:text-white"
@@ -61,7 +61,7 @@ export function LoginTabs({
           aria-selected={tab === "register"}
           onClick={() => setTab("register")}
           className={cn(
-            "flex-1 sm:flex-none rounded-full px-4 py-2 transition-colors",
+            "min-h-11 flex-1 sm:flex-none rounded-full px-4 py-2.5 transition-colors",
             tab === "register"
               ? "bg-brand-green text-brand-black"
               : "text-white/70 hover:text-white"

@@ -62,3 +62,13 @@ export function generateVoucherCode(): string {
     Math.random().toString(36).slice(2, 6).toUpperCase()
   ).join("-");
 }
+
+const PICKUP_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+export function generateWheelPickupCode(): string {
+  let part = "";
+  for (let i = 0; i < 6; i++) {
+    part += PICKUP_ALPHABET[Math.floor(Math.random() * PICKUP_ALPHABET.length)];
+  }
+  return `WHEEL-${part}`;
+}

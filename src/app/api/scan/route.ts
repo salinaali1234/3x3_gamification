@@ -20,6 +20,7 @@ import { isSupabaseConfigured } from "@/lib/supabase/env";
 import {
   completeChallengeScanDb,
   completeJourneyStepDb,
+  lookupCodeDb,
 } from "@/lib/supabase/game";
 
 const Body = z.object({ code: z.string().min(1) });
@@ -34,13 +35,29 @@ export async function POST(req: Request) {
   if (!parsed.success) {
     return NextResponse.json({ ok: false, error: "bad_input" }, { status: 400 });
   }
-  const qr = getQrCode(parsed.data.code.trim());
-  if (!qr) {
-    return NextResponse.json({ ok: false, error: "invalid" });
+
+  const code = parsed.data.code.trim();
+  let targetType: "step" | "challenge";
+  let targetSlug: string;
+
+  if (isSupabaseConfigured()) {
+    const lookup = await lookupCodeDb(code);
+    if (!lookup) {
+      return NextResponse.json({ ok: false, error: "invalid" });
+    }
+    targetType = lookup.targetType;
+    targetSlug = lookup.targetSlug;
+  } else {
+    const qr = getQrCode(code);
+    if (!qr) {
+      return NextResponse.json({ ok: false, error: "invalid" });
+    }
+    targetType = qr.targetType;
+    targetSlug = qr.targetId;
   }
 
-  if (qr.targetType === "step") {
-    const step = getJourneyStepById(qr.targetId);
+  if (targetType === "step") {
+    const step = getJourneyStepById(targetSlug);
     if (!step) {
       return NextResponse.json({ ok: false, error: "invalid" });
     }
@@ -56,13 +73,12 @@ export async function POST(req: Request) {
       if (!result.ok) {
         return NextResponse.json({ ok: false, error: result.error });
       }
-      const { newlyEarnedBadges } = evaluateBadges(user.id);
+      const { newlyEarnedBadges } = await evaluateBadges(user.id);
       return NextResponse.json({
         ok: true,
         type: "step",
-        target: { id: step.id, title: step.title, points: step.points },
-        pointsGained: result.points_gained,
-        totalPoints: result.total_points,
+        target: { id: step.id, title: step.title },
+        pointsGained: 0,
         wheelSpinsGained: result.wheel_spins_gained,
         wheelSpinsAvailable: result.wheel_spins_available,
         journeyStepsRemaining: journeyStepsUntilWheelSpin(
@@ -74,23 +90,20 @@ export async function POST(req: Request) {
       });
     }
 
-    const pointsBefore = totalPoints(user.id);
     const spinsBefore = wheelSpinsEarned(user.id);
     const added = addStepCompletion(user.id, step.id);
     if (!added) {
       return NextResponse.json({ ok: false, error: "already" });
     }
-    const pointsAfter = totalPoints(user.id);
     const totalSteps = listJourneySteps().length;
     const stepsDone = journeyStepsCompleted(user.id);
     const spinsGained = wheelSpinsEarned(user.id) - spinsBefore;
-    const { newlyEarnedBadges } = evaluateBadges(user.id);
+    const { newlyEarnedBadges } = await evaluateBadges(user.id);
     return NextResponse.json({
       ok: true,
       type: "step",
-      target: { id: step.id, title: step.title, points: step.points },
-      pointsGained: pointsAfter - pointsBefore,
-      totalPoints: pointsAfter,
+      target: { id: step.id, title: step.title },
+      pointsGained: 0,
       wheelSpinsGained: spinsGained,
       wheelSpinsAvailable: wheelSpinsAvailable(user.id),
       journeyStepsRemaining: journeyStepsUntilWheelSpin(stepsDone, totalSteps),
@@ -99,7 +112,7 @@ export async function POST(req: Request) {
     });
   }
 
-  const ch = getChallengeById(qr.targetId);
+  const ch = getChallengeById(targetSlug);
   if (!ch) {
     return NextResponse.json({ ok: false, error: "invalid" });
   }
@@ -112,7 +125,7 @@ export async function POST(req: Request) {
     if (!result.ok) {
       return NextResponse.json({ ok: false, error: result.error });
     }
-    const { newlyEarnedBadges } = evaluateBadges(user.id);
+    const { newlyEarnedBadges } = await evaluateBadges(user.id);
     return NextResponse.json({
       ok: true,
       type: "challenge",
@@ -133,14 +146,14 @@ export async function POST(req: Request) {
     id: `att-${user.id}-${ch.id}-${Date.now()}`,
     userId: user.id,
     challengeId: ch.id,
-    answer: { scanned: parsed.data.code },
+    answer: { scanned: code },
     correct: true,
     awardedPoints: ch.points,
     createdAt: new Date().toISOString(),
   });
   const spinsGained = wheelSpinsEarned(user.id) - spinsBefore;
   const pts = totalPoints(user.id);
-  const { newlyEarnedBadges } = evaluateBadges(user.id);
+  const { newlyEarnedBadges } = await evaluateBadges(user.id);
   return NextResponse.json({
     ok: true,
     type: "challenge",

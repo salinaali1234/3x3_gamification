@@ -1,18 +1,21 @@
 import {
   awardBadge,
+  getChallengeById,
   listBadges,
+  listJourneySteps,
   userAttempts,
   userCompletions,
-  listJourneySteps,
   getStore,
 } from "@/lib/data/store";
 import type { Badge } from "@/lib/data/types";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { evaluateBadgesDb } from "@/lib/supabase/badges";
 
 export type AwardResult = {
   newlyEarnedBadges: Badge[];
 };
 
-export function evaluateBadges(userId: string): AwardResult {
+function evaluateBadgesMem(userId: string): AwardResult {
   const newly: Badge[] = [];
   const badges = listBadges();
   const stepsDone = userCompletions(userId).length;
@@ -20,7 +23,9 @@ export function evaluateBadges(userId: string): AwardResult {
   const correctAttempts = userAttempts(userId).filter((a) => a.correct).length;
   const hasPhoto = getStore().photos.some((p) => p.userId === userId);
   const hasCorrectScore = userAttempts(userId).some(
-    (a) => a.correct && getStore().challenges.find((c) => c.id === a.challengeId)?.type === "score_input"
+    (a) =>
+      a.correct &&
+      getChallengeById(a.challengeId)?.type === "score_input"
   );
 
   for (const badge of badges) {
@@ -51,4 +56,12 @@ export function evaluateBadges(userId: string): AwardResult {
   }
 
   return { newlyEarnedBadges: newly };
+}
+
+export async function evaluateBadges(userId: string): Promise<AwardResult> {
+  if (isSupabaseConfigured()) {
+    const newlyEarnedBadges = await evaluateBadgesDb(userId);
+    return { newlyEarnedBadges };
+  }
+  return evaluateBadgesMem(userId);
 }

@@ -13,16 +13,16 @@ export default async function FaqPage() {
       <h1 className="font-display text-5xl">{t.faq.title}</h1>
       <p className="mt-3 text-white/70">{t.faq.subtitle}</p>
 
-      <nav className="mt-6 flex flex-wrap gap-2 text-sm font-mono uppercase tracking-wider">
+      <nav className="mt-6 flex flex-col sm:flex-row flex-wrap gap-2 text-sm font-mono uppercase tracking-wider">
         <a
           href="#faq"
-          className="rounded border border-brand-green/40 bg-brand-green/10 px-3 py-1.5 text-brand-green"
+          className="inline-flex min-h-11 items-center justify-center rounded border border-brand-green/40 bg-brand-green/10 px-4 py-2 text-brand-green"
         >
           FAQ
         </a>
         <a
           href="#rules"
-          className="rounded border border-white/15 px-3 py-1.5 text-white/70 hover:border-brand-orange/40 hover:text-brand-orange"
+          className="inline-flex min-h-11 items-center justify-center rounded border border-white/15 px-4 py-2 text-white/70 hover:border-brand-orange/40 hover:text-brand-orange"
         >
           {t.nav.rules}
         </a>

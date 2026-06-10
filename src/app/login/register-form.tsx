@@ -20,6 +20,8 @@ type Labels = {
   errorPasswordWeak: string;
   errorAuthFailed: string;
   successConfirmEmail: string;
+  consentLabel: string;
+  errorConsentRequired: string;
   hint: string;
 };
 
@@ -42,6 +44,8 @@ export function RegisterForm({ labels }: { labels: Labels }) {
       ? labels.errorEmailExists
       : state.error === "password_weak"
       ? labels.errorPasswordWeak
+      : state.error === "consent_required"
+      ? labels.errorConsentRequired
       : state.error
       ? labels.errorAuthFailed
       : null;
@@ -112,6 +116,22 @@ export function RegisterForm({ labels }: { labels: Labels }) {
           placeholder={labels.passwordPlaceholder}
           className="w-full rounded border border-white/15 bg-white/5 px-4 py-3 text-base placeholder:text-white/40 focus:border-brand-green focus:outline-none"
         />
+      </div>
+
+      <div className="rounded border border-white/10 bg-white/[0.02] p-4">
+        <label className="flex items-start gap-3 cursor-pointer">
+          <input
+            id="register-consent"
+            name="dataConsent"
+            type="checkbox"
+            value="yes"
+            required
+            className="mt-1 h-4 w-4 shrink-0 rounded border-white/30 bg-white/5 accent-brand-green"
+          />
+          <span className="text-sm leading-relaxed text-white/75">
+            {labels.consentLabel}
+          </span>
+        </label>
       </div>
 
       {errorMessage ? (

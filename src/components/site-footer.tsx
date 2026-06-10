@@ -22,7 +22,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
             <li><Link href="/journey" className="hover:text-brand-green">Journey</Link></li>
             <li><Link href="/challenges" className="hover:text-brand-green">Challenges</Link></li>
             <li><Link href="/leaderboard" className="hover:text-brand-green">Leaderboard</Link></li>
-            <li><Link href="/rewards" className="hover:text-brand-green">Rewards</Link></li>
+            <li><Link href="/rewards" className="hover:text-brand-green">Challenge Pass</Link></li>
             <li><Link href="/faq" className="hover:text-brand-green">{locale === "nl" ? "FAQ & Regels" : "FAQ & Rules"}</Link></li>
           </ul>
         </div>

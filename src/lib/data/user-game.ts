@@ -1,17 +1,88 @@
 import {
   totalPoints as memTotalPoints,
+  wheelSpinsUsed as memWheelSpinsUsed,
   wheelSpinsAvailable as memWheelSpinsAvailable,
   wheelSpinsEarned as memWheelSpinsEarned,
   userCompletions as memUserCompletions,
   userAttempts as memUserAttempts,
   userClaims as memUserClaims,
+  userMatchSubmissions as memUserMatchSubmissions,
+  challengePoints as memChallengePoints,
+  matchScorePoints as memMatchScorePoints,
   listRewards as memListRewards,
   getRewardById as memGetRewardById,
+  getBadgeById as memGetBadgeById,
+  userBadgesFor as memUserBadgesFor,
+  leaderboard as memLeaderboard,
+  listLiveMatches as memListLiveMatches,
+  getLiveMatchById as memGetLiveMatchById,
+  userWheelSpins as memUserWheelSpins,
+  getWheelPrizeById as memGetWheelPrizeById,
 } from "./store";
+import type { LeaderboardRow } from "./store";
+import type { LiveMatch } from "./types";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { getUserGameState } from "@/lib/supabase/game";
 import { listRewardStockDb } from "@/lib/supabase/game";
+import { getUserBadgesFromDb } from "@/lib/supabase/badges";
+import { getLeaderboardDb } from "@/lib/supabase/leaderboard";
+import {
+  getLiveMatchByIdDb,
+  listLiveMatchesDb,
+} from "@/lib/supabase/live-matches";
+import { getUserWheelSpinsDb, type UserWheelSpinRow } from "@/lib/supabase/redemptions";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import type { Badge } from "./types";
+
+export type { LeaderboardRow };
+
+export async function getChallengePassPoints(userId: string): Promise<number> {
+  if (isSupabaseConfigured()) {
+    const supabase = await createSupabaseServerClient();
+    if (!supabase) {
+      return memChallengePoints(userId) + memMatchScorePoints(userId);
+    }
+    const [attemptsRes, matchRes] = await Promise.all([
+      supabase.from("challenge_attempts").select("awarded_points").eq("user_id", userId),
+      supabase
+        .from("match_score_submissions")
+        .select("awarded_points")
+        .eq("user_id", userId),
+    ]);
+    const fromChallenges = (attemptsRes.data ?? []).reduce(
+      (sum, row) => sum + (row.awarded_points as number),
+      0
+    );
+    const fromMatches = (matchRes.data ?? []).reduce(
+      (sum, row) => sum + (row.awarded_points as number),
+      0
+    );
+    return fromChallenges + fromMatches;
+  }
+  return memChallengePoints(userId) + memMatchScorePoints(userId);
+}
+
+export async function getLeaderboard(limit = 100): Promise<LeaderboardRow[]> {
+  if (isSupabaseConfigured()) {
+    const rows = await getLeaderboardDb(limit);
+    return rows;
+  }
+  return memLeaderboard(limit);
+}
+
+export async function listLiveMatches(): Promise<LiveMatch[]> {
+  if (isSupabaseConfigured()) {
+    return listLiveMatchesDb();
+  }
+  return memListLiveMatches();
+}
+
+export async function getLiveMatchById(id: string): Promise<LiveMatch | null> {
+  if (isSupabaseConfigured()) {
+    return getLiveMatchByIdDb(id);
+  }
+  return memGetLiveMatchById(id) ?? null;
+}
 
 export async function getTotalPoints(userId: string): Promise<number> {
   if (isSupabaseConfigured()) {
@@ -19,6 +90,14 @@ export async function getTotalPoints(userId: string): Promise<number> {
     if (state) return state.totalPoints;
   }
   return memTotalPoints(userId);
+}
+
+export async function getWheelSpinsUsed(userId: string): Promise<number> {
+  if (isSupabaseConfigured()) {
+    const state = await getUserGameState(userId);
+    if (state) return state.wheelSpinsUsed;
+  }
+  return memWheelSpinsUsed(userId);
 }
 
 export async function getWheelSpinsAvailable(userId: string): Promise<number> {
@@ -111,7 +190,7 @@ export async function getUserClaims(userId: string) {
     if (supabase) {
       const { data } = await supabase
         .from("reward_claims")
-        .select("id, voucher_code, claimed_at, rewards(slug)")
+        .select("id, voucher_code, claimed_at, redeemed_at, rewards(slug)")
         .eq("user_id", userId);
       if (data) {
         return data.map((row) => ({
@@ -119,6 +198,7 @@ export async function getUserClaims(userId: string) {
           rewardId: slugFromJoin(row.rewards) ?? "",
           voucherCode: row.voucher_code as string,
           claimedAt: row.claimed_at as string,
+          redeemedAt: (row.redeemed_at as string | null) ?? null,
         }));
       }
     }
@@ -129,10 +209,62 @@ export async function getUserClaims(userId: string) {
         rewardId: slug,
         voucherCode: "",
         claimedAt: "",
+        redeemedAt: null,
       }));
     }
   }
-  return memUserClaims(userId);
+  return memUserClaims(userId).map((c) => ({
+    ...c,
+    redeemedAt: c.redeemedAt ?? null,
+  }));
+}
+
+export async function getUserMatchSubmissions(userId: string) {
+  if (isSupabaseConfigured()) {
+    const supabase = await createSupabaseServerClient();
+    if (!supabase) return memUserMatchSubmissions(userId);
+    const { data } = await supabase
+      .from("match_score_submissions")
+      .select("match_id, submitted_score, correct, awarded_points, created_at")
+      .eq("user_id", userId);
+    return (data ?? []).map((row) => ({
+      userId,
+      matchId: row.match_id as string,
+      submittedScore: row.submitted_score as string,
+      correct: row.correct as boolean,
+      awardedPoints: row.awarded_points as number,
+      createdAt: row.created_at as string,
+    }));
+  }
+  return memUserMatchSubmissions(userId);
+}
+
+export async function getUserBadges(userId: string): Promise<Badge[]> {
+  if (isSupabaseConfigured()) {
+    return getUserBadgesFromDb(userId);
+  }
+  return memUserBadgesFor(userId)
+    .map((ub) => memGetBadgeById(ub.badgeId))
+    .filter(Boolean) as Badge[];
+}
+
+export async function getUserWheelSpins(userId: string): Promise<UserWheelSpinRow[]> {
+  if (isSupabaseConfigured()) {
+    return getUserWheelSpinsDb(userId);
+  }
+  return memUserWheelSpins(userId).map((spin) => {
+    const prize = memGetWheelPrizeById(spin.prizeId);
+    return {
+      id: spin.id,
+      pickupCode: spin.pickupCode ?? "",
+      prizeId: spin.prizeId,
+      emoji: prize?.emoji ?? "🎁",
+      labelNl: prize?.label.nl ?? "",
+      labelEn: prize?.label.en ?? "",
+      createdAt: spin.createdAt,
+      redeemedAt: spin.redeemedAt ?? null,
+    };
+  });
 }
 
 /** Rewards with live stock from Supabase when configured. */
