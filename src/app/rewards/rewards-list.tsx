@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Reward } from "@/lib/data/types";
 import type { Locale } from "@/lib/i18n/config";
@@ -13,13 +13,14 @@ type TierStatus = "claimed" | "unlocked" | "locked" | "soldOut";
 
 function tierStatus(
   reward: Reward,
+  stock: number,
   passPoints: number,
   claimed: boolean,
   isLoggedIn: boolean
 ): TierStatus {
   if (claimed) return "claimed";
   if (!isLoggedIn) return "locked";
-  if (reward.stock <= 0) return "soldOut";
+  if (stock <= 0) return "soldOut";
   if (passPoints >= reward.costPoints) return "unlocked";
   return "locked";
 }
@@ -52,7 +53,19 @@ export function RewardsList({
   const [freshVoucher, setFreshVoucher] = useState<{ rewardId: string; code: string } | null>(
     null
   );
-  const claimedSet = new Set(claimedIds);
+  const [stockById, setStockById] = useState<Record<string, number>>(() =>
+    Object.fromEntries(rewards.map((r) => [r.id, r.stock]))
+  );
+  const [localClaimedIds, setLocalClaimedIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    setStockById(Object.fromEntries(rewards.map((r) => [r.id, r.stock])));
+  }, [rewards]);
+
+  const claimedSet = useMemo(
+    () => new Set([...claimedIds, ...localClaimedIds]),
+    [claimedIds, localClaimedIds]
+  );
 
   const tiers = useMemo(
     () => [...rewards].sort((a, b) => a.costPoints - b.costPoints),
@@ -80,6 +93,17 @@ export function RewardsList({
       const data = await res.json();
       if (data.ok) {
         setFreshVoucher({ rewardId: reward.id, code: data.code });
+        setLocalClaimedIds((prev) =>
+          prev.includes(reward.id) ? prev : [...prev, reward.id]
+        );
+        if (typeof data.stockRemaining === "number") {
+          setStockById((prev) => ({ ...prev, [reward.id]: data.stockRemaining }));
+        } else {
+          setStockById((prev) => ({
+            ...prev,
+            [reward.id]: Math.max(0, (prev[reward.id] ?? reward.stock) - 1),
+          }));
+        }
         router.refresh();
       }
     } finally {
@@ -205,7 +229,14 @@ export function RewardsList({
       {/* Tier cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {tiers.map((reward, index) => {
-          const status = tierStatus(reward, userPoints, claimedSet.has(reward.id), isLoggedIn);
+          const stock = stockById[reward.id] ?? reward.stock;
+          const status = tierStatus(
+            reward,
+            stock,
+            userPoints,
+            claimedSet.has(reward.id),
+            isLoggedIn
+          );
           const tierNumber = index + 1;
           const voucher = voucherFor(reward.id);
           const isFocus = reward.id === focusTierId;
@@ -238,6 +269,18 @@ export function RewardsList({
                         .replace("{tier}", String(tierNumber))
                         .replace("{points}", formatPts(reward.costPoints, locale))}
                     </p>
+                    <span
+                      className={cn(
+                        "mt-1 inline-block px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider",
+                        reward.verifiable
+                          ? "bg-brand-blue/20 text-brand-blue"
+                          : "bg-white/10 text-white/50"
+                      )}
+                    >
+                      {reward.verifiable
+                        ? dict.rewards.verifiableReward
+                        : dict.rewards.voucherReward}
+                    </span>
                     <h3 className="mt-2 font-display text-2xl uppercase leading-tight">
                       {reward.name[locale]}
                     </h3>
@@ -270,14 +313,9 @@ export function RewardsList({
                   </div>
                 ) : null}
 
-                <div className="mt-4 flex items-center justify-between gap-2">
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
                   <StatusTag status={status} dict={dict} />
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-white/35">
-                    {dict.rewards.stock}:{" "}
-                    <span className="tabular-nums text-white/55">
-                      {formatPts(reward.stock, locale)}
-                    </span>
-                  </span>
+                  <StockBadge stock={stock} locale={locale} dict={dict} />
                 </div>
 
                 <div className="mt-5 pt-4 border-t border-white/10">
@@ -356,6 +394,40 @@ function SummaryStat({
       </div>
       <div className="mt-1 text-[10px] leading-snug text-white/45">{label}</div>
     </div>
+  );
+}
+
+function StockBadge({
+  stock,
+  locale,
+  dict,
+}: {
+  stock: number;
+  locale: Locale;
+  dict: Dictionary;
+}) {
+  const formatted = stock.toLocaleString(locale === "nl" ? "nl-NL" : "en-US");
+
+  if (stock <= 0) {
+    return (
+      <span className="font-mono text-xs font-bold uppercase tracking-wider text-white/35">
+        {dict.rewards.outOfStock}
+      </span>
+    );
+  }
+
+  const low = stock <= 10;
+
+  return (
+    <span
+      className={cn(
+        "font-mono text-xs font-bold uppercase tracking-wider tabular-nums",
+        low ? "text-brand-orange" : "text-brand-green"
+      )}
+    >
+      {dict.rewards.stockAvailable.replace("{n}", formatted)}
+      {low ? ` · ${dict.rewards.stockLow.replace("{n}", formatted)}` : ""}
+    </span>
   );
 }
 

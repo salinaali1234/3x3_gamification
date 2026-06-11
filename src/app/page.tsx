@@ -6,7 +6,6 @@ import { getCurrentUser } from "@/lib/session";
 import {
   listBadges,
   listChallenges,
-  listJourneySteps,
   listRewards,
 } from "@/lib/data/store";
 import { getLeaderboard } from "@/lib/data/user-game";
@@ -23,7 +22,6 @@ export default async function HomePage() {
   const t = getDictionary(locale);
   const user = await getCurrentUser();
   const top = await getLeaderboard(5);
-  const steps = listJourneySteps();
   const challenges = listChallenges();
   const badges = listBadges();
   const rewards = listRewards();
@@ -87,11 +85,8 @@ export default async function HomePage() {
               <div className="mt-8 flex flex-col sm:flex-row sm:flex-wrap gap-3">
                 {user ? (
                   <>
-                    <ButtonLink href="/journey" variant="primary" size="lg" className="w-full sm:w-auto">
-                      {t.home.ctaPlay} →
-                    </ButtonLink>
-                    <ButtonLink href="/challenges" variant="outline" size="lg" className="w-full sm:w-auto">
-                      {t.home.ctaScan}
+                    <ButtonLink href="/challenges" variant="primary" size="lg" className="w-full sm:w-auto">
+                      {t.home.ctaChallenges} →
                     </ButtonLink>
                   </>
                 ) : (
@@ -128,11 +123,10 @@ export default async function HomePage() {
             {t.home.posterRaw}
           </p>
 
-          <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-px bg-white/10 border border-white/10">
-            <PosterStat number={steps.length} label={t.home.stat1} accent="orange" />
-            <PosterStat number={challenges.length} label={t.home.stat2} accent="green" />
+          <div className="mt-10 grid grid-cols-3 sm:grid-cols-3 gap-px bg-white/10 border border-white/10">
+            <PosterStat number={challenges.length} label={t.home.stat1} accent="green" />
             <PosterStat number={badges.length} label={t.home.stat3} accent="blue" />
-            <PosterStat number={rewards.length} label={t.home.stat4} accent="green" />
+            <PosterStat number={rewards.length} label={t.home.stat4} accent="orange" />
           </div>
         </div>
 

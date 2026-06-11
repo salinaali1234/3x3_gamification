@@ -22,8 +22,10 @@ export default async function RewardsPage() {
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-      <div className="brand-section-label mb-2">3X3 UNITES // challenge pass</div>
+      <div className="brand-section-label mb-2">3X3 UNITES // street pass</div>
       <p className="max-w-2xl text-white/70">{t.rewards.subtitle}</p>
+      <p className="mt-2 max-w-2xl text-sm text-white/45">{t.rewards.pointsTierHint}</p>
+      <p className="mt-1 max-w-2xl text-xs text-white/35">{t.rewards.stockClaimNote}</p>
 
       <RewardsList
         rewards={rewards}

@@ -274,9 +274,11 @@ export async function listRewardsWithStock() {
 
   const stockRows = await listRewardStockDb();
   const stockBySlug = new Map(stockRows.map((r) => [r.slug, r.stock]));
+  const costBySlug = new Map(stockRows.map((r) => [r.slug, r.costPoints]));
   return rewards.map((r) => ({
     ...r,
     stock: stockBySlug.get(r.id) ?? r.stock,
+    costPoints: costBySlug.get(r.id) ?? r.costPoints,
   }));
 }
 

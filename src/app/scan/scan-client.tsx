@@ -14,10 +14,6 @@ type ScanResult =
       target: { id: string; title: { nl: string; en: string }; points?: number };
       pointsGained?: number;
       totalPoints?: number;
-      wheelSpinsGained?: number;
-      wheelSpinsAvailable?: number;
-      journeyStepsRemaining?: number;
-      journeyComplete?: boolean;
       newBadges: { id: string; emoji: string; name: { nl: string; en: string } }[];
     }
   | { ok: false; error: string };
@@ -117,41 +113,11 @@ export function ScanClient({
               </div>
             ) : null}
             {result.type === "step" ? (
-              <p className="mt-2 text-sm text-white/60">{dict.journey.stepCompletedHint}</p>
+              <p className="mt-2 text-sm text-white/60">{dict.scan.success}</p>
             ) : null}
             {result.totalPoints !== undefined && result.type === "challenge" ? (
               <p className="mt-1 text-sm text-white/60">
                 {locale === "nl" ? "Totaal" : "Total"}: {result.totalPoints} pts
-              </p>
-            ) : null}
-            {result.wheelSpinsGained ? (
-              <p className="mt-2 text-sm text-brand-orange">
-                {result.journeyComplete
-                  ? locale === "nl"
-                    ? "Alle main quests voltooid — je wheel-spin staat klaar! "
-                    : "All main quests complete — your wheel spin is ready! "
-                  : null}
-                +{result.wheelSpinsGained}{" "}
-                {result.wheelSpinsGained === 1 ? "wheel spin" : "wheel spins"}!{" "}
-                <Link href="/wheel" className="underline hover:text-brand-green">
-                  {dict.wheel.title} →
-                </Link>
-              </p>
-            ) : result.journeyStepsRemaining !== undefined &&
-              result.journeyStepsRemaining > 0 ? (
-              <p className="mt-2 text-sm text-white/50">
-                {locale === "nl"
-                  ? `Nog ${result.journeyStepsRemaining} main quest(s) tot wheel-spin. `
-                  : `${result.journeyStepsRemaining} main quest(s) left until wheel spin. `}
-                <Link href="/journey" className="text-brand-green hover:underline">
-                  Journey →
-                </Link>
-              </p>
-            ) : result.wheelSpinsAvailable !== undefined ? (
-              <p className="mt-2 text-sm text-white/50">
-                <Link href="/wheel" className="hover:text-brand-green">
-                  {dict.wheel.spinsAvailable}: {result.wheelSpinsAvailable}
-                </Link>
               </p>
             ) : null}
             {result.newBadges?.length ? (
@@ -182,8 +148,8 @@ export function ScanClient({
               : result.error === "photo_required" ? (
                 <span>
                   {dict.scan.photoRequired}{" "}
-                  <Link href="/journey" className="text-brand-green underline">
-                    {dict.scan.openJourney}
+                  <Link href="/challenges" className="text-brand-green underline">
+                    {dict.scan.openChallenges}
                   </Link>
                 </span>
               ) : result.error === "leader_hub_locked"

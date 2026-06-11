@@ -6,19 +6,13 @@ import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getCurrentUser } from "@/lib/session";
 import {
   getLeaderboard,
-  getStepCompletions,
   getTotalPoints,
-  getWheelSpinsAvailable,
   getUserAttempts,
   getUserBadges,
   getUserMatchSubmissions,
   listLiveMatches,
 } from "@/lib/data/user-game";
-import {
-  listJourneySteps,
-  getChallengeById,
-  listChallenges,
-} from "@/lib/data/store";
+import { getChallengeById, listChallenges } from "@/lib/data/store";
 import { ButtonLink } from "@/components/ui/button";
 import { SectionLabel } from "@/components/ui/section-label";
 import { BadgeSticker } from "@/components/ui/badge-sticker";
@@ -32,16 +26,13 @@ export default async function DashboardPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
-  const steps = listJourneySteps();
-  const completions = await getStepCompletions(user.id);
-  const completedIds = new Set(completions.map((c) => c.stepId));
-  const nextStep = steps.find((s) => !completedIds.has(s.id));
+  const challenges = listChallenges();
   const points = await getTotalPoints(user.id);
-  const spins = await getWheelSpinsAvailable(user.id);
   const badges = await getUserBadges(user.id);
   const attempts = await getUserAttempts(user.id);
   const doneChallengeIds = new Set(attempts.map((a) => a.challengeId));
-  const recommendedChallenge = listChallenges().find(
+  const challengesDone = challenges.filter((c) => doneChallengeIds.has(c.id)).length;
+  const recommendedChallenge = challenges.find(
     (c) => !doneChallengeIds.has(c.id)
   );
   const lb = await getLeaderboard(100);
@@ -66,24 +57,19 @@ export default async function DashboardPage() {
       </h1>
       <p className="mt-2 text-white/70">
         {locale === "nl"
-          ? "Klaar voor de volgende stap?"
-          : "Ready for your next step?"}
+          ? "Klaar voor je volgende challenge?"
+          : "Ready for your next challenge?"}
       </p>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Tile
-          label={locale === "nl" ? "Wheel spins" : "Wheel spins"}
-          value={spins}
-          accent="orange"
-        />
+      <div className="mt-8 grid gap-4 sm:grid-cols-3">
         <Tile
           label={t.common.yourPoints}
           value={points}
           accent="green"
         />
         <Tile
-          label={locale === "nl" ? "Stappen voltooid" : "Steps completed"}
-          value={`${completions.length}/${steps.length}`}
+          label={locale === "nl" ? "Challenges voltooid" : "Challenges done"}
+          value={`${challengesDone}/${challenges.length}`}
           accent="orange"
         />
         <Tile
@@ -95,48 +81,50 @@ export default async function DashboardPage() {
 
       <section className="mt-10">
         <SectionLabel number="01" className="mb-4">
-          {locale === "nl" ? "Volgende stap" : "Next step"}
+          {locale === "nl" ? "Volgende challenge" : "Next challenge"}
         </SectionLabel>
-        {nextStep ? (
+        {recommendedChallenge ? (
           <div className="rounded-md border border-brand-orange/40 bg-brand-orange/5 p-6 flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
             <div>
               <div className="brand-section-label !text-brand-orange mb-1">
-                STEP {nextStep.order} / {steps.length}
+                {t.challenges.types[recommendedChallenge.type]}
               </div>
-              <h2 className="font-display text-3xl">{nextStep.title[locale]}</h2>
-              <p className="text-white/70 mt-1">{nextStep.location[locale]}</p>
+              <h2 className="font-display text-3xl">
+                {recommendedChallenge.title[locale]}
+              </h2>
               <p className="text-sm text-white/60 mt-2 max-w-prose">
-                {nextStep.description[locale]}
+                {recommendedChallenge.description[locale]}
               </p>
-            </div>
-            <div className="flex flex-col gap-2 sm:items-end">
-              <span className="font-display text-3xl text-brand-orange">🎡 spin</span>
-            <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:w-auto">
-                <ButtonLink href="/challenges" variant="orange" className="w-full sm:w-auto">
-                  {t.scan.title}
-                </ButtonLink>
-                <ButtonLink href="/wheel" variant="outline" className="w-full sm:w-auto">
-                  {t.nav.wheel}
-                </ButtonLink>
+              <div className="mt-3 font-display text-2xl text-brand-green">
+                +{recommendedChallenge.points} pts
               </div>
+            </div>
+            <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:w-auto">
+              <ButtonLink
+                href={`/challenges/${recommendedChallenge.id}`}
+                variant="orange"
+                className="w-full sm:w-auto"
+              >
+                {t.common.next} →
+              </ButtonLink>
+              <ButtonLink href="/challenges" variant="outline" className="w-full sm:w-auto">
+                {t.nav.challenges}
+              </ButtonLink>
             </div>
           </div>
         ) : (
           <div className="rounded-md border border-brand-green/40 bg-brand-green/5 p-6">
             <h2 className="font-display text-3xl text-brand-green">
-              {locale === "nl" ? "Hele journey voltooid!" : "Whole journey complete!"}
+              {locale === "nl" ? "Alle challenges voltooid!" : "All challenges complete!"}
             </h2>
             <p className="text-white/70 mt-2">
               {locale === "nl"
-                ? "Bekijk je rewards of pak nog wat extra punten via challenges."
-                : "Go cash in your rewards or grab extra points via challenges."}
+                ? "Pak je rewards op via je Street Pass."
+                : "Claim your rewards via your Street Pass."}
             </p>
             <div className="mt-4 flex flex-col sm:flex-row gap-3">
               <ButtonLink href="/rewards" variant="primary" className="w-full sm:w-auto">
                 {t.nav.rewards}
-              </ButtonLink>
-              <ButtonLink href="/challenges" variant="outline" className="w-full sm:w-auto">
-                {t.nav.challenges}
               </ButtonLink>
             </div>
           </div>
@@ -151,8 +139,8 @@ export default async function DashboardPage() {
           {badges.length === 0 ? (
             <div className="rounded-md border border-white/10 bg-white/[0.02] p-6 text-white/60">
               {locale === "nl"
-                ? "Nog geen badges. Voltooi je eerste stap om de 'First step' badge te verdienen."
-                : "No badges yet. Complete your first step to earn the 'First step' badge."}
+                ? "Nog geen badges. Voltooi je eerste challenge om badges te verdienen."
+                : "No badges yet. Complete your first challenge to earn badges."}
             </div>
           ) : (
             <div className="flex flex-wrap gap-4 rounded-md border border-white/10 bg-white/[0.02] p-6">
@@ -167,31 +155,18 @@ export default async function DashboardPage() {
 
         <div>
           <SectionLabel number="03" className="mb-4">
-            {locale === "nl" ? "Aanbevolen challenge" : "Recommended challenge"}
+            {locale === "nl" ? "Code invoeren" : "Enter a code"}
           </SectionLabel>
-          {recommendedChallenge ? (
-            <Link
-              href={`/challenges/${recommendedChallenge.id}`}
-              className="block rounded-md border border-white/10 bg-white/[0.02] p-6 hover:border-brand-green/60 hover:bg-white/[0.04] transition-colors"
-            >
-              <div className="brand-section-label !text-brand-green mb-1">
-                {t.challenges.types[recommendedChallenge.type]}
-              </div>
-              <h3 className="font-display text-2xl">
-                {recommendedChallenge.title[locale]}
-              </h3>
-              <p className="text-sm text-white/70 mt-1">
-                {recommendedChallenge.description[locale]}
-              </p>
-              <div className="mt-3 font-display text-2xl text-brand-green">
-                +{recommendedChallenge.points} pts →
-              </div>
-            </Link>
-          ) : (
-            <div className="rounded-md border border-white/10 bg-white/[0.02] p-6 text-white/60">
-              {locale === "nl" ? "Alle challenges gedaan!" : "All challenges done!"}
-            </div>
-          )}
+          <div className="rounded-md border border-white/10 bg-white/[0.02] p-6">
+            <p className="text-sm text-white/70">
+              {locale === "nl"
+                ? "Scan of typ een locatiecode op de challenges-pagina."
+                : "Scan or type a location code on the challenges page."}
+            </p>
+            <ButtonLink href="/challenges" variant="primary" className="mt-4 w-full sm:w-auto">
+              {t.challenges.enterCode}
+            </ButtonLink>
+          </div>
         </div>
       </section>
 
@@ -200,40 +175,18 @@ export default async function DashboardPage() {
           {locale === "nl" ? "Recente activiteit" : "Recent activity"}
         </SectionLabel>
         <ul className="rounded-md border border-white/10 divide-y divide-white/5">
-          {(() => {
-            type ActivityRow = {
-              kind: "step" | "attempt";
-              userId: string;
-              stepId: string;
-              completedAt: string;
-            };
-            const stepRows: ActivityRow[] = completions.map((c) => ({
-              kind: "step",
-              userId: c.userId,
-              stepId: c.stepId,
-              completedAt: c.completedAt,
-            }));
-            const attemptRows: ActivityRow[] = attempts.map((a) => ({
-              kind: "attempt",
-              userId: a.userId,
-              stepId: a.challengeId,
-              completedAt: a.createdAt,
-            }));
-            return [...stepRows, ...attemptRows];
-          })()
+          {attempts
+            .slice()
             .sort(
               (a, b) =>
-                new Date(b.completedAt).getTime() -
-                new Date(a.completedAt).getTime()
+                new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
             )
             .slice(0, 6)
-            .map((row, i) => {
-              const isStep = row.kind === "step";
-              const step = isStep ? steps.find((s) => s.id === row.stepId) : null;
-              const ch = !isStep ? getChallengeById(row.stepId) : null;
+            .map((row) => {
+              const ch = getChallengeById(row.challengeId);
               return (
                 <li
-                  key={i}
+                  key={row.id}
                   className="flex items-center gap-3 px-4 py-3 text-sm"
                 >
                   <Avatar
@@ -242,14 +195,7 @@ export default async function DashboardPage() {
                     size="sm"
                   />
                   <span className="flex-1 truncate">
-                    {isStep && step ? (
-                      <>
-                        <span className="text-white/60">
-                          {locale === "nl" ? "Voltooid:" : "Completed:"}{" "}
-                        </span>
-                        <span className="text-brand-white">{step.title[locale]}</span>
-                      </>
-                    ) : ch ? (
+                    {ch ? (
                       <>
                         <span className="text-white/60">
                           {locale === "nl" ? "Challenge:" : "Challenge:"}{" "}
@@ -259,12 +205,12 @@ export default async function DashboardPage() {
                     ) : null}
                   </span>
                   <span className="font-mono text-xs text-white/40">
-                    {new Date(row.completedAt).toLocaleString(locale)}
+                    {new Date(row.createdAt).toLocaleString(locale)}
                   </span>
                 </li>
               );
             })}
-          {completions.length === 0 && attempts.length === 0 ? (
+          {attempts.length === 0 ? (
             <li className="px-4 py-6 text-sm text-white/50">
               {t.common.noResults}
             </li>

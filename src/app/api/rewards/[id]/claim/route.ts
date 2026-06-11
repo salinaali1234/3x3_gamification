@@ -28,7 +28,13 @@ export async function POST(
     if (!result.ok) {
       return NextResponse.json({ ok: false, error: result.error });
     }
-    return NextResponse.json({ ok: true, code: result.code });
+    const stockRemaining =
+      typeof result.stock_remaining === "number" ? result.stock_remaining : undefined;
+    return NextResponse.json({
+      ok: true,
+      code: result.code,
+      stockRemaining,
+    });
   }
 
   if (reward.stock <= 0) {
@@ -49,5 +55,10 @@ export async function POST(
     claimedAt: new Date().toISOString(),
     voucherCode: code,
   });
-  return NextResponse.json({ ok: true, code });
+  const updated = getRewardById(reward.id);
+  return NextResponse.json({
+    ok: true,
+    code,
+    stockRemaining: updated?.stock ?? 0,
+  });
 }
