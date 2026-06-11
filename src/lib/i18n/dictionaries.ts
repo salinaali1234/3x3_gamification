@@ -181,7 +181,7 @@ export const dictionaries = {
     rewards: {
       title: "Street Pass",
       subtitle:
-        "Verdien punten via challenges. Vouchers kosten minder punten; fysieke items (ophalen op locatie) kosten meer. Bij claimen gaat de voorraad omlaag.",
+        "Vier officiële tiers — verdien punten via challenges en claim je reward op locatie.",
       passSeason: "World Tour Weekend",
       loginToViewPass: "om je Street Pass te zien.",
       passPointsLabel: "Street Pass punten",
@@ -197,11 +197,12 @@ export const dictionaries = {
       stock: "Op voorraad",
       stockAvailable: "{n} beschikbaar",
       stockLow: "Nog {n} over",
-      stockClaimNote: "Voorraad daalt zodra je claimt (max. 1× per reward per speler).",
+      stockOpen: "Beschikbaar",
+      stockClaimNote: "Voorraad daalt zodra je claimt (max. 1× per tier per speler).",
       verifiableReward: "Fysiek item",
       voucherReward: "Voucher",
       pointsTierHint:
-        "Vouchers = lagere punten · fysieke items (waterfles, bal) = hogere punten. Punten zijn voorlopig — passen we aan na testen.",
+        "Tier 1 sticker/case · Tier 2 keychain · Tier 3 20% merch · Tier 4 3x3 bal. Punten zijn voorlopig.",
       notEnoughPoints: "Niet genoeg punten",
       outOfStock: "Uitverkocht",
       yourVoucher: "Jouw voucher code",
@@ -709,7 +710,7 @@ export const dictionaries = {
     rewards: {
       title: "Street Pass",
       subtitle:
-        "Earn points via challenges. Vouchers cost fewer points; physical items (pick up on site) cost more. Stock goes down when you claim.",
+        "Four official tiers — earn points via challenges and claim on site.",
       passSeason: "World Tour Weekend",
       loginToViewPass: "to view your Street Pass.",
       passPointsLabel: "Street Pass points",
@@ -725,11 +726,12 @@ export const dictionaries = {
       stock: "In stock",
       stockAvailable: "{n} available",
       stockLow: "Only {n} left",
-      stockClaimNote: "Stock drops when you claim (max once per reward per player).",
+      stockOpen: "Available",
+      stockClaimNote: "Stock drops when you claim (max once per tier per player).",
       verifiableReward: "Physical item",
       voucherReward: "Voucher",
       pointsTierHint:
-        "Vouchers = lower points · physical items (bottle, ball) = higher points. Point values are provisional — we'll tune after testing.",
+        "Tier 1 sticker/case · Tier 2 keychain · Tier 3 20% merch · Tier 4 3x3 ball. Point values are provisional.",
       notEnoughPoints: "Not enough points",
       outOfStock: "Out of stock",
       yourVoucher: "Your voucher code",

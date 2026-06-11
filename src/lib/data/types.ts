@@ -235,6 +235,8 @@ export type Reward = {
   verifiable: boolean;
   costPoints: number;
   stock: number;
+  /** Hide exact stock count in UI (e.g. high-volume vouchers). */
+  showStockCount?: boolean;
   emoji: string;
   accent: "green" | "orange" | "blue";
 };

@@ -315,7 +315,12 @@ export function RewardsList({
 
                 <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
                   <StatusTag status={status} dict={dict} />
-                  <StockBadge stock={stock} locale={locale} dict={dict} />
+                  <StockBadge
+                    stock={stock}
+                    showCount={reward.showStockCount !== false}
+                    locale={locale}
+                    dict={dict}
+                  />
                 </div>
 
                 <div className="mt-5 pt-4 border-t border-white/10">
@@ -399,15 +404,15 @@ function SummaryStat({
 
 function StockBadge({
   stock,
+  showCount,
   locale,
   dict,
 }: {
   stock: number;
+  showCount: boolean;
   locale: Locale;
   dict: Dictionary;
 }) {
-  const formatted = stock.toLocaleString(locale === "nl" ? "nl-NL" : "en-US");
-
   if (stock <= 0) {
     return (
       <span className="font-mono text-xs font-bold uppercase tracking-wider text-white/35">
@@ -416,6 +421,15 @@ function StockBadge({
     );
   }
 
+  if (!showCount) {
+    return (
+      <span className="font-mono text-xs font-bold uppercase tracking-wider text-brand-green">
+        {dict.rewards.stockOpen}
+      </span>
+    );
+  }
+
+  const formatted = stock.toLocaleString(locale === "nl" ? "nl-NL" : "en-US");
   const low = stock <= 10;
 
   return (
