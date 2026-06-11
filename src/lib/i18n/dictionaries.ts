@@ -423,6 +423,18 @@ export const dictionaries = {
       save: "Opslaan",
       saved: "Opgeslagen",
       saveError: "Opslaan mislukt. Probeer het opnieuw.",
+      changePassword: "Wachtwoord wijzigen",
+      changePasswordHint:
+        "Vul je huidige wachtwoord in en kies een nieuw wachtwoord (minimaal 8 tekens).",
+      currentPasswordLabel: "Huidig wachtwoord",
+      newPasswordLabel: "Nieuw wachtwoord",
+      confirmPasswordLabel: "Bevestig nieuw wachtwoord",
+      changePasswordSubmit: "Wachtwoord opslaan",
+      changePasswordSubmitting: "Bezig…",
+      changePasswordSuccess: "Je wachtwoord is gewijzigd.",
+      errorPasswordMismatch: "De nieuwe wachtwoorden komen niet overeen.",
+      errorPasswordSame: "Het nieuwe wachtwoord moet anders zijn dan je huidige wachtwoord.",
+      errorWrongCurrentPassword: "Huidig wachtwoord is onjuist.",
     },
     admin: {
       title: "Admin",
@@ -488,6 +500,9 @@ export const dictionaries = {
       emailPlaceholder: "jij@voorbeeld.nl",
       passwordLabel: "Wachtwoord",
       passwordPlaceholder: "Minimaal 8 tekens",
+      newPasswordLabel: "Nieuw wachtwoord",
+      showPassword: "Toon",
+      hidePassword: "Verberg",
       signInSubmit: "Inloggen",
       signInSubmitting: "Bezig met inloggen…",
       submit: "Account aanmaken",
@@ -497,6 +512,7 @@ export const dictionaries = {
       errorEmail: "Vul een geldig e-mailadres in.",
       errorEmailExists: "Er bestaat al een account met dit e-mailadres.",
       errorPasswordWeak: "Wachtwoord moet minimaal 8 tekens zijn.",
+      errorPasswordMismatch: "De wachtwoorden komen niet overeen.",
       errorInvalidCredentials: "Onjuist e-mailadres of wachtwoord.",
       errorEmailNotConfirmed: "Bevestig eerst je e-mail via de link in je inbox.",
       errorAuthFailed: "Inloggen mislukt. Probeer het opnieuw.",
@@ -507,6 +523,29 @@ export const dictionaries = {
       errorConsentRequired:
         "Vink het vakje aan om toestemming te geven voor het opslaan van je gegevens.",
       hint: "Je kunt codes invoeren, side challenges spelen en de wheel spinnen. Vraag op locatie naar de regels voor fysieke prijzen.",
+      forgotPasswordLink: "Wachtwoord vergeten?",
+      forgotPasswordTitle: "Wachtwoord vergeten",
+      forgotPasswordSubtitle:
+        "Vul je e-mailadres in. We sturen je een link om een nieuw wachtwoord te kiezen.",
+      forgotPasswordSubmit: "Stuur resetlink",
+      forgotPasswordSubmitting: "Bezig met versturen…",
+      forgotPasswordSuccess:
+        "Als er een account bestaat met dit e-mailadres, ontvang je binnen enkele minuten een e-mail met een resetlink. Check ook je spamfolder.",
+      resetPasswordTitle: "Nieuw wachtwoord",
+      resetPasswordSubtitle: "Kies een nieuw wachtwoord voor je account.",
+      resetPasswordSubmit: "Wachtwoord opslaan",
+      resetPasswordSubmitting: "Bezig…",
+      confirmPasswordLabel: "Bevestig wachtwoord",
+      backToLogin: "← Terug naar inloggen",
+      errorNotConfigured: "Wachtwoord reset werkt alleen wanneer Supabase is geconfigureerd.",
+      errorSessionExpired:
+        "De resetlink is verlopen of ongeldig. Vraag een nieuwe link aan.",
+      forgotPasswordError:
+        "Resetlink kon niet worden verstuurd. Probeer het over een paar minuten opnieuw.",
+      forgotPasswordRedirectError:
+        "De redirect-URL staat niet in Supabase. Voeg http://localhost:3000/auth/callback toe onder Authentication → URL Configuration.",
+      errorAuthCallback:
+        "De resetlink werkt niet (verlopen of ongeldig). Vraag een nieuwe link aan op dezelfde computer waar localhost draait.",
     },
   },
   en: {
@@ -931,6 +970,18 @@ export const dictionaries = {
       save: "Save",
       saved: "Saved",
       saveError: "Could not save. Please try again.",
+      changePassword: "Change password",
+      changePasswordHint:
+        "Enter your current password and choose a new one (at least 8 characters).",
+      currentPasswordLabel: "Current password",
+      newPasswordLabel: "New password",
+      confirmPasswordLabel: "Confirm new password",
+      changePasswordSubmit: "Save password",
+      changePasswordSubmitting: "Saving…",
+      changePasswordSuccess: "Your password has been changed.",
+      errorPasswordMismatch: "The new passwords do not match.",
+      errorPasswordSame: "The new password must be different from your current password.",
+      errorWrongCurrentPassword: "Current password is incorrect.",
     },
     admin: {
       title: "Admin",
@@ -995,6 +1046,9 @@ export const dictionaries = {
       emailPlaceholder: "you@example.com",
       passwordLabel: "Password",
       passwordPlaceholder: "At least 8 characters",
+      newPasswordLabel: "New password",
+      showPassword: "Show",
+      hidePassword: "Hide",
       signInSubmit: "Log in",
       signInSubmitting: "Signing in…",
       submit: "Create account",
@@ -1004,6 +1058,7 @@ export const dictionaries = {
       errorEmail: "Enter a valid email address.",
       errorEmailExists: "An account with this email already exists.",
       errorPasswordWeak: "Password must be at least 8 characters.",
+      errorPasswordMismatch: "Passwords do not match.",
       errorInvalidCredentials: "Incorrect email or password.",
       errorEmailNotConfirmed: "Please confirm your email using the link we sent you.",
       errorAuthFailed: "Sign-in failed. Please try again.",
@@ -1014,6 +1069,29 @@ export const dictionaries = {
       errorConsentRequired:
         "Please check the box to consent to storing your data.",
       hint: "You can enter codes, play side challenges and spin the wheel. Ask on site about rules for physical prizes.",
+      forgotPasswordLink: "Forgot password?",
+      forgotPasswordTitle: "Forgot password",
+      forgotPasswordSubtitle:
+        "Enter your email address and we will send you a link to choose a new password.",
+      forgotPasswordSubmit: "Send reset link",
+      forgotPasswordSubmitting: "Sending…",
+      forgotPasswordSuccess:
+        "If an account exists for this email, you will receive a reset link within a few minutes. Check your spam folder too.",
+      resetPasswordTitle: "New password",
+      resetPasswordSubtitle: "Choose a new password for your account.",
+      resetPasswordSubmit: "Save password",
+      resetPasswordSubmitting: "Saving…",
+      confirmPasswordLabel: "Confirm password",
+      backToLogin: "← Back to log in",
+      errorNotConfigured: "Password reset only works when Supabase is configured.",
+      errorSessionExpired:
+        "This reset link has expired or is invalid. Please request a new one.",
+      forgotPasswordError:
+        "Could not send the reset link. Please try again in a few minutes.",
+      forgotPasswordRedirectError:
+        "Redirect URL is not allowed in Supabase. Add http://localhost:3000/auth/callback under Authentication → URL Configuration.",
+      errorAuthCallback:
+        "This reset link did not work (expired or invalid). Request a new link and open it on the same computer where localhost is running.",
     },
   },
 };

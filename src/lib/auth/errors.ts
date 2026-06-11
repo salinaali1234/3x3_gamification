@@ -13,5 +13,15 @@ export function mapAuthError(message: string): string {
   if (m.includes("email not confirmed")) {
     return "email_not_confirmed";
   }
+  if (
+    m.includes("rate limit") ||
+    m.includes("over_email_send_rate_limit") ||
+    m.includes("too many requests")
+  ) {
+    return "rate_limit";
+  }
+  if (m.includes("redirect") && m.includes("not allowed")) {
+    return "redirect_not_allowed";
+  }
   return "auth_failed";
 }

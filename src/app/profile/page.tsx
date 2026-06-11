@@ -3,12 +3,14 @@ import { redirect } from "next/navigation";
 import { getLocaleFromCookieValue } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getCurrentUser } from "@/lib/session";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { getTotalPoints, getUserClaims, getUserBadges, getUserWheelSpins } from "@/lib/data/user-game";
 import { getRewardById } from "@/lib/data/store";
 import { BadgeSticker } from "@/components/ui/badge-sticker";
 import { Avatar } from "@/components/ui/avatar";
 import { SectionLabel } from "@/components/ui/section-label";
 import { ProfileForm } from "./profile-form";
+import { ChangePasswordForm } from "./change-password-form";
 
 export default async function ProfilePage() {
   const cookieStore = await cookies();
@@ -20,6 +22,7 @@ export default async function ProfilePage() {
   const claims = await getUserClaims(user.id);
   const wheelSpins = await getUserWheelSpins(user.id);
   const points = await getTotalPoints(user.id);
+  const passwordEnabled = isSupabaseConfigured();
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8 py-10">
@@ -48,8 +51,37 @@ export default async function ProfilePage() {
         />
       </section>
 
+      {passwordEnabled ? (
+        <section className="mt-10">
+          <SectionLabel number="02" className="mb-4">
+            {t.profile.changePassword}
+          </SectionLabel>
+          <p className="mb-4 max-w-md text-sm text-white/60">
+            {t.profile.changePasswordHint}
+          </p>
+          <ChangePasswordForm
+            labels={{
+              currentPasswordLabel: t.profile.currentPasswordLabel,
+              newPasswordLabel: t.profile.newPasswordLabel,
+              confirmPasswordLabel: t.profile.confirmPasswordLabel,
+              passwordPlaceholder: t.login.passwordPlaceholder,
+              showPassword: t.login.showPassword,
+              hidePassword: t.login.hidePassword,
+              submit: t.profile.changePasswordSubmit,
+              submitting: t.profile.changePasswordSubmitting,
+              success: t.profile.changePasswordSuccess,
+              errorPasswordWeak: t.login.errorPasswordWeak,
+              errorPasswordMismatch: t.profile.errorPasswordMismatch,
+              errorPasswordSame: t.profile.errorPasswordSame,
+              errorWrongCurrentPassword: t.profile.errorWrongCurrentPassword,
+              errorAuthFailed: t.login.errorAuthFailed,
+            }}
+          />
+        </section>
+      ) : null}
+
       <section className="mt-10">
-        <SectionLabel number="02" className="mb-4">
+        <SectionLabel number="03" className="mb-4">
           {t.profile.yourBadges}
         </SectionLabel>
         {badges.length === 0 ? (
@@ -66,7 +98,7 @@ export default async function ProfilePage() {
       </section>
 
       <section className="mt-10">
-        <SectionLabel number="03" className="mb-4">
+        <SectionLabel number="04" className="mb-4">
           {t.profile.claimedRewards}
         </SectionLabel>
         {claims.length === 0 ? (
@@ -106,7 +138,7 @@ export default async function ProfilePage() {
       </section>
 
       <section className="mt-10">
-        <SectionLabel number="04" className="mb-4">
+        <SectionLabel number="05" className="mb-4">
           {t.profile.wheelPrizes}
         </SectionLabel>
         {wheelSpins.length === 0 ? (

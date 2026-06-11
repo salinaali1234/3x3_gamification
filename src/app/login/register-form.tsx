@@ -1,8 +1,9 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { registerAction, type RegisterState } from "@/app/actions";
 import { Button } from "@/components/ui/button";
+import { PasswordInput } from "@/components/ui/password-input";
 
 type Labels = {
   nameLabel: string;
@@ -11,6 +12,8 @@ type Labels = {
   emailPlaceholder: string;
   passwordLabel: string;
   passwordPlaceholder: string;
+  showPassword: string;
+  hidePassword: string;
   submit: string;
   submitting: string;
   errorNameShort: string;
@@ -28,6 +31,10 @@ type Labels = {
 const initialState: RegisterState = { ok: false };
 
 export function RegisterForm({ labels }: { labels: Labels }) {
+  const [displayName, setDisplayName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [consent, setConsent] = useState(false);
   const [state, formAction, isPending] = useActionState(
     registerAction,
     initialState
@@ -75,6 +82,8 @@ export function RegisterForm({ labels }: { labels: Labels }) {
           minLength={2}
           maxLength={40}
           autoComplete="nickname"
+          value={displayName}
+          onChange={(e) => setDisplayName(e.target.value)}
           placeholder={labels.namePlaceholder}
           className="w-full rounded border border-white/15 bg-white/5 px-4 py-3 text-base placeholder:text-white/40 focus:border-brand-green focus:outline-none"
         />
@@ -94,6 +103,8 @@ export function RegisterForm({ labels }: { labels: Labels }) {
           required
           autoComplete="email"
           inputMode="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           placeholder={labels.emailPlaceholder}
           className="w-full rounded border border-white/15 bg-white/5 px-4 py-3 text-base placeholder:text-white/40 focus:border-brand-green focus:outline-none"
         />
@@ -106,15 +117,17 @@ export function RegisterForm({ labels }: { labels: Labels }) {
         >
           {labels.passwordLabel}
         </label>
-        <input
+        <PasswordInput
           id="register-password"
           name="password"
-          type="password"
           required
           minLength={8}
           autoComplete="new-password"
+          value={password}
+          onChange={setPassword}
           placeholder={labels.passwordPlaceholder}
-          className="w-full rounded border border-white/15 bg-white/5 px-4 py-3 text-base placeholder:text-white/40 focus:border-brand-green focus:outline-none"
+          showLabel={labels.showPassword}
+          hideLabel={labels.hidePassword}
         />
       </div>
 
@@ -126,6 +139,8 @@ export function RegisterForm({ labels }: { labels: Labels }) {
             type="checkbox"
             value="yes"
             required
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
             className="mt-1 h-4 w-4 shrink-0 rounded border-white/30 bg-white/5 accent-brand-green"
           />
           <span className="text-sm leading-relaxed text-white/75">

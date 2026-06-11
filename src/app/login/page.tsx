@@ -42,11 +42,14 @@ export default async function LoginPage({
               emailPlaceholder: t.login.emailPlaceholder,
               passwordLabel: t.login.passwordLabel,
               passwordPlaceholder: t.login.passwordPlaceholder,
+              showPassword: t.login.showPassword,
+              hidePassword: t.login.hidePassword,
               submit: t.login.signInSubmit,
               submitting: t.login.signInSubmitting,
               errorInvalidCredentials: t.login.errorInvalidCredentials,
               errorEmailNotConfirmed: t.login.errorEmailNotConfirmed,
               errorAuthFailed: t.login.errorAuthFailed,
+              forgotPasswordLink: t.login.forgotPasswordLink,
             }}
             registerLabels={{
               nameLabel: t.login.nameLabel,
@@ -55,6 +58,8 @@ export default async function LoginPage({
               emailPlaceholder: t.login.emailPlaceholder,
               passwordLabel: t.login.passwordLabel,
               passwordPlaceholder: t.login.passwordPlaceholder,
+              showPassword: t.login.showPassword,
+              hidePassword: t.login.hidePassword,
               submit: t.login.submit,
               submitting: t.login.submitting,
               errorNameShort: t.login.errorNameShort,

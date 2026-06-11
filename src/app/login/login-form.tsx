@@ -1,24 +1,31 @@
 "use client";
 
-import { useActionState } from "react";
+import Link from "next/link";
+import { useActionState, useState } from "react";
 import { signInAction, type AuthFormState } from "@/app/actions";
 import { Button } from "@/components/ui/button";
+import { PasswordInput } from "@/components/ui/password-input";
 
 type Labels = {
   emailLabel: string;
   emailPlaceholder: string;
   passwordLabel: string;
   passwordPlaceholder: string;
+  showPassword: string;
+  hidePassword: string;
   submit: string;
   submitting: string;
   errorInvalidCredentials: string;
   errorEmailNotConfirmed: string;
   errorAuthFailed: string;
+  forgotPasswordLink: string;
 };
 
 const initialState: AuthFormState = { ok: false };
 
 export function LoginForm({ labels }: { labels: Labels }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [state, formAction, isPending] = useActionState(
     signInAction,
     initialState
@@ -48,6 +55,8 @@ export function LoginForm({ labels }: { labels: Labels }) {
           required
           autoComplete="email"
           inputMode="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           placeholder={labels.emailPlaceholder}
           className="w-full rounded border border-white/15 bg-white/5 px-4 py-3 text-base placeholder:text-white/40 focus:border-brand-green focus:outline-none"
         />
@@ -60,16 +69,26 @@ export function LoginForm({ labels }: { labels: Labels }) {
         >
           {labels.passwordLabel}
         </label>
-        <input
+        <PasswordInput
           id="login-password"
           name="password"
-          type="password"
           required
           autoComplete="current-password"
           minLength={8}
+          value={password}
+          onChange={setPassword}
           placeholder={labels.passwordPlaceholder}
-          className="w-full rounded border border-white/15 bg-white/5 px-4 py-3 text-base placeholder:text-white/40 focus:border-brand-green focus:outline-none"
+          showLabel={labels.showPassword}
+          hideLabel={labels.hidePassword}
         />
+        <p className="mt-2 text-right">
+          <Link
+            href="/login/forgot-password"
+            className="font-mono text-xs uppercase tracking-wider text-white/50 hover:text-brand-green"
+          >
+            {labels.forgotPasswordLink}
+          </Link>
+        </p>
       </div>
 
       {errorMessage ? (
