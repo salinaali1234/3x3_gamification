@@ -6,9 +6,9 @@ import {
   listChallengesByLocation,
   listPrizeTiers,
   userCompletedIds,
-  userPointsBalance,
   currentFestivalDay,
 } from "@/lib/data/challenges-v2";
+import { getUserPointsBalance } from "@/lib/data/user-game";
 import { AuthRequiredPanel } from "@/components/auth-required-panel";
 
 export default async function ChallengesPage() {
@@ -39,7 +39,7 @@ export default async function ChallengesPage() {
 async function ChallengesContent({ userId }: { userId: string }) {
   const groups = listChallengesByLocation();
   const completed = Array.from(userCompletedIds(userId));
-  const points = userPointsBalance(userId);
+  const points = await getUserPointsBalance(userId);
   const tiers = listPrizeTiers();
   const currentDay = currentFestivalDay();
 

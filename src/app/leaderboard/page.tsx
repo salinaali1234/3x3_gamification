@@ -3,7 +3,7 @@ import { getLocaleFromCookieValue } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getCurrentUser } from "@/lib/session";
 import { getBadgeById } from "@/lib/data/store";
-import { getLeaderboard } from "@/lib/data/user-game";
+import { getLeaderboard, syncUserV2Progress } from "@/lib/data/user-game";
 import { Avatar } from "@/components/ui/avatar";
 import { AuthRequiredPanel } from "@/components/auth-required-panel";
 
@@ -37,7 +37,17 @@ async function LeaderboardTable({
   locale: ReturnType<typeof getLocaleFromCookieValue>;
   t: ReturnType<typeof getDictionary>;
 }) {
+  await syncUserV2Progress(userId);
   const rows = await getLeaderboard(100);
+
+  if (rows.length === 0) {
+    return (
+      <div className="mt-8 rounded-md border border-white/10 bg-white/[0.02] px-6 py-12 text-center">
+        <p className="font-display text-2xl text-white/80">{t.leaderboard.emptyTitle}</p>
+        <p className="mt-2 text-sm text-white/50 max-w-md mx-auto">{t.leaderboard.emptyBody}</p>
+      </div>
+    );
+  }
 
   return (
       <div className="mt-8 rounded-md border border-white/10 overflow-x-auto">

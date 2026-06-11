@@ -250,15 +250,22 @@ export function RewardsList({
             <article
               key={reward.id}
               className={cn(
-                "flex flex-col overflow-hidden rounded-md border bg-brand-black transition-all",
+                "relative flex flex-col overflow-hidden rounded-md border bg-brand-black transition-all",
                 status === "claimed"
                   ? "border-brand-green/40"
+                  : status === "soldOut"
+                  ? "border-white/15 opacity-90"
                   : status === "unlocked"
                   ? "border-brand-orange/50"
                   : "border-white/10",
                 isFocus && status === "unlocked" && "ring-1 ring-brand-orange/30"
               )}
             >
+              {status === "soldOut" ? (
+                <div className="absolute right-3 top-3 z-10 rotate-3 bg-white/10 px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-widest text-white/55">
+                  {dict.rewards.outOfStock}
+                </div>
+              ) : null}
               <div className={cn("h-1 w-full shrink-0", accentClass(reward.accent, "bg"))} />
 
               <div className="flex flex-1 flex-col p-5">
@@ -415,7 +422,7 @@ function StockBadge({
 }) {
   if (stock <= 0) {
     return (
-      <span className="font-mono text-xs font-bold uppercase tracking-wider text-white/35">
+      <span className="font-mono text-xs font-bold uppercase tracking-wider text-white/45">
         {dict.rewards.outOfStock}
       </span>
     );

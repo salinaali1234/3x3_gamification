@@ -5,6 +5,8 @@
  * to challenges_v2 / prize_tiers / *_v2 RPCs (see src/lib/supabase/challenges-v2.ts).
  */
 
+import { listProfiles, userBadgesFor, type LeaderboardRow } from "./store";
+
 export type ChallengeAccent = "green" | "orange" | "blue";
 export type ChallengeVerification = "code" | "manual" | "photo" | "fence";
 export type DayFlag = "friday" | "saturday";
@@ -79,27 +81,27 @@ export const UNIFIED_CHALLENGES: UnifiedChallenge[] = [
 
   // The Streets
   { id: "street-league-watch",    location: "The Streets",         sortOrder: 10, title: "Street League",          subtitle: "Dive into The Streets and watch a 3x3 Street League game", description: "Find a spot at The Streets and watch a full 3x3 Street League game. Code from the 3X3 Leader at the court.", points: 200, verification: "code",   code: "STREET-200",    accent: "green" },
-  { id: "kfc-court-hangout",      location: "The Streets",         sortOrder: 20, title: "KFC Court",              subtitle: "Hangout and play some challenges on the KFC court", description: "Spend time at the KFC court, join a casual game and mark it done.", points: 25,  verification: "manual", accent: "green" },
+  { id: "kfc-court-hangout",      location: "The Streets",         sortOrder: 20, title: "KFC Court",              subtitle: "Hangout and play some challenges on the KFC court", description: "Spend time at the KFC court, join a casual game and mark it done.", points: 50,  verification: "manual", accent: "green" },
 
   // Warm-Up Court
-  { id: "dunking-devils-show",    location: "Warm-Up Court",       sortOrder: 10, title: "Dunking Devils",         subtitle: "Watch the craziest flips and dunks from the Dunking Devils show in front of the stadium", description: "Catch the Dunking Devils performing in front of the stadium.", points: 75,  verification: "manual", accent: "orange" },
-  { id: "pro-warmup-watch",       location: "Warm-Up Court",       sortOrder: 20, title: "Pro Warm-Up",            subtitle: "Watch the 3x3 professionals get ready for their World Tour / Women's Series match", description: "Watch the pros prepare at the Warm-Up Court before they hit the main stage.", points: 25, verification: "manual", accent: "orange" },
+  { id: "dunking-devils-show",    location: "Warm-Up Court",       sortOrder: 10, title: "Dunking Devils",         subtitle: "Watch the craziest flips and dunks from the Dunking Devils show in front of the stadium", description: "Catch the Dunking Devils performing in front of the stadium.", points: 50,  verification: "manual", accent: "orange" },
+  { id: "pro-warmup-watch",       location: "Warm-Up Court",       sortOrder: 20, title: "Pro Warm-Up",            subtitle: "Watch the 3x3 professionals get ready for their World Tour / Women's Series match", description: "Watch the pros prepare at the Warm-Up Court before they hit the main stage.", points: 50, verification: "manual", accent: "orange" },
 
   // Panna Courts
-  { id: "panna-ko-watch",         location: "Panna Courts",        sortOrder: 10, title: "Panna KO",               subtitle: "Watch the intensity and flare of Panna KO street ballers at the panna cages", description: "Catch the Panna KO street ballers at the panna cages.", points: 75,  verification: "manual", accent: "blue" },
-  { id: "breakdance-battles",     location: "Panna Courts",        sortOrder: 20, title: "Break Dance Battles",    subtitle: "Experience the energy and vibes from the Break Dance Battles at the panna cages", description: "Catch the Break Dance Battles at the panna cages.", points: 25,  verification: "manual", dayFlag: "saturday", accent: "blue" },
+  { id: "panna-ko-watch",         location: "Panna Courts",        sortOrder: 10, title: "Panna KO",               subtitle: "Watch the intensity and flare of Panna KO street ballers at the panna cages", description: "Catch the Panna KO street ballers at the panna cages.", points: 50,  verification: "manual", accent: "blue" },
+  { id: "breakdance-battles",     location: "Panna Courts",        sortOrder: 20, title: "Break Dance Battles",    subtitle: "Experience the energy and vibes from the Break Dance Battles at the panna cages", description: "Catch the Break Dance Battles at the panna cages.", points: 50,  verification: "manual", dayFlag: "saturday", accent: "blue" },
 
   // Side Events Court
   { id: "one-vs-one-leaders",     location: "Side Events Court",   sortOrder: 10, title: "1v1 vs 3X3 Leaders",     subtitle: "Take part on the 1v1 challenge versus 3X3 Unites Leaders from all over the country", description: "Sign up for a 1v1 versus a 3X3 Unites Leader. The 3X3 Leader hands out the code after your match.", points: 75,  verification: "code",   code: "ONE-V-ONE", accent: "green" },
   { id: "nbb-clinic",             location: "Side Events Court",   sortOrder: 20, title: "NBB Clinic",               subtitle: "Join in on the 3x3 basketball clinic given by the Nederlandse Basketball Bond (NBB)", description: "Join the NBB clinic at the side events court.", points: 50, verification: "manual", dayFlag: "friday", accent: "green" },
   { id: "shootout-challenge",     location: "Side Events Court",   sortOrder: 30, title: "Shootout",               subtitle: "Take part in the Shootout challenge at the side events court", description: "Take three shots from the line. Code from the 3X3 Leader.", points: 100, verification: "code", code: "SHOOT-100", accent: "green" },
-  { id: "meet-greet-teams",       location: "Side Events Court",   sortOrder: 40, title: "Meet & Greet",           subtitle: "Meet & Greet the 3x3 professional mens and womens basketball team", description: "Get a photo or autograph with the pro teams. Mark it done.", points: 25, verification: "manual", accent: "green" },
+  { id: "meet-greet-teams",       location: "Side Events Court",   sortOrder: 40, title: "Meet & Greet",           subtitle: "Meet & Greet the 3x3 professional mens and womens basketball team", description: "Get a photo or autograph with the pro teams. Mark it done.", points: 50, verification: "manual", accent: "green" },
   { id: "rabobank-arcade",        location: "Side Events Court",   sortOrder: 50, title: "Rabobank Arcade",        subtitle: "Challenge a 3X3 Leader to play the Rabobank basketball arcade game in front of De Waaier", description: "Beat (or be beaten by) a 3X3 Leader on the Rabobank arcade game. The 3X3 Leader gives the code.", points: 50, verification: "code", code: "WAAIER-50", accent: "orange" },
 
   // Interactive Dome — powered by Odido
   { id: "leader-conversations",   location: INTERACTIVE_DOME,      sortOrder: 10, title: "3X3 Leader Talks",       subtitle: "Tune in to conversations about 3X3 Unites and the achieved impact over the last 10 years", description: "Listen to 3X3 Leaders talk impact at the Interactive Dome — powered by Odido.", points: 100, verification: "code", code: "DOME-100", accent: "blue" },
   { id: "dome-immersive-video",   location: INTERACTIVE_DOME,      sortOrder: 20, title: "Immersive Video",        subtitle: "Experience the first ever 3x3 basketball immersive video experience at the dome", description: "Step into the immersive video experience — pick up the code on your way out.", points: 200, verification: "code", code: "DOME-IMMERSIVE", accent: "blue" },
-  { id: "odido-arcade-outside",   location: INTERACTIVE_DOME,      sortOrder: 30, title: "ODIDO Arcade",           subtitle: "Try out the ODIDO basketball arcade outside the Interactive Dome — powered by Odido", description: "Try the ODIDO arcade outside the dome and mark it done.", points: 25, verification: "manual", accent: "blue" },
+  { id: "odido-arcade-outside",   location: INTERACTIVE_DOME,      sortOrder: 30, title: "ODIDO Arcade",           subtitle: "Try out the ODIDO basketball arcade outside the Interactive Dome — powered by Odido", description: "Try the ODIDO arcade outside the dome and mark it done.", points: 50, verification: "manual", accent: "blue" },
 
   // Fence Installations (special multi-letter)
   { id: "fence-leaders", location: "Fence Installations", sortOrder: 10,
@@ -109,7 +111,7 @@ export const UNIFIED_CHALLENGES: UnifiedChallenge[] = [
     points: 333, verification: "fence",
     letters: ["S","T","R","E","E","T","G","A","M","E"],
     accent: "orange" },
-  { id: "nxt-level-food", location: "Fence Installations", sortOrder: 20, title: "nxt level food station", subtitle: "Take care of yourself at the nxt level food station", description: "Collect a fresh sports drink at the nxt level food station. Mark it done when you've been.", points: 30, verification: "manual", accent: "green" },
+  { id: "nxt-level-food", location: "Fence Installations", sortOrder: 20, title: "nxt level food station", subtitle: "Take care of yourself at the nxt level food station", description: "Collect a fresh sports drink at the nxt level food station. Mark it done when you've been.", points: 50, verification: "manual", accent: "green" },
 ];
 
 // ---------- Seed: placeholder prize tiers ----------
@@ -209,6 +211,36 @@ export function userPointsSpent(userId: string): number {
 
 export function userPointsBalance(userId: string): number {
   return userPointsEarned(userId) - userPointsSpent(userId);
+}
+
+/** Leaderboard from in-memory v2 completions (mock + session cache). */
+export function leaderboardV2(limit = 100): LeaderboardRow[] {
+  const profileById = new Map(listProfiles().map((p) => [p.id, p]));
+  const userIds = new Set(getV2Store().completions.map((c) => c.userId));
+
+  const rows = Array.from(userIds)
+    .map((userId) => {
+      const profile = profileById.get(userId);
+      const points = userPointsBalance(userId);
+      if (points <= 0) return null;
+      return {
+        userId,
+        displayName: profile?.displayName ?? "Player",
+        avatarColor: profile?.avatarColor ?? "green",
+        points,
+        badgeIds: userBadgesFor(userId).map((b) => b.badgeId),
+        stepsDone: userCompletions(userId).length,
+      };
+    })
+    .filter(Boolean) as Omit<LeaderboardRow, "rank">[];
+
+  return rows
+    .sort(
+      (a, b) =>
+        b.points - a.points || a.displayName.localeCompare(b.displayName)
+    )
+    .slice(0, limit)
+    .map((row, i) => ({ rank: i + 1, ...row }));
 }
 
 export function userCompletedIds(userId: string): Set<string> {

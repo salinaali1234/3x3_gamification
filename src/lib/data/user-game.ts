@@ -27,11 +27,19 @@ import { listRewardStockDb } from "@/lib/supabase/game";
 import { getUserBadgesFromDb } from "@/lib/supabase/badges";
 import { getLeaderboardDb } from "@/lib/supabase/leaderboard";
 import {
+  getUserPointsBalanceDb,
+  syncMemCompletionsToDb,
+} from "@/lib/supabase/challenges-v2";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
+import {
+  leaderboardV2,
+  userPointsBalance as memUserPointsBalance,
+} from "./challenges-v2";
+import {
   getLiveMatchByIdDb,
   listLiveMatchesDb,
 } from "@/lib/supabase/live-matches";
 import { getUserWheelSpinsDb, type UserWheelSpinRow } from "@/lib/supabase/redemptions";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Badge } from "./types";
 
 export type { LeaderboardRow };
@@ -62,12 +70,89 @@ export async function getChallengePassPoints(userId: string): Promise<number> {
   return memChallengePoints(userId) + memMatchScorePoints(userId);
 }
 
-export async function getLeaderboard(limit = 100): Promise<LeaderboardRow[]> {
+export async function getUserPointsBalance(userId: string): Promise<number> {
+  const mem = memUserPointsBalance(userId);
   if (isSupabaseConfigured()) {
-    const rows = await getLeaderboardDb(limit);
-    return rows;
+    const db = await getUserPointsBalanceDb(userId);
+    if (db !== null) return Math.max(db, mem);
   }
-  return memLeaderboard(limit);
+  return mem;
+}
+
+function mergeLeaderboardRows(
+  db: LeaderboardRow[],
+  mem: LeaderboardRow[]
+): LeaderboardRow[] {
+  const byUser = new Map<string, LeaderboardRow>();
+  for (const row of db) byUser.set(row.userId, { ...row });
+  for (const row of mem) {
+    const existing = byUser.get(row.userId);
+    byUser.set(row.userId, {
+      rank: 0,
+      userId: row.userId,
+      displayName: existing?.displayName ?? row.displayName,
+      avatarColor: existing?.avatarColor ?? row.avatarColor,
+      points: Math.max(existing?.points ?? 0, row.points),
+      badgeIds: existing?.badgeIds?.length ? existing.badgeIds : row.badgeIds,
+      stepsDone: Math.max(existing?.stepsDone ?? 0, row.stepsDone),
+    });
+  }
+  return Array.from(byUser.values())
+    .filter((r) => r.points > 0)
+    .sort(
+      (a, b) =>
+        b.points - a.points || a.displayName.localeCompare(b.displayName)
+    )
+    .map((row, i) => ({ ...row, rank: i + 1 }));
+}
+
+export async function syncUserV2Progress(userId: string): Promise<void> {
+  if (isSupabaseConfigured()) {
+    await syncMemCompletionsToDb(userId);
+  }
+}
+
+async function enrichLeaderboardProfiles(
+  rows: LeaderboardRow[]
+): Promise<LeaderboardRow[]> {
+  if (rows.length === 0) return rows;
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return rows;
+
+  const ids = rows.map((r) => r.userId);
+  const { data } = await supabase
+    .from("profiles")
+    .select("id, display_name, avatar_color")
+    .in("id", ids);
+
+  const byId = new Map(
+    (data ?? []).map((p) => [
+      p.id as string,
+      {
+        displayName: p.display_name as string,
+        avatarColor: p.avatar_color as string,
+      },
+    ])
+  );
+
+  return rows.map((row) => {
+    const profile = byId.get(row.userId);
+    if (!profile) return row;
+    return {
+      ...row,
+      displayName: profile.displayName,
+      avatarColor: profile.avatarColor,
+    };
+  });
+}
+
+export async function getLeaderboard(limit = 100): Promise<LeaderboardRow[]> {
+  const memRows = await enrichLeaderboardProfiles(leaderboardV2(limit));
+  if (isSupabaseConfigured()) {
+    const dbRows = await getLeaderboardDb(limit);
+    return mergeLeaderboardRows(dbRows, memRows).slice(0, limit);
+  }
+  return memRows;
 }
 
 export async function listLiveMatches(): Promise<LiveMatch[]> {

@@ -204,12 +204,15 @@ export const dictionaries = {
     },
     leaderboard: {
       title: "Leaderboard",
-      subtitle: "Top 100 deelnemers van de journey.",
+      subtitle: "Top 100 deelnemers op basis van challenge-punten.",
       colRank: "#",
       colPlayer: "Speler",
       colBadges: "Badges",
       colPoints: "Punten",
       bannerTitle: "Top spelers",
+      emptyTitle: "Nog geen scores",
+      emptyBody:
+        "Voltooi challenges om punten te verdienen. Zodra de eerste spelers punten hebben, verschijnen ze hier.",
     },
     rewards: {
       title: "Street Pass",
@@ -237,7 +240,7 @@ export const dictionaries = {
       pointsTierHint:
         "Tier 1 sticker/case · Tier 2 keychain · Tier 3 20% merch · Tier 4 3x3 bal. Punten zijn voorlopig.",
       notEnoughPoints: "Niet genoeg punten",
-      outOfStock: "Uitverkocht",
+      outOfStock: "Op is op",
       yourVoucher: "Jouw voucher code",
       redeemHint: "Toon deze code bij de reward desk op het terrein.",
       redeemed: "Opgehaald op locatie",
@@ -766,12 +769,15 @@ export const dictionaries = {
     },
     leaderboard: {
       title: "Leaderboard",
-      subtitle: "Top 100 participants of the journey.",
+      subtitle: "Top 100 participants ranked by challenge points.",
       colRank: "#",
       colPlayer: "Player",
       colBadges: "Badges",
       colPoints: "Points",
       bannerTitle: "Top players",
+      emptyTitle: "No scores yet",
+      emptyBody:
+        "Complete challenges to earn points. Once players start scoring, they'll show up here.",
     },
     rewards: {
       title: "Street Pass",
@@ -799,7 +805,7 @@ export const dictionaries = {
       pointsTierHint:
         "Tier 1 sticker/case · Tier 2 keychain · Tier 3 20% merch · Tier 4 3x3 ball. Point values are provisional.",
       notEnoughPoints: "Not enough points",
-      outOfStock: "Out of stock",
+      outOfStock: "Sold out",
       yourVoucher: "Your voucher code",
       redeemHint: "Show this code at the reward desk on site.",
       redeemed: "Picked up on site",
