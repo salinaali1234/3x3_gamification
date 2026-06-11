@@ -1,17 +1,18 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import {
   FESTIVAL_MAP_POIS,
+  FESTIVAL_MAP_PDF,
   searchMapPois,
   type MapPoi,
   type MapPoiCategory,
 } from "@/lib/data/map-pois";
+import { FestivalMapEmbed } from "@/components/festival-map-embed";
 import { cn } from "@/lib/utils";
 
 const CATEGORY_COLORS: Record<MapPoiCategory, string> = {
@@ -37,44 +38,24 @@ export function MapClient({
 
   const results = useMemo(() => searchMapPois(query), [query]);
   const selected =
-    FESTIVAL_MAP_POIS.find((p) => p.id === selectedId) ?? results[0] ?? null;
+    FESTIVAL_MAP_POIS.find((p) => p.id === selectedId) ?? null;
 
   function selectPoi(poi: MapPoi) {
     setSelectedId(poi.id);
-    setQuery(poi.mapCode);
   }
 
   useEffect(() => {
     if (!poiFromUrl) return;
     const poi = FESTIVAL_MAP_POIS.find((p) => p.id === poiFromUrl);
-    if (poi) selectPoi(poi);
+    if (poi) setSelectedId(poi.id);
   }, [poiFromUrl]);
 
   return (
     <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">
       <div className="relative rounded-md border border-white/15 overflow-hidden bg-white">
-        <div className="relative aspect-[4/3] w-full">
-          <Image
-            src="/festival-map.png"
-            alt={dict.map.imageAlt}
-            fill
-            className="object-contain"
-            priority
-            sizes="(max-width: 1024px) 100vw, 70vw"
-          />
-          <div
-            className="absolute z-20 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1 pointer-events-none"
-            style={{ left: "88%", top: "88%" }}
-          >
-            <span className="rounded-full bg-brand-green px-2 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider text-brand-black shadow-md">
-              {dict.map.youAreHere}
-            </span>
-            <span className="h-3 w-3 rounded-full border-2 border-brand-black bg-brand-green" />
-          </div>
+        <FestivalMapEmbed title={dict.map.imageAlt}>
           {FESTIVAL_MAP_POIS.map((poi) => {
             const active = selected?.id === poi.id;
-            const visible = results.some((r) => r.id === poi.id);
-            if (!visible) return null;
             return (
               <button
                 key={poi.id}
@@ -96,15 +77,27 @@ export function MapClient({
               >
                 <span
                   className={cn(
-                    "block rounded-full border-2 border-brand-black",
+                    "grid place-items-center rounded-full border-2 border-brand-black font-mono text-[10px] font-bold text-brand-black",
                     poi.isMainQuest ? "bg-brand-orange" : CATEGORY_COLORS[poi.category],
-                    active ? "h-6 w-6 ring-4 ring-brand-green" : "h-4 w-4 opacity-90"
+                    active ? "h-7 w-7 ring-4 ring-brand-green" : "h-5 w-5 opacity-95"
                   )}
-                />
+                >
+                  {poi.siteNumber ?? (poi.isMainQuest ? "•" : "")}
+                </span>
               </button>
             );
           })}
-        </div>
+        </FestivalMapEmbed>
+        <p className="border-t border-white/10 px-3 py-2 text-center text-xs text-white/50">
+          <a
+            href={FESTIVAL_MAP_PDF}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono uppercase tracking-wider hover:text-brand-green"
+          >
+            {dict.map.openPdf} ↗
+          </a>
+        </p>
       </div>
 
       <aside className="space-y-4">

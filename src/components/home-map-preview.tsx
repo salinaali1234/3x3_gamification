@@ -1,13 +1,15 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
-import { FESTIVAL_MAP_POIS } from "@/lib/data/map-pois";
+import {
+  FESTIVAL_MAP_POIS,
+  FESTIVAL_MAP_PDF,
+} from "@/lib/data/map-pois";
+import { FestivalMapEmbed } from "@/components/festival-map-embed";
 
-/** Entrance POI — "you are here" for spectators entering the grounds */
-const YOU_ARE_HERE = { x: 88, y: 88 };
+/** Main quest POIs on the homepage preview */
 
 export function HomeMapPreview({
   locale,
@@ -45,25 +47,10 @@ export function HomeMapPreview({
         </div>
 
         <div className="relative rounded-lg border border-black/10 overflow-hidden bg-white shadow-lg">
-          <div className="relative aspect-[4/3] w-full max-h-[420px]">
-            <Image
-              src="/festival-map.png"
-              alt={dict.map.imageAlt}
-              fill
-              className="object-contain"
-              sizes="(max-width: 768px) 100vw, 1200px"
-              priority
-            />
-            {/* You are here */}
-            <div
-              className="absolute z-20 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1 pointer-events-none"
-              style={{ left: `${YOU_ARE_HERE.x}%`, top: `${YOU_ARE_HERE.y}%` }}
-            >
-              <span className="rounded-full bg-brand-green px-2 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider text-brand-black shadow-md">
-                {dict.map.youAreHere}
-              </span>
-              <span className="h-4 w-4 rounded-full border-2 border-brand-black bg-brand-green animate-pulse-ring" />
-            </div>
+          <FestivalMapEmbed
+            title={dict.map.imageAlt}
+            className="max-h-[480px]"
+          >
             {mainQuestPois.map((poi) => (
               <Link
                 key={poi.id}
@@ -74,10 +61,18 @@ export function HomeMapPreview({
                 aria-label={poi.name[locale]}
               />
             ))}
-          </div>
+          </FestivalMapEmbed>
         </div>
         <p className="mt-3 text-xs text-brand-black/50 font-mono">
-          {dict.map.mainQuestHint}
+          {dict.map.mainQuestHint}{" "}
+          <a
+            href={FESTIVAL_MAP_PDF}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-brand-black/70 hover:text-brand-black underline underline-offset-2"
+          >
+            {dict.map.openPdf}
+          </a>
         </p>
       </div>
     </section>

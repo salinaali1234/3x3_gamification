@@ -50,10 +50,10 @@ export const dictionaries = {
         "Het World Tour-weekend brengt 3x3 Street League, shows, talks, partner-activaties en de 3X3 Unites community samen. Of je nu komt kijken, spelen of ontdekken — er is overal iets te doen.",
       venueTitle: "Het terrein",
       venueBody:
-        "Van The Streets en de Dome tot de 3X3 Leader Centre, Food Court, Community Corner en de Leader exhibition: negen main quest-locaties vormen je route over het festival. Gebruik de plattegrond hieronder om te zien waar alles staat.",
+        "Van The Streets en de Interactive Dome tot het 3X3 Leader Centre, Food Court, Community Corner en de 3X3 Leader exhibition: negen main quest-locaties vormen je route over het festival. Gebruik de plattegrond hieronder om te zien waar alles staat.",
       gameTitle: "Het spel",
       gameBody:
-        "Volg de Main Quest Grand Tour over het terrein, doe side challenges voor Challenge Pass-punten, maak 3 contest-foto’s en draai aan het wheel als je alle main quests hebt voltooid.",
+        "Volg de Main Quest Grand Tour over het terrein, doe side challenges voor Challenge Pass-punten, doe mee aan de Worthy de Jong selfie contest en draai aan het wheel als je alle main quests hebt voltooid.",
     },
     home: {
       eyebrow: "3X3 UNITES // WORLD TOUR WEEKEND",
@@ -95,7 +95,7 @@ export const dictionaries = {
         "Bezoek main quest-locaties voor je wheel-spin, doe side challenges voor punten en voer codes in bij activaties op het terrein.",
       hiwStep3Title: "Win rewards",
       hiwStep3Body:
-        "Verzamel punten voor de reward shop, draai aan de wheel en upload 3 contest-foto’s. Fysieke prijzen haal je op locatie op.",
+        "Verzamel punten voor de reward shop, draai aan de wheel en upload 3 selfies voor de Worthy de Jong selfie contest. Fysieke prijzen haal je op locatie op.",
       stat1: "Main quest stops",
       stat2: "Side challenges",
       stat3: "Badges te verdienen",
@@ -226,18 +226,19 @@ export const dictionaries = {
     map: {
       title: "Plattegrond",
       subtitle:
-        "Zoek waar je bent op het festival. Typ een locatie of code om het op de kaart te vinden.",
+        "Officiële venue map — zoek op nummer (01–08) of locatienaam. Oranje markers = main quest.",
       sectionLabel: "02 // plattegrond",
       homeTitle: "Festival plattegrond",
       homeSubtitle:
-        "Zie alle main quest locaties en waar je nu bent. Oranje stippen = main quest.",
+        "Officiële plattegrond van het terrein — nummers 01 t/m 08 komen overeen met de map op locatie.",
       openFullMap: "Volledige kaart",
+      openPdf: "Open PDF plattegrond",
       youAreHere: "Jij bent hier",
       mainQuestHint: "Oranje = main quest (wheel-spin). Side quests = Challenge Pass-punten.",
       imageAlt: "Festival plattegrond 3X3 Unites",
       searchLabel: "Zoeken",
-      searchPlaceholder: "Bijv. FOOD, DJ, Rabobank…",
-      searchHint: "Zoek op naam, locatiecode (RABO, FOOD) of journey-code (JOURNEY-01).",
+      searchPlaceholder: "Bijv. 04, FOOD, Panna, Community…",
+      searchHint: "Zoek op map-nummer (01–08), locatiecode of journey-code (JOURNEY-DOME).",
       journeyCode: "Journey code",
       enterCode: "Code invoeren",
       noResults: "Geen locatie gevonden",
@@ -293,17 +294,17 @@ export const dictionaries = {
       wheelPending: "Nog niet opgehaald — toon je afhaalcode op locatie",
     },
     photo: {
-      title: "Disposable camera",
+      title: "Worthy de Jong selfie contest",
       subtitle:
-        "Digitale wegwerpcamera: max 3 foto's per sessie. Winnaars worden na het World Tour-weekend op socials bekendgemaakt.",
+        "Leg de sfeer van het festival vast — max 3 foto's per sessie. Winnaars worden na het World Tour-weekend op socials bekendgemaakt.",
       leaderTitle: "Alle deelnemersfoto's",
       leaderSubtitle:
-        "Als leader/admin zie je alle contest-foto's voor de jury na het event.",
+        "Als leader/admin zie je alle selfies voor de jury na het event.",
       leaderViewNote:
         "Leader view: jury-overzicht. Deelnemers zien alleen hun eigen 3 shots.",
       adminGalleryLink: "Admin fotogalerij",
       privateNote:
-        "Jouw 3 shots zijn privé tot de jury. Leg de beste 3X3 Unites-momenten vast.",
+        "Jouw 3 shots zijn privé tot de jury. Vang de festival vibe — energie, mensen en momenten op het terrein.",
       photosLeft: "foto's over",
       limitReached: "Je hebt al 3 foto's geüpload deze sessie.",
       upload: "Foto maken",
@@ -557,10 +558,10 @@ export const dictionaries = {
         "The World Tour weekend brings 3x3 Street League, shows, talks, partner activations and the 3X3 Unites community together. Whether you come to watch, play or discover — there is something everywhere.",
       venueTitle: "The venue",
       venueBody:
-        "From The Streets and the Dome to the 3X3 Leader Centre, Food Court, Community Corner and the Leader exhibition: nine main quest locations form your route across the festival. Use the map below to see where everything is.",
+        "From The Streets and the Interactive Dome to the 3X3 Leader Centre, Food Court, Community Corner and the 3X3 Leader exhibition: nine main quest locations form your route across the festival. Use the map below to see where everything is.",
       gameTitle: "The game",
       gameBody:
-        "Follow the Main Quest Grand Tour across the site, earn Challenge Pass points from side challenges, take 3 contest photos and spin the wheel once you've finished all main quests.",
+        "Follow the Main Quest Grand Tour across the site, earn Challenge Pass points from side challenges, join the Worthy de Jong selfie contest and spin the wheel once you've finished all main quests.",
     },
     home: {
       eyebrow: "3X3 UNITES // WORLD TOUR WEEKEND",
@@ -602,7 +603,7 @@ export const dictionaries = {
         "Visit main quest locations for your wheel spin, complete side challenges for points and enter codes at on-site activations.",
       hiwStep3Title: "Win rewards",
       hiwStep3Body:
-        "Collect points for the reward shop, spin the wheel and upload 3 contest photos. Pick up physical prizes on site.",
+        "Collect points for the reward shop, spin the wheel and upload 3 selfies for the Worthy de Jong selfie contest. Pick up physical prizes on site.",
       stat1: "Main quest stops",
       stat2: "Side challenges",
       stat3: "Badges to earn",
@@ -733,18 +734,19 @@ export const dictionaries = {
     map: {
       title: "Site map",
       subtitle:
-        "Find where you are at the festival. Search by location name or code.",
+        "Official venue map — search by number (01–08) or location name. Orange markers = main quest.",
       sectionLabel: "02 // map",
       homeTitle: "Festival map",
       homeSubtitle:
-        "See all main quest locations and where you are now. Orange dots = main quest.",
+        "Official site map — numbers 01–08 match the map on location.",
       openFullMap: "Full map",
+      openPdf: "Open PDF map",
       youAreHere: "You are here",
       mainQuestHint: "Orange = main quest (wheel spin). Side quests = Challenge Pass points.",
       imageAlt: "Festival site map 3X3 Unites",
       searchLabel: "Search",
-      searchPlaceholder: "e.g. FOOD, DJ, Rabobank…",
-      searchHint: "Search by name, location code (RABO, FOOD) or journey code (JOURNEY-01).",
+      searchPlaceholder: "e.g. 04, FOOD, Panna, Community…",
+      searchHint: "Search by map number (01–08), location code or journey code (JOURNEY-DOME).",
       journeyCode: "Journey code",
       enterCode: "Enter code",
       noResults: "No location found",
@@ -800,17 +802,17 @@ export const dictionaries = {
       wheelPending: "Not collected yet — show your pickup code on site",
     },
     photo: {
-      title: "Disposable camera",
+      title: "Worthy de Jong selfie contest",
       subtitle:
-        "Digital disposable camera: max 3 photos per session. Winners announced on socials after World Tour weekend.",
+        "Capture the feeling of the festival — max 3 photos per session. Winners announced on socials after World Tour weekend.",
       leaderTitle: "All participant photos",
       leaderSubtitle:
-        "As leader/admin view all contest photos for post-event judging.",
+        "As leader/admin view all selfies for post-event judging.",
       leaderViewNote:
         "Leader view: jury overview. Participants only see their own 3 shots.",
       adminGalleryLink: "Admin photo gallery",
       privateNote:
-        "Your 3 shots are private until judging. Capture the best 3X3 Unites moments.",
+        "Your 3 shots are private until judging. Capture the festival vibe — energy, people and moments on site.",
       photosLeft: "photos left",
       limitReached: "You already uploaded 3 photos this session.",
       upload: "Take photo",
