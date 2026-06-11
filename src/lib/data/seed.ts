@@ -99,10 +99,10 @@ export const SEED_JOURNEY_STEPS: JourneyStep[] = [
       nl: "Interactive Dome — powered by Odido",
       en: "Interactive Dome — powered by Odido",
     },
-    location: { nl: "Interactive Dome", en: "Interactive Dome" },
+    location: { nl: "Interactive Dome — powered by Odido", en: "Interactive Dome — powered by Odido" },
     description: {
-      nl: "Bezoek een talk of de AI-ervaring in de Interactive Dome en voer de code in.",
-      en: "Visit a talk or the AI experience in the Interactive Dome and enter the code.",
+      nl: "Bezoek een talk of de AI-ervaring in de Interactive Dome — powered by Odido — en voer de code in.",
+      en: "Visit a talk or the AI experience in the Interactive Dome — powered by Odido — and enter the code.",
     },
     qrCode: "JOURNEY-DOME",
     accent: "blue",
@@ -548,10 +548,10 @@ export const SEED_CHALLENGES: Challenge[] = [
   {
     id: "ch-talent-movement",
     type: "panna_qr",
-    title: { nl: "Talent Movement bus", en: "Talent Movement bus" },
+    title: { nl: "Talent movement bus", en: "Talent movement bus" },
     description: {
-      nl: "Maak een beat/song bij de Talent Movement bus.",
-      en: "Create a beat/song at the Talent Movement bus.",
+      nl: "Maak een beat/song bij de Talent movement bus.",
+      en: "Create a beat/song at the Talent movement bus.",
     },
     points: 50,
     accent: "blue",
@@ -606,7 +606,7 @@ export const SEED_CHALLENGES: Challenge[] = [
   {
     id: "ch-skills-showdown",
     type: "panna_qr",
-    title: { nl: "3X3 Skills Showdown", en: "3X3 Skills Showdown" },
+    title: { nl: "3x3 Skills Showdown", en: "3x3 Skills Showdown" },
     description: {
       nl: "Doe mee en ontvang je player card.",
       en: "Participate and receive your player card.",
@@ -626,8 +626,8 @@ export const SEED_CHALLENGES: Challenge[] = [
     type: "panna_qr",
     title: { nl: "3X3 Leader Hub storytelling", en: "3X3 Leader Hub storytelling" },
     description: {
-      nl: "Meld je aan voor meer over 3X3 Unites leader storytelling.",
-      en: "Sign up to hear more about 3X3 Unites leader storytelling.",
+      nl: "Meld je aan voor meer over 3X3 Leader storytelling.",
+      en: "Sign up to hear more about 3X3 Leader storytelling.",
     },
     points: 25,
     accent: "blue",

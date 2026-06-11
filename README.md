@@ -1,6 +1,6 @@
-# 3x3 Unites — Gamification mockup
+# 3X3 Unites — Gamification mockup
 
-A Next.js + Supabase mockup of the **3x3 Unites** "From the Streets to the Top" gamification platform. Built around the official 3x3 Unites brandbook (street/urban, black + white + neon green / orange / blue).
+A Next.js + Supabase mockup of the **3X3 Unites** "From the Streets to the Top" gamification platform. Built around the official 3X3 Unites brandbook (street/urban, black + white + neon green / orange / blue).
 
 > **Mockup status**: this version runs entirely on an in-memory store seeded with ~30 fake participants, 10 journey steps, 8 side challenges, 6 badges, 5 rewards and 20 demo photos. The Supabase schema is provided in [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql) so the production wiring can be plugged in later (with a real cm.nl webhook).
 
@@ -33,7 +33,7 @@ Visit http://localhost:3000.
 - `zod` for API input validation
 - Mockup data layer in `src/lib/data/store.ts` (mutable singleton, swap for Supabase via `@supabase/ssr` later)
 
-## Brand palette (from 3x3 Unites brandbook §2.2)
+## Brand palette (from 3X3 Unites brandbook §2.2)
 
 - Primary: `#000000`, `#FFFFFF`, `#F3EEE4`, `#BEFF00` (signature green)
 - Secondary: `#FF6701` (events — used on the Streets-to-the-Top journey), `#00FFFF` (education — used on leader-related challenges)

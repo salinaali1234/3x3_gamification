@@ -57,7 +57,7 @@ export const dictionaries = {
         "Het World Tour-weekend brengt 3x3 Street League, shows, talks, partner-activaties en de 3X3 Unites community samen. Of je nu komt kijken, spelen of ontdekken — er is overal iets te doen.",
       venueTitle: "Het terrein",
       venueBody:
-        "Van The Streets en de Interactive Dome tot het 3X3 Leader Centre, Food Court, Community Corner en de 3X3 Leader exhibition: negen main quest-locaties vormen je route over het festival. Gebruik de plattegrond hieronder om te zien waar alles staat.",
+        "Van The Streets en de Interactive Dome — powered by Odido tot het 3X3 Leader Centre, Food Court, Community Corner en de 3X3 Leader exhibition: negen main quest-locaties vormen je route over het festival. Gebruik de plattegrond hieronder om te zien waar alles staat.",
       gameTitle: "Het spel",
       gameBody:
         "Volg de Main Quest Grand Tour over het terrein, doe side challenges voor Street Pass-punten, doe mee aan de Worthy de Jong selfie contest en draai aan het wheel als je alle main quests hebt voltooid.",
@@ -70,7 +70,7 @@ export const dictionaries = {
       festivalSeries: "FIBA 3x3 World Tour Masters & Women's Series",
       festivalDates: "19–21 juni 2026",
       festivalLocation: "NDSM-werf, Amsterdam",
-      posterRaw: "3X3 basketball op zijn rauwst.",
+      posterRaw: "3x3 basketball op zijn rauwst.",
       pillarPlay: "PLAY",
       pillarUnite: "UNITE",
       pillarEmpower: "EMPOWER",
@@ -619,7 +619,7 @@ export const dictionaries = {
         "The World Tour weekend brings 3x3 Street League, shows, talks, partner activations and the 3X3 Unites community together. Whether you come to watch, play or discover — there is something everywhere.",
       venueTitle: "The venue",
       venueBody:
-        "From The Streets and the Interactive Dome to the 3X3 Leader Centre, Food Court, Community Corner and the 3X3 Leader exhibition: nine main quest locations form your route across the festival. Use the map below to see where everything is.",
+        "From The Streets and the Interactive Dome — powered by Odido to the 3X3 Leader Centre, Food Court, Community Corner and the 3X3 Leader exhibition: nine main quest locations form your route across the festival. Use the map below to see where everything is.",
       gameTitle: "The game",
       gameBody:
         "Follow the Main Quest Grand Tour across the site, earn Street Pass points from side challenges, join the Worthy de Jong selfie contest and spin the wheel once you've finished all main quests.",
@@ -632,7 +632,7 @@ export const dictionaries = {
       festivalSeries: "FIBA 3x3 World Tour Masters & Women's Series",
       festivalDates: "June 19–21, 2026",
       festivalLocation: "NDSM-werf, Amsterdam",
-      posterRaw: "3X3 basketball at its rawest.",
+      posterRaw: "3x3 basketball at its rawest.",
       pillarPlay: "PLAY",
       pillarUnite: "UNITE",
       pillarEmpower: "EMPOWER",

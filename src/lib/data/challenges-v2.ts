@@ -57,26 +57,28 @@ export type PrizeRedemption = {
   redeemedAt: string | null;
 };
 
-// ---------- Seed: 23 unified challenges ----------
+// ---------- Seed: 24 unified challenges ----------
+
+const INTERACTIVE_DOME = "Interactive Dome — powered by Odido";
 
 export const UNIFIED_CHALLENGES: UnifiedChallenge[] = [
   // 3X3 Unites Area
-  { id: "skills-showdown",        location: "3X3 Unites Area",     sortOrder: 10, title: "Skills Showdown",        subtitle: "Discover your 3x3 player abilities at the Skills Showdown", description: "Test your shooting, dribbling and reaction skills at the Skills Showdown. Get your code from the leader at the booth.", points: 75,  verification: "code",   code: "SKILLS-2026",   accent: "green" },
-  { id: "leaderhub-clinic",       location: "3X3 Unites Area",     sortOrder: 20, title: "LeaderHub Clinic",       subtitle: "Sign up at the LeaderHub for a 3x3 clinic or trial leader course", description: "Join a clinic or sign up as a trial 3x3 leader at the LeaderHub. Leaders give you a unique code on completion.", points: 200, verification: "code",   code: "LEADER-200",    accent: "green" },
-  { id: "learn-about-leaders",    location: "3X3 Unites Area",     sortOrder: 30, title: "Meet Our Leaders",       subtitle: "Learn more about 3X3 Unites from our Leaders at the LeaderHub", description: "Stop by the LeaderHub, hear the story behind our leader program and grab the code.", points: 75,  verification: "code",   code: "HUB-LEARN",     accent: "green" },
+  { id: "skills-showdown",        location: "3X3 Unites Area",     sortOrder: 10, title: "Skills Showdown",        subtitle: "Discover your 3x3 player abilities at the Skills Showdown", description: "Test your shooting, dribbling and reaction skills at the Skills Showdown. Get your code from the 3X3 Leader at the booth.", points: 75,  verification: "code",   code: "SKILLS-2026",   accent: "green" },
+  { id: "leaderhub-clinic",       location: "3X3 Unites Area",     sortOrder: 20, title: "3X3 Leader Hub Clinic",  subtitle: "Sign up at the 3X3 Leader Hub for a 3x3 clinic or Rembrandt 3X3 Leader course", description: "Join a clinic or sign up as a trial 3X3 Leader at the 3X3 Leader Hub. A 3X3 Leader gives you a unique code on completion.", points: 200, verification: "code",   code: "LEADER-200",    accent: "green" },
+  { id: "learn-about-leaders",    location: "3X3 Unites Area",     sortOrder: 30, title: "Meet 3X3 Leaders",       subtitle: "Learn more about 3X3 Unites from 3X3 Leaders at the 3X3 Leader Hub", description: "Stop by the 3X3 Leader Hub, hear the story behind the 3X3 Leader program and grab the code.", points: 75,  verification: "code",   code: "HUB-LEARN",     accent: "green" },
 
   // Kids Area
-  { id: "shon-price-live-art",    location: "Kids Area",           sortOrder: 10, title: "Live Art",               subtitle: "Help Shon Price paint his live art piece at the Kids Area", description: "Pick up a brush and contribute to the live art piece — mark it done when you've helped.", points: 50,  verification: "manual", accent: "orange" },
+  { id: "shon-price-live-art",    location: "Kids Area",           sortOrder: 10, title: "The Paint Wall",         subtitle: "Contribute to The Paint Wall at the Kids Area", description: "The Paint Wall is painted by Shon Price — pick up a brush, add your touch and mark it done when you've helped.", points: 50,  verification: "manual", accent: "orange" },
   { id: "godrip-cornhole",        location: "Kids Area",           sortOrder: 20, title: "GoDrip Challenge",       subtitle: "Challenge GoDrip in cornhole or bucket shooting at the Kids Area", description: "Take on GoDrip in a quick game — bucket shooting or cornhole. Mark it done when finished.", points: 50,  verification: "manual", accent: "orange" },
 
   // Community Corner
   { id: "vriendenloterij-trivia", location: "Community Corner",    sortOrder: 10, title: "Sports Trivia",          subtitle: "Play sports trivia at the VriendenLoterij locker rooms", description: "Test your sports knowledge at the VriendenLoterij locker rooms.", points: 50,  verification: "manual", accent: "blue" },
-  { id: "sneakerness-shoelacing", location: "Community Corner",    sortOrder: 20, title: "Shoelacing Challenge",   subtitle: "Attempt the Sneakerness shoelacing challenge under the tarp", description: "Lace your sneakers fast and clean under the tarp at the Community Corner. Code from the leader.", points: 100, verification: "code",   code: "LACE-100",      accent: "blue" },
-  { id: "triple-threat-barber",   location: "Community Corner",    sortOrder: 30, title: "Triple Threat Barber",   subtitle: "Freshen up your haircut at the Triple Threat BarberShop", description: "Get a quick fade or trim at the Triple Threat BarberShop, then enter the leader code.", points: 100, verification: "code",   code: "FADE-100",      accent: "blue" },
-  { id: "talent-movement-music",  location: "Community Corner",    sortOrder: 40, title: "Talent Movement",        subtitle: "Groove and make music at the Talent Movement van", description: "Stop by the Talent Movement van, jam along and mark it done.", points: 50,  verification: "manual", accent: "blue" },
+  { id: "sneakerness-shoelacing", location: "Community Corner",    sortOrder: 20, title: "Shoelacing Challenge",   subtitle: "Attempt the Sneakerness shoelacing challenge under the tarp", description: "Lace your sneakers fast and clean under the tarp at the Community Corner. Code from the 3X3 Leader.", points: 100, verification: "code",   code: "LACE-100",      accent: "blue" },
+  { id: "triple-threat-barber",   location: "Community Corner",    sortOrder: 30, title: "Triple Threat Barber",   subtitle: "Freshen up your haircut at the Triple Threat BarberShop", description: "Get a quick fade or trim at the Triple Threat BarberShop, then enter the code from the 3X3 Leader.", points: 100, verification: "code",   code: "FADE-100",      accent: "blue" },
+  { id: "talent-movement-music",  location: "Community Corner",    sortOrder: 40, title: "Talent movement bus",    subtitle: "Groove and make music at the Talent movement bus", description: "Stop by the Talent movement bus, jam along and mark it done.", points: 50,  verification: "manual", accent: "blue" },
 
   // The Streets
-  { id: "street-league-watch",    location: "The Streets",         sortOrder: 10, title: "Street League",          subtitle: "Dive into The Streets and watch a Street League game", description: "Find a spot at The Streets and watch a full Street League game. Code from the leader at the court.", points: 200, verification: "code",   code: "STREET-200",    accent: "green" },
+  { id: "street-league-watch",    location: "The Streets",         sortOrder: 10, title: "Street League",          subtitle: "Dive into The Streets and watch a 3x3 Street League game", description: "Find a spot at The Streets and watch a full 3x3 Street League game. Code from the 3X3 Leader at the court.", points: 200, verification: "code",   code: "STREET-200",    accent: "green" },
   { id: "kfc-court-hangout",      location: "The Streets",         sortOrder: 20, title: "KFC Court",              subtitle: "Hangout and play some challenges on the KFC court", description: "Spend time at the KFC court, join a casual game and mark it done.", points: 25,  verification: "manual", accent: "green" },
 
   // Warm-Up Court
@@ -88,25 +90,26 @@ export const UNIFIED_CHALLENGES: UnifiedChallenge[] = [
   { id: "breakdance-battles",     location: "Panna Courts",        sortOrder: 20, title: "Break Dance Battles",    subtitle: "Experience the energy and vibes from the Break Dance Battles at the panna cages", description: "Catch the Break Dance Battles at the panna cages.", points: 25,  verification: "manual", dayFlag: "saturday", accent: "blue" },
 
   // Side Events Court
-  { id: "one-vs-one-leaders",     location: "Side Events Court",   sortOrder: 10, title: "1v1 vs Leaders",         subtitle: "Take part on the 1v1 challenge versus 3x3 Unites leaders from all over the country", description: "Sign up for a 1v1 versus a 3x3 Unites leader. Leader hands out the code after your match.", points: 75,  verification: "code",   code: "ONE-V-ONE", accent: "green" },
+  { id: "one-vs-one-leaders",     location: "Side Events Court",   sortOrder: 10, title: "1v1 vs 3X3 Leaders",     subtitle: "Take part on the 1v1 challenge versus 3X3 Unites Leaders from all over the country", description: "Sign up for a 1v1 versus a 3X3 Unites Leader. The 3X3 Leader hands out the code after your match.", points: 75,  verification: "code",   code: "ONE-V-ONE", accent: "green" },
   { id: "nbb-clinic",             location: "Side Events Court",   sortOrder: 20, title: "NBB Clinic",               subtitle: "Join in on the 3x3 basketball clinic given by the Nederlandse Basketball Bond (NBB)", description: "Join the NBB clinic at the side events court.", points: 50, verification: "manual", dayFlag: "friday", accent: "green" },
-  { id: "shootout-challenge",     location: "Side Events Court",   sortOrder: 30, title: "Shootout",               subtitle: "Take part in the Shootout challenge at the side events court", description: "Take three shots from the line. Code from the leader.", points: 100, verification: "code", code: "SHOOT-100", accent: "green" },
+  { id: "shootout-challenge",     location: "Side Events Court",   sortOrder: 30, title: "Shootout",               subtitle: "Take part in the Shootout challenge at the side events court", description: "Take three shots from the line. Code from the 3X3 Leader.", points: 100, verification: "code", code: "SHOOT-100", accent: "green" },
   { id: "meet-greet-teams",       location: "Side Events Court",   sortOrder: 40, title: "Meet & Greet",           subtitle: "Meet & Greet the 3x3 professional mens and womens basketball team", description: "Get a photo or autograph with the pro teams. Mark it done.", points: 25, verification: "manual", accent: "green" },
-  { id: "rabobank-arcade",        location: "Side Events Court",   sortOrder: 50, title: "Rabobank Arcade",        subtitle: "Challenge a leader to play the Rabobank basketball arcade game in front of De Waaier", description: "Beat (or be beaten by) a leader on the Rabobank arcade game. Leader gives the code.", points: 50, verification: "code", code: "WAAIER-50", accent: "orange" },
+  { id: "rabobank-arcade",        location: "Side Events Court",   sortOrder: 50, title: "Rabobank Arcade",        subtitle: "Challenge a 3X3 Leader to play the Rabobank basketball arcade game in front of De Waaier", description: "Beat (or be beaten by) a 3X3 Leader on the Rabobank arcade game. The 3X3 Leader gives the code.", points: 50, verification: "code", code: "WAAIER-50", accent: "orange" },
 
-  // Interactive Dome
-  { id: "leader-conversations",   location: "Interactive Dome",    sortOrder: 10, title: "Leader Talks",           subtitle: "Tune in to conversations about 3X3 Unites and the achieved impact over the last 10 years", description: "Listen to the leaders talk impact at the Interactive Dome.", points: 100, verification: "code", code: "DOME-100", accent: "blue" },
-  { id: "dome-immersive-video",   location: "Interactive Dome",    sortOrder: 20, title: "Immersive Video",        subtitle: "Experience the first ever 3x3 basketball immersive video experience at the dome", description: "Step into the immersive video experience — pick up the code on your way out.", points: 200, verification: "code", code: "DOME-IMMERSIVE", accent: "blue" },
-  { id: "odido-arcade-outside",   location: "Interactive Dome",    sortOrder: 30, title: "ODIDO Arcade",           subtitle: "Try out the ODIDO basketball arcade outside the Interactive Dome", description: "Try the ODIDO arcade outside the dome and mark it done.", points: 25, verification: "manual", accent: "blue" },
+  // Interactive Dome — powered by Odido
+  { id: "leader-conversations",   location: INTERACTIVE_DOME,      sortOrder: 10, title: "3X3 Leader Talks",       subtitle: "Tune in to conversations about 3X3 Unites and the achieved impact over the last 10 years", description: "Listen to 3X3 Leaders talk impact at the Interactive Dome — powered by Odido.", points: 100, verification: "code", code: "DOME-100", accent: "blue" },
+  { id: "dome-immersive-video",   location: INTERACTIVE_DOME,      sortOrder: 20, title: "Immersive Video",        subtitle: "Experience the first ever 3x3 basketball immersive video experience at the dome", description: "Step into the immersive video experience — pick up the code on your way out.", points: 200, verification: "code", code: "DOME-IMMERSIVE", accent: "blue" },
+  { id: "odido-arcade-outside",   location: INTERACTIVE_DOME,      sortOrder: 30, title: "ODIDO Arcade",           subtitle: "Try out the ODIDO basketball arcade outside the Interactive Dome — powered by Odido", description: "Try the ODIDO arcade outside the dome and mark it done.", points: 25, verification: "manual", accent: "blue" },
 
   // Fence Installations (special multi-letter)
   { id: "fence-leaders", location: "Fence Installations", sortOrder: 10,
-    title: "Fence Leaders",
-    subtitle: "Meet all 10 fence leaders in real life for a special reward",
-    description: "The leaders on the fences are here on the grounds! Meet all 10 in real life — each one gives you one letter. Enter all 10 letters in the correct order on this challenge to form the secret word and claim 333 points.",
+    title: "3X3 Leader Fence Quest",
+    subtitle: "Meet all 10 3X3 Leaders on the fence installations in real life for a special reward",
+    description: "The 3X3 Leaders on the fences are here on the grounds! Meet all 10 in real life — each 3X3 Leader gives you one letter. Enter all 10 letters in the correct order to form the secret word and claim 333 points.",
     points: 333, verification: "fence",
     letters: ["S","T","R","E","E","T","G","A","M","E"],
     accent: "orange" },
+  { id: "nxt-level-food", location: "Fence Installations", sortOrder: 20, title: "nxt level food station", subtitle: "Take care of yourself at the nxt level food station", description: "Collect a fresh sports drink at the nxt level food station. Mark it done when you've been.", points: 30, verification: "manual", accent: "green" },
 ];
 
 // ---------- Seed: placeholder prize tiers ----------
