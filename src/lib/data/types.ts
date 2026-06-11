@@ -219,15 +219,24 @@ export type PhotoLike = {
   photoId: string;
 };
 
-export type RewardType = "food" | "water" | "merch_voucher" | "autograph" | "speaker";
+export type RewardType =
+  | "food"
+  | "water"
+  | "merch_voucher"
+  | "ball"
+  | "airpods_case";
 
 export type Reward = {
   id: string;
   name: Bilingual;
   description: Bilingual;
   type: RewardType;
+  /** Physical pickup at desk (higher point cost) vs voucher-only. */
+  verifiable: boolean;
   costPoints: number;
   stock: number;
+  /** Hide exact stock count in UI (e.g. high-volume vouchers). */
+  showStockCount?: boolean;
   emoji: string;
   accent: "green" | "orange" | "blue";
 };

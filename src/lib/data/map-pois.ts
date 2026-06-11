@@ -10,68 +10,80 @@ export type MapPoiCategory =
 
 export type MapPoi = {
   id: string;
+  /** Short code shown in search / sidebar */
   mapCode: string;
+  /** Number on the official venue map legend (01–08) */
+  siteNumber?: string;
   name: Bilingual;
   description: Bilingual;
   category: MapPoiCategory;
+  /** Horizontal position on the map image (0–100%) */
   x: number;
+  /** Vertical position on the map image (0–100%) */
   y: number;
   redeemCode?: string;
   isMainQuest?: boolean;
 };
 
+export const FESTIVAL_MAP_PDF = "/festival-map.pdf";
+/** Render of `map 3x3 festival.pdf` — pins calibrated to this file */
+export const FESTIVAL_MAP_IMAGE = "/venue-map.png";
+export const FESTIVAL_MAP_ASPECT = "2400 / 1368";
+
 export const FESTIVAL_MAP_POIS: MapPoi[] = [
   {
     id: "poi-ingang",
-    mapCode: "INGANG",
-    name: { nl: "Ingang", en: "Entrance" },
+    mapCode: "ENTRANCE",
+    name: { nl: "Entrance", en: "Entrance" },
     description: {
-      nl: "Hoofdingang — start hier je festival journey.",
-      en: "Main entrance — start your festival journey here.",
+      nl: "Hoofdingang & tickets — start hier op het terrein.",
+      en: "Main entrance & tickets — start here on site.",
     },
     category: "service",
-    x: 88,
-    y: 88,
+    x: 83,
+    y: 68,
   },
   {
     id: "poi-streets",
-    mapCode: "STREETS",
-    name: { nl: "The Streets", en: "The Streets" },
+    mapCode: "03",
+    siteNumber: "03",
+    name: { nl: "Rabo 3x3 Street League", en: "Rabo 3x3 Street League" },
     description: {
-      nl: "3x3 Street League courts — main quest.",
-      en: "3x3 Street League courts — main quest.",
+      nl: "Street League courts — main quest (The Streets).",
+      en: "Street League courts — main quest (The Streets).",
     },
     category: "court",
-    x: 22,
-    y: 68,
+    x: 47,
+    y: 21,
     redeemCode: "JOURNEY-STREETS",
     isMainQuest: true,
   },
   {
     id: "poi-odido-dome",
-    mapCode: "DOME",
-    name: { nl: "Dome", en: "Dome" },
+    mapCode: "04",
+    siteNumber: "04",
+    name: { nl: "Interactive Dome — powered by Odido", en: "Interactive Dome — powered by Odido" },
     description: {
-      nl: "Talks, AI experience & rave — main quest.",
-      en: "Talks, AI experience & rave — main quest.",
+      nl: "Talks, AI experience & rave — main quest (Interactive Dome).",
+      en: "Talks, AI experience & rave — main quest (Interactive Dome).",
     },
     category: "activation",
-    x: 42,
-    y: 28,
+    x: 44,
+    y: 39,
     redeemCode: "JOURNEY-DOME",
     isMainQuest: true,
   },
   {
     id: "poi-rabobus",
     mapCode: "RABO",
-    name: { nl: "The Rabobus", en: "The Rabobus" },
+    name: { nl: "RaboBank Court", en: "RaboBank Court" },
     description: {
-      nl: "Rabobank Bus — main quest.",
-      en: "Rabobank Bus — main quest.",
+      nl: "Stap de bus in bij RaboBank Court — main quest.",
+      en: "Step inside the bus at RaboBank Court — main quest.",
     },
     category: "activation",
-    x: 72,
-    y: 38,
+    x: 56,
+    y: 26,
     redeemCode: "JOURNEY-RABO",
     isMainQuest: true,
   },
@@ -84,78 +96,83 @@ export const FESTIVAL_MAP_POIS: MapPoi[] = [
       en: "Food Court — main quest.",
     },
     category: "food",
-    x: 48,
-    y: 82,
+    x: 47,
+    y: 52,
     redeemCode: "JOURNEY-FOOD",
     isMainQuest: true,
   },
   {
     id: "poi-community",
-    mapCode: "COMMUNITY",
+    mapCode: "08",
+    siteNumber: "08",
     name: { nl: "Community Corner", en: "Community Corner" },
     description: {
-      nl: "Sneakerness & partners — main quest + side quests.",
-      en: "Sneakerness & partners — main quest + side quests.",
+      nl: "Sneakerness & partners — main quest.",
+      en: "Sneakerness & partners — main quest.",
     },
     category: "activation",
-    x: 18,
-    y: 48,
+    x: 35,
+    y: 58,
     redeemCode: "JOURNEY-COMMUNITY",
     isMainQuest: true,
   },
   {
     id: "poi-panna",
-    mapCode: "PANNA",
-    name: { nl: "Panna KO", en: "Panna KO" },
+    mapCode: "02",
+    siteNumber: "02",
+    name: { nl: "Panna Courts", en: "Panna Courts" },
     description: {
-      nl: "Panna courts — main quest.",
-      en: "Panna courts — main quest.",
+      nl: "Panna KO courts — main quest.",
+      en: "Panna KO courts — main quest.",
     },
     category: "court",
-    x: 72,
-    y: 72,
+    x: 67,
+    y: 50,
     redeemCode: "JOURNEY-PANNA",
     isMainQuest: true,
   },
   {
     id: "poi-leader-center",
-    mapCode: "LEADER-CTR",
-    name: { nl: "3X3 Leader Centre", en: "3X3 Leader Centre" },
+    mapCode: "05",
+    siteNumber: "05",
+    name: { nl: "3X3 Unites Square", en: "3X3 Unites Square" },
     description: {
-      nl: "Clinics & Rembrandt 3X3 Leader course — main quest.",
-      en: "Clinics & Rembrandt 3X3 Leader course — main quest.",
+      nl: "3X3 Leader Centre activaties — main quest.",
+      en: "3X3 Leader Centre activations — main quest.",
     },
     category: "activation",
-    x: 58,
-    y: 32,
+    x: 34,
+    y: 33,
     redeemCode: "JOURNEY-LEADER-CENTER",
     isMainQuest: true,
   },
   {
     id: "poi-warmup",
-    mapCode: "WARMUP",
-    name: { nl: "Warmup Court", en: "Warmup Court" },
+    mapCode: "07",
+    siteNumber: "07",
+    name: { nl: "Warm-up Court", en: "Warm-up Court" },
     description: {
       nl: "Watch the pros warm up — main quest.",
       en: "Watch the pros warm up — main quest.",
     },
     category: "court",
-    x: 38,
-    y: 14,
+    x: 20,
+    y: 47,
     redeemCode: "JOURNEY-WARMUP",
     isMainQuest: true,
   },
   {
     id: "poi-hekken",
-    mapCode: "HEKKEN",
-    name: { nl: "Leader exhibition", en: "Leader exhibition" },
+    mapCode: "06",
+    siteNumber: "06",
+    name: { nl: "Merch / 3X3 Leader exhibition", en: "Merch / 3X3 Leader exhibition" },
     description: {
-      nl: "10 years 3X3 Unites — spot the 3X3 Leader at the Leader exhibition.",
-      en: "10 years 3X3 Unites — spot the 3X3 Leader at the Leader exhibition.",
+      nl: "Merch & 3X3 Leader exhibition — main quest.",
+      en: "Merch & 3X3 Leader exhibition — main quest.",
     },
     category: "culture",
-    x: 50,
-    y: 52,
+    x: 29,
+    y: 33,
     redeemCode: "JOURNEY-HEKKEN",
     isMainQuest: true,
   },
@@ -168,8 +185,8 @@ export const FESTIVAL_MAP_POIS: MapPoi[] = [
       en: "Leader storytelling signup — side quest.",
     },
     category: "activation",
-    x: 55,
-    y: 36,
+    x: 33,
+    y: 40,
     redeemCode: "SIDE-LEADER-HUB",
   },
   {
@@ -177,42 +194,79 @@ export const FESTIVAL_MAP_POIS: MapPoi[] = [
     mapCode: "KIDS",
     name: { nl: "Kids Area", en: "Kids Area" },
     description: {
-      nl: "Kids challenges & The Paint Wall — side quests.",
-      en: "Kids challenges & The Paint Wall — side quests.",
+      nl: "Kids challenges & activations — side quests.",
+      en: "Kids challenges & activations — side quests.",
     },
     category: "entertainment",
-    x: 82,
-    y: 62,
+    x: 61,
+    y: 45,
   },
   {
     id: "poi-bar",
     mapCode: "BAR",
-    name: { nl: "Big Screens / Bar", en: "Big Screens / Bar" },
+    name: { nl: "Bar", en: "Bar" },
     description: {
-      nl: "Watch NL vs Sweden — pop-up side event.",
-      en: "Watch NL vs Sweden — pop-up side event.",
+      nl: "Bar & big screens.",
+      en: "Bar & big screens.",
     },
     category: "food",
-    x: 55,
-    y: 42,
+    x: 52,
+    y: 44,
+  },
+  {
+    id: "poi-media",
+    mapCode: "MEDIA",
+    name: { nl: "Media", en: "Media" },
+    description: {
+      nl: "Media zone bij de entrance.",
+      en: "Media zone near the entrance.",
+    },
+    category: "service",
+    x: 74,
+    y: 56,
+  },
+  {
+    id: "poi-vip",
+    mapCode: "VIP",
+    name: { nl: "VIP", en: "VIP" },
+    description: {
+      nl: "VIP-terras naast het stadion.",
+      en: "VIP terrace next to the stadium.",
+    },
+    category: "service",
+    x: 11,
+    y: 77,
+  },
+  {
+    id: "poi-stadium",
+    mapCode: "STADIUM",
+    name: { nl: "Stadium", en: "Stadium" },
+    description: {
+      nl: "Hoofdstadion — World Tour wedstrijden.",
+      en: "Main stadium — World Tour matches.",
+    },
+    category: "court",
+    x: 13,
+    y: 48,
   },
   {
     id: "poi-toiletten",
     mapCode: "WC",
     name: { nl: "Toiletten", en: "Toilets" },
-    description: { nl: "Toiletblokken", en: "Toilet blocks" },
+    description: { nl: "Toiletblok", en: "Toilet block" },
     category: "service",
-    x: 90,
-    y: 22,
+    x: 67,
+    y: 30,
   },
   {
     id: "poi-ehbo",
-    mapCode: "EHBO",
-    name: { nl: "EHBO", en: "First aid" },
-    description: { nl: "Eerste hulp", en: "First aid" },
+    mapCode: "01",
+    siteNumber: "01",
+    name: { nl: "First Aid", en: "First Aid" },
+    description: { nl: "EHBO / first aid", en: "First aid" },
     category: "service",
-    x: 12,
-    y: 88,
+    x: 73,
+    y: 42,
   },
 ];
 
@@ -221,6 +275,7 @@ export function getMapPoiByCode(code: string): MapPoi | undefined {
   return FESTIVAL_MAP_POIS.find(
     (p) =>
       p.mapCode.toUpperCase() === upper ||
+      p.siteNumber === upper ||
       p.redeemCode?.toUpperCase() === upper
   );
 }
@@ -231,6 +286,7 @@ export function searchMapPois(query: string): MapPoi[] {
   return FESTIVAL_MAP_POIS.filter(
     (p) =>
       p.mapCode.toLowerCase().includes(q) ||
+      p.siteNumber?.includes(q) ||
       p.name.nl.toLowerCase().includes(q) ||
       p.name.en.toLowerCase().includes(q) ||
       p.description.nl.toLowerCase().includes(q) ||

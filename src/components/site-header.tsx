@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import type { Profile } from "@/lib/data/types";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import type { Locale } from "@/lib/i18n/config";
-import { getChallengePassPoints } from "@/lib/data/user-game";
+import { userPointsBalance } from "@/lib/data/challenges-v2";
 import { LocaleSwitcher } from "./locale-switcher";
 import { UserMenu } from "./user-menu";
 import { Logo3x3 } from "./logo";
@@ -18,7 +18,7 @@ export async function SiteHeader({
 }) {
   await cookies();
   const t = getDictionary(locale);
-  const points = user ? await getChallengePassPoints(user.id) : 0;
+  const points = user ? userPointsBalance(user.id) : 0;
 
   const navItems = [
     { href: "/", label: t.nav.home },

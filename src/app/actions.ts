@@ -14,6 +14,7 @@ import type { Profile } from "@/lib/data/types";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { mapAuthError } from "@/lib/auth/errors";
+import { getSiteUrl } from "@/lib/site-url";
 import { ensureUserProfileForUser } from "@/lib/supabase/ensure-profile";
 
 const GUEST_AVATAR_COLORS = [
@@ -104,6 +105,95 @@ export async function signInAction(
 
   if (data.user) {
     await ensureUserProfileForUser(supabase, data.user);
+  }
+
+  revalidatePath("/", "layout");
+  redirect("/dashboard");
+}
+
+export type ForgotPasswordState = {
+  ok: boolean;
+  error?: string;
+};
+
+export async function requestPasswordResetAction(
+  _prev: ForgotPasswordState | undefined,
+  formData: FormData
+): Promise<ForgotPasswordState> {
+  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { ok: false, error: "invalid_email" };
+  }
+
+  if (!isSupabaseConfigured()) {
+    return { ok: false, error: "not_configured" };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) {
+    return { ok: false, error: "not_configured" };
+  }
+
+  const siteUrl = await getSiteUrl();
+  const redirectTo = `${siteUrl}/auth/callback?next=${encodeURIComponent("/login/reset-password")}`;
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo,
+  });
+
+  if (error) {
+    const mapped = mapAuthError(error.message);
+    // Supabase may rate-limit while an earlier reset email was already sent.
+    if (mapped === "rate_limit") {
+      return { ok: true };
+    }
+    return { ok: false, error: mapped };
+  }
+
+  return { ok: true };
+}
+
+export type ResetPasswordState = {
+  ok: boolean;
+  error?: string;
+};
+
+export async function resetPasswordAction(
+  _prev: ResetPasswordState | undefined,
+  formData: FormData
+): Promise<ResetPasswordState> {
+  const password = String(formData.get("password") ?? "");
+  const confirmPassword = String(formData.get("confirmPassword") ?? "");
+
+  if (password.length < 8) {
+    return { ok: false, error: "password_weak" };
+  }
+  if (password !== confirmPassword) {
+    return { ok: false, error: "password_mismatch" };
+  }
+
+  if (!isSupabaseConfigured()) {
+    return { ok: false, error: "not_configured" };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) {
+    return { ok: false, error: "not_configured" };
+  }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { ok: false, error: "session_expired" };
+  }
+
+  const { error } = await supabase.auth.updateUser({ password });
+
+  if (error) {
+    return { ok: false, error: mapAuthError(error.message) };
   }
 
   revalidatePath("/", "layout");
