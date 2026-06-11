@@ -3,8 +3,13 @@ import { redirect } from "next/navigation";
 import { getLocaleFromCookieValue } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getCurrentUser } from "@/lib/session";
-import { getTotalPoints, getUserClaims, getUserBadges, getUserWheelSpins } from "@/lib/data/user-game";
-import { getRewardById } from "@/lib/data/store";
+import { getChallengePassPoints, getUserBadges } from "@/lib/data/user-game";
+import {
+  userRedemptions,
+  listPrizeTiers,
+  userPointsEarned,
+  userPointsSpent,
+} from "@/lib/data/challenges-v2";
 import { BadgeSticker } from "@/components/ui/badge-sticker";
 import { Avatar } from "@/components/ui/avatar";
 import { SectionLabel } from "@/components/ui/section-label";
@@ -17,9 +22,11 @@ export default async function ProfilePage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
   const badges = await getUserBadges(user.id);
-  const claims = await getUserClaims(user.id);
-  const wheelSpins = await getUserWheelSpins(user.id);
-  const points = await getTotalPoints(user.id);
+  const balance = await getChallengePassPoints(user.id);
+  const earned = userPointsEarned(user.id);
+  const spent = userPointsSpent(user.id);
+  const redemptions = userRedemptions(user.id);
+  const tiers = listPrizeTiers();
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8 py-10">
@@ -32,8 +39,13 @@ export default async function ProfilePage() {
           <div className="font-display text-3xl">{user.displayName}</div>
           <div className="text-sm text-white/60 font-mono">{user.email}</div>
           <div className="mt-2 font-display text-2xl text-brand-green">
-            {points} pts
+            {balance} pts
           </div>
+          {spent > 0 ? (
+            <div className="text-xs text-white/55 font-mono mt-1">
+              {earned} earned · {spent} spent
+            </div>
+          ) : null}
         </div>
       </div>
 
@@ -41,11 +53,7 @@ export default async function ProfilePage() {
         <SectionLabel number="01" className="mb-4">
           {t.profile.displayName}
         </SectionLabel>
-        <ProfileForm
-          userId={user.id}
-          initialName={user.displayName}
-          dict={t}
-        />
+        <ProfileForm userId={user.id} initialName={user.displayName} dict={t} />
       </section>
 
       <section className="mt-10">
@@ -57,9 +65,7 @@ export default async function ProfilePage() {
         ) : (
           <div className="flex flex-wrap gap-4">
             {badges.map((b) =>
-              b ? (
-                <BadgeSticker key={b.id} badge={b} locale={locale} size="md" />
-              ) : null
+              b ? <BadgeSticker key={b.id} badge={b} locale={locale} size="md" /> : null
             )}
           </div>
         )}
@@ -67,80 +73,47 @@ export default async function ProfilePage() {
 
       <section className="mt-10">
         <SectionLabel number="03" className="mb-4">
-          {t.profile.claimedRewards}
+          {locale === "nl" ? "Geclaimde prijzen" : "Redeemed prizes"}
         </SectionLabel>
-        {claims.length === 0 ? (
+        {redemptions.length === 0 ? (
           <p className="text-white/60 text-sm">{t.common.noResults}</p>
         ) : (
           <ul className="grid gap-2 sm:grid-cols-2">
-            {claims.map((c) => {
-              const rw = getRewardById(c.rewardId);
-              if (!rw) return null;
+            {redemptions.map((r) => {
+              const tier = tiers.find((t) => t.id === r.tierId);
               return (
                 <li
-                  key={c.id}
+                  key={r.id}
                   className="flex flex-col gap-2 rounded-md border border-white/10 bg-white/[0.02] p-4"
                 >
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-3 min-w-0">
-                      <span className="text-3xl shrink-0">{rw.emoji}</span>
+                      <span className="text-3xl shrink-0">{tier?.emoji ?? "🎁"}</span>
                       <div className="min-w-0">
-                        <div className="font-medium truncate">{rw.name[locale]}</div>
+                        <div className="font-medium truncate">
+                          {tier?.name ?? r.tierId}
+                        </div>
                         <div className="font-mono text-xs text-brand-green break-all">
-                          {c.voucherCode}
+                          {r.voucherCode}
                         </div>
                       </div>
                     </div>
                     <span className="text-xs text-white/40 font-mono shrink-0">
-                      {new Date(c.claimedAt).toLocaleDateString(locale)}
+                      {new Date(r.claimedAt).toLocaleDateString(locale)}
                     </span>
                   </div>
                   <p className="text-xs text-white/50">
-                    {c.redeemedAt ? t.rewards.redeemed : t.rewards.pendingPickup}
+                    {r.redeemedAt
+                      ? locale === "nl"
+                        ? "Opgehaald"
+                        : "Picked up"
+                      : locale === "nl"
+                        ? "Wacht op pickup"
+                        : "Pending pickup"}
                   </p>
                 </li>
               );
             })}
-          </ul>
-        )}
-      </section>
-
-      <section className="mt-10">
-        <SectionLabel number="04" className="mb-4">
-          {t.profile.wheelPrizes}
-        </SectionLabel>
-        {wheelSpins.length === 0 ? (
-          <p className="text-white/60 text-sm">{t.common.noResults}</p>
-        ) : (
-          <ul className="grid gap-2 sm:grid-cols-2">
-            {wheelSpins.map((spin) => (
-              <li
-                key={spin.id}
-                className="flex flex-col gap-2 rounded-md border border-white/10 bg-white/[0.02] p-4"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <span className="text-3xl shrink-0">{spin.emoji}</span>
-                    <div className="min-w-0">
-                      <div className="font-medium truncate">
-                        {locale === "nl" ? spin.labelNl : spin.labelEn}
-                      </div>
-                      {spin.pickupCode ? (
-                        <div className="font-mono text-xs text-brand-orange break-all">
-                          {spin.pickupCode}
-                        </div>
-                      ) : null}
-                    </div>
-                  </div>
-                  <span className="text-xs text-white/40 font-mono shrink-0">
-                    {new Date(spin.createdAt).toLocaleDateString(locale)}
-                  </span>
-                </div>
-                <p className="text-xs text-white/50">
-                  {spin.redeemedAt ? t.wheel.wheelRedeemed : t.wheel.wheelPending}
-                </p>
-              </li>
-            ))}
           </ul>
         )}
       </section>

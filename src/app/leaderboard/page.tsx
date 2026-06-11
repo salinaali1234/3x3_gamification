@@ -5,13 +5,13 @@ import { getCurrentUser } from "@/lib/session";
 import { getBadgeById } from "@/lib/data/store";
 import { getLeaderboard } from "@/lib/data/user-game";
 import { Avatar } from "@/components/ui/avatar";
+import { AuthRequiredPanel } from "@/components/auth-required-panel";
 
 export default async function LeaderboardPage() {
   const cookieStore = await cookies();
   const locale = getLocaleFromCookieValue(cookieStore.get("locale")?.value);
   const t = getDictionary(locale);
   const user = await getCurrentUser();
-  const rows = await getLeaderboard(100);
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8 py-10">
@@ -19,6 +19,27 @@ export default async function LeaderboardPage() {
       <h1 className="font-display text-5xl sm:text-6xl">{t.leaderboard.title}</h1>
       <p className="mt-3 text-white/70">{t.leaderboard.subtitle}</p>
 
+      {!user ? (
+        <AuthRequiredPanel dict={t} />
+      ) : (
+        <LeaderboardTable userId={user.id} locale={locale} t={t} />
+      )}
+    </div>
+  );
+}
+
+async function LeaderboardTable({
+  userId,
+  locale,
+  t,
+}: {
+  userId: string;
+  locale: ReturnType<typeof getLocaleFromCookieValue>;
+  t: ReturnType<typeof getDictionary>;
+}) {
+  const rows = await getLeaderboard(100);
+
+  return (
       <div className="mt-8 rounded-md border border-white/10 overflow-x-auto">
         <table className="w-full min-w-[480px]">
           <thead className="bg-white/[0.04]">
@@ -31,7 +52,7 @@ export default async function LeaderboardPage() {
           </thead>
           <tbody className="divide-y divide-white/5">
             {rows.map((r) => {
-              const isMe = user?.id === r.userId;
+              const isMe = userId === r.userId;
               return (
                 <tr
                   key={r.userId}
@@ -100,6 +121,5 @@ export default async function LeaderboardPage() {
           </tbody>
         </table>
       </div>
-    </div>
   );
 }

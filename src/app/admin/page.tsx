@@ -4,6 +4,7 @@ import { getDictionary } from "@/lib/i18n/dictionaries";
 import { totalCounts } from "@/lib/data/store";
 import { getLeaderboard } from "@/lib/data/user-game";
 import { Avatar } from "@/components/ui/avatar";
+import { listUnifiedChallenges, listPrizeTiers } from "@/lib/data/challenges-v2";
 
 export default async function AdminHome() {
   const cookieStore = await cookies();
@@ -11,14 +12,25 @@ export default async function AdminHome() {
   const t = getDictionary(locale);
   const counts = totalCounts();
   const top = await getLeaderboard(5);
+  const challenges = listUnifiedChallenges();
+  const tiers = listPrizeTiers();
+
+  // V2 stats from in-memory store
+  const v2 = (globalThis as { __3X3_V2_STORE__?: { completions: unknown[]; redemptions: unknown[] } }).__3X3_V2_STORE__;
+  const totalCompletions = v2?.completions.length ?? 0;
+  const totalRedemptions = v2?.redemptions.length ?? 0;
 
   return (
     <div className="space-y-8">
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Kpi label={t.admin.kpiParticipants} value={counts.participants} accent="green" />
-        <Kpi label={t.admin.kpiCompletions} value={counts.completions} accent="orange" />
-        <Kpi label={t.admin.kpiChallenges} value={counts.attempts} accent="blue" />
-        <Kpi label={t.admin.kpiPhotos} value={counts.photos} accent="green" />
+        <Kpi label={locale === "nl" ? "Challenges" : "Challenges"} value={challenges.length} accent="orange" />
+        <Kpi label={locale === "nl" ? "Voltooid" : "Completions"} value={totalCompletions} accent="blue" />
+        <Kpi label={locale === "nl" ? "Prijzen geclaimd" : "Prizes claimed"} value={totalRedemptions} accent="green" />
+      </div>
+
+      <div className="text-xs text-white/55 font-mono">
+        {challenges.length} challenges · {tiers.length} prize tiers · {t.admin.kpiPhotos}: {counts.photos}
       </div>
 
       <section>

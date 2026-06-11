@@ -22,12 +22,10 @@ export async function SiteHeader({
 
   const navItems = [
     { href: "/", label: t.nav.home },
-    { href: "/journey", label: t.nav.journey },
     { href: "/challenges", label: t.nav.challenges },
     { href: "/schedule", label: t.nav.schedule },
-    { href: "/wheel", label: t.nav.wheel },
-    { href: "/photos", label: t.nav.photos },
     { href: "/rewards", label: t.nav.rewards },
+    { href: "/leaderboard", label: t.nav.leaderboard ?? "Leaderboard" },
     { href: "/faq", label: t.nav.faqRules },
   ];
 

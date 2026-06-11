@@ -6,19 +6,22 @@ import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getCurrentUser } from "@/lib/session";
 import {
   getLeaderboard,
-  getStepCompletions,
-  getTotalPoints,
-  getWheelSpinsAvailable,
-  getUserAttempts,
+  getChallengePassPoints,
   getUserBadges,
   getUserMatchSubmissions,
   listLiveMatches,
 } from "@/lib/data/user-game";
 import {
-  listJourneySteps,
-  getChallengeById,
-  listChallenges,
-} from "@/lib/data/store";
+  listUnifiedChallenges,
+  userCompletedIds,
+  userCompletions,
+  userPointsEarned,
+  userPointsSpent,
+  currentFestivalDay,
+  isChallengeAvailable,
+  listPrizeTiers,
+  userRedemptions,
+} from "@/lib/data/challenges-v2";
 import { ButtonLink } from "@/components/ui/button";
 import { SectionLabel } from "@/components/ui/section-label";
 import { BadgeSticker } from "@/components/ui/badge-sticker";
@@ -32,20 +35,26 @@ export default async function DashboardPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
-  const steps = listJourneySteps();
-  const completions = await getStepCompletions(user.id);
-  const completedIds = new Set(completions.map((c) => c.stepId));
-  const nextStep = steps.find((s) => !completedIds.has(s.id));
-  const points = await getTotalPoints(user.id);
-  const spins = await getWheelSpinsAvailable(user.id);
+  const today = currentFestivalDay();
+  const allChallenges = listUnifiedChallenges();
+  const completedIds = userCompletedIds(user.id);
+  const completions = userCompletions(user.id);
+  const balance = await getChallengePassPoints(user.id);
+  const earned = userPointsEarned(user.id);
+  const spent = userPointsSpent(user.id);
   const badges = await getUserBadges(user.id);
-  const attempts = await getUserAttempts(user.id);
-  const doneChallengeIds = new Set(attempts.map((a) => a.challengeId));
-  const recommendedChallenge = listChallenges().find(
-    (c) => !doneChallengeIds.has(c.id)
-  );
   const lb = await getLeaderboard(100);
   const myRank = lb.findIndex((r) => r.userId === user.id);
+
+  const tiers = listPrizeTiers();
+  const redemptions = userRedemptions(user.id);
+  const nextTier = tiers.find((t) => t.costPoints > balance) ?? null;
+
+  const recommendedChallenge =
+    allChallenges.find(
+      (c) => !completedIds.has(c.id) && isChallengeAvailable(c, today === "sunday" ? undefined : today ?? undefined)
+    ) ?? allChallenges.find((c) => !completedIds.has(c.id));
+
   const liveMatches = await listLiveMatches();
   const matchDoneIds = (await getUserMatchSubmissions(user.id)).map((s) => s.matchId);
 
@@ -57,33 +66,28 @@ export default async function DashboardPage() {
         locale={locale}
         dict={t}
       />
-      <div className="brand-section-label mb-2">
-        3X3 UNITES // dashboard
-      </div>
+      <div className="brand-section-label mb-2">3X3 UNITES // dashboard</div>
       <h1 className="font-display text-5xl sm:text-6xl">
         Yo,{" "}
         <span className="text-brand-green">{user.displayName.split(" ")[0]}</span>.
       </h1>
       <p className="mt-2 text-white/70">
         {locale === "nl"
-          ? "Klaar voor de volgende stap?"
-          : "Ready for your next step?"}
+          ? "Klaar voor de volgende challenge?"
+          : "Ready for your next challenge?"}
       </p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Tile label={t.common.yourPoints} value={balance} accent="green" />
         <Tile
-          label={locale === "nl" ? "Wheel spins" : "Wheel spins"}
-          value={spins}
+          label={locale === "nl" ? "Verdiend" : "Earned"}
+          value={earned}
+          mono={spent > 0 ? `-${spent} ${locale === "nl" ? "uitgegeven" : "spent"}` : undefined}
           accent="orange"
         />
         <Tile
-          label={t.common.yourPoints}
-          value={points}
-          accent="green"
-        />
-        <Tile
-          label={locale === "nl" ? "Stappen voltooid" : "Steps completed"}
-          value={`${completions.length}/${steps.length}`}
+          label={locale === "nl" ? "Challenges gedaan" : "Challenges done"}
+          value={`${completions.length}/${allChallenges.length}`}
           accent="orange"
         />
         <Tile
@@ -95,48 +99,44 @@ export default async function DashboardPage() {
 
       <section className="mt-10">
         <SectionLabel number="01" className="mb-4">
-          {locale === "nl" ? "Volgende stap" : "Next step"}
+          {locale === "nl" ? "Aanbevolen challenge" : "Recommended challenge"}
         </SectionLabel>
-        {nextStep ? (
+        {recommendedChallenge ? (
           <div className="rounded-md border border-brand-orange/40 bg-brand-orange/5 p-6 flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
             <div>
               <div className="brand-section-label !text-brand-orange mb-1">
-                STEP {nextStep.order} / {steps.length}
+                {recommendedChallenge.location}
               </div>
-              <h2 className="font-display text-3xl">{nextStep.title[locale]}</h2>
-              <p className="text-white/70 mt-1">{nextStep.location[locale]}</p>
-              <p className="text-sm text-white/60 mt-2 max-w-prose">
-                {nextStep.description[locale]}
+              <h2 className="font-display text-3xl">{recommendedChallenge.title}</h2>
+              <p className="text-base text-white/75 mt-1">{recommendedChallenge.subtitle}</p>
+              <p className="text-sm text-white/55 mt-2 max-w-prose">
+                {recommendedChallenge.description}
               </p>
             </div>
             <div className="flex flex-col gap-2 sm:items-end">
-              <span className="font-display text-3xl text-brand-orange">🎡 spin</span>
-            <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:w-auto">
-                <ButtonLink href="/challenges" variant="orange" className="w-full sm:w-auto">
-                  {t.scan.title}
-                </ButtonLink>
-                <ButtonLink href="/wheel" variant="outline" className="w-full sm:w-auto">
-                  {t.nav.wheel}
-                </ButtonLink>
-              </div>
+              <span className="font-display text-3xl text-brand-orange">
+                +{recommendedChallenge.points} pts
+              </span>
+              <ButtonLink href="/challenges" variant="orange" className="w-full sm:w-auto">
+                {locale === "nl" ? "Naar challenges" : "Go to challenges"}
+              </ButtonLink>
             </div>
           </div>
         ) : (
           <div className="rounded-md border border-brand-green/40 bg-brand-green/5 p-6">
             <h2 className="font-display text-3xl text-brand-green">
-              {locale === "nl" ? "Hele journey voltooid!" : "Whole journey complete!"}
+              {locale === "nl"
+                ? "Alle challenges voltooid!"
+                : "All challenges complete!"}
             </h2>
             <p className="text-white/70 mt-2">
               {locale === "nl"
-                ? "Bekijk je rewards of pak nog wat extra punten via challenges."
-                : "Go cash in your rewards or grab extra points via challenges."}
+                ? "Tijd om je punten in te wisselen voor een reward."
+                : "Time to spend your points on a reward."}
             </p>
             <div className="mt-4 flex flex-col sm:flex-row gap-3">
               <ButtonLink href="/rewards" variant="primary" className="w-full sm:w-auto">
                 {t.nav.rewards}
-              </ButtonLink>
-              <ButtonLink href="/challenges" variant="outline" className="w-full sm:w-auto">
-                {t.nav.challenges}
               </ButtonLink>
             </div>
           </div>
@@ -146,50 +146,47 @@ export default async function DashboardPage() {
       <section className="mt-10 grid gap-6 lg:grid-cols-2">
         <div>
           <SectionLabel number="02" className="mb-4">
-            {t.profile.yourBadges}
+            {locale === "nl" ? "Volgende prijs" : "Next prize tier"}
           </SectionLabel>
-          {badges.length === 0 ? (
-            <div className="rounded-md border border-white/10 bg-white/[0.02] p-6 text-white/60">
-              {locale === "nl"
-                ? "Nog geen badges. Voltooi je eerste stap om de 'First step' badge te verdienen."
-                : "No badges yet. Complete your first step to earn the 'First step' badge."}
-            </div>
+          {nextTier ? (
+            <Link
+              href="/rewards"
+              className="block rounded-md border border-white/10 bg-white/[0.02] p-6 hover:border-brand-green/60 transition-colors"
+            >
+              <div className="text-3xl mb-2">{nextTier.emoji}</div>
+              <h3 className="font-display text-2xl">{nextTier.name}</h3>
+              <p className="text-sm text-white/60 mt-1">{nextTier.description}</p>
+              <div className="mt-3 font-display text-2xl text-brand-green">
+                {nextTier.costPoints} pts ·{" "}
+                <span className="text-brand-orange">
+                  {locale === "nl" ? "nog" : "need"} {nextTier.costPoints - balance}
+                </span>
+              </div>
+            </Link>
           ) : (
-            <div className="flex flex-wrap gap-4 rounded-md border border-white/10 bg-white/[0.02] p-6">
-              {badges.map((b) =>
-                b ? (
-                  <BadgeSticker key={b.id} badge={b} locale={locale} size="md" />
-                ) : null
-              )}
+            <div className="rounded-md border border-brand-green/40 bg-brand-green/5 p-6 text-brand-green">
+              {locale === "nl"
+                ? "Je hebt het hoogste tier ontgrendeld!"
+                : "You've unlocked the top tier!"}
             </div>
           )}
         </div>
 
         <div>
           <SectionLabel number="03" className="mb-4">
-            {locale === "nl" ? "Aanbevolen challenge" : "Recommended challenge"}
+            {t.profile.yourBadges}
           </SectionLabel>
-          {recommendedChallenge ? (
-            <Link
-              href={`/challenges/${recommendedChallenge.id}`}
-              className="block rounded-md border border-white/10 bg-white/[0.02] p-6 hover:border-brand-green/60 hover:bg-white/[0.04] transition-colors"
-            >
-              <div className="brand-section-label !text-brand-green mb-1">
-                {t.challenges.types[recommendedChallenge.type]}
-              </div>
-              <h3 className="font-display text-2xl">
-                {recommendedChallenge.title[locale]}
-              </h3>
-              <p className="text-sm text-white/70 mt-1">
-                {recommendedChallenge.description[locale]}
-              </p>
-              <div className="mt-3 font-display text-2xl text-brand-green">
-                +{recommendedChallenge.points} pts →
-              </div>
-            </Link>
-          ) : (
+          {badges.length === 0 ? (
             <div className="rounded-md border border-white/10 bg-white/[0.02] p-6 text-white/60">
-              {locale === "nl" ? "Alle challenges gedaan!" : "All challenges done!"}
+              {locale === "nl"
+                ? "Nog geen badges. Voltooi je eerste challenge om er een te verdienen."
+                : "No badges yet. Complete your first challenge to earn one."}
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-4 rounded-md border border-white/10 bg-white/[0.02] p-6">
+              {badges.map((b) =>
+                b ? <BadgeSticker key={b.id} badge={b} locale={locale} size="md" /> : null
+              )}
             </div>
           )}
         </div>
@@ -200,74 +197,52 @@ export default async function DashboardPage() {
           {locale === "nl" ? "Recente activiteit" : "Recent activity"}
         </SectionLabel>
         <ul className="rounded-md border border-white/10 divide-y divide-white/5">
-          {(() => {
-            type ActivityRow = {
-              kind: "step" | "attempt";
-              userId: string;
-              stepId: string;
-              completedAt: string;
-            };
-            const stepRows: ActivityRow[] = completions.map((c) => ({
-              kind: "step",
-              userId: c.userId,
-              stepId: c.stepId,
-              completedAt: c.completedAt,
-            }));
-            const attemptRows: ActivityRow[] = attempts.map((a) => ({
-              kind: "attempt",
-              userId: a.userId,
-              stepId: a.challengeId,
-              completedAt: a.createdAt,
-            }));
-            return [...stepRows, ...attemptRows];
-          })()
-            .sort(
-              (a, b) =>
-                new Date(b.completedAt).getTime() -
-                new Date(a.completedAt).getTime()
-            )
+          {[...completions, ...redemptions.map((r) => ({ ...r, isRedemption: true as const }))]
+            .sort((a, b) => {
+              const aTime = "completedAt" in a ? a.completedAt : (a as { claimedAt: string }).claimedAt;
+              const bTime = "completedAt" in b ? b.completedAt : (b as { claimedAt: string }).claimedAt;
+              return new Date(bTime).getTime() - new Date(aTime).getTime();
+            })
             .slice(0, 6)
             .map((row, i) => {
-              const isStep = row.kind === "step";
-              const step = isStep ? steps.find((s) => s.id === row.stepId) : null;
-              const ch = !isStep ? getChallengeById(row.stepId) : null;
+              if ("challengeId" in row) {
+                const c = allChallenges.find((x) => x.id === row.challengeId);
+                return (
+                  <li key={i} className="flex items-center gap-3 px-4 py-3 text-sm">
+                    <Avatar name={user.displayName} color={user.avatarColor} size="sm" />
+                    <span className="flex-1 truncate">
+                      <span className="text-white/60">
+                        {locale === "nl" ? "Voltooid:" : "Completed:"}{" "}
+                      </span>
+                      <span className="text-brand-white">{c?.title ?? row.challengeId}</span>
+                    </span>
+                    <span className="text-brand-green font-mono text-xs">+{row.pointsAwarded}</span>
+                    <span className="font-mono text-xs text-white/40">
+                      {new Date(row.completedAt).toLocaleString(locale)}
+                    </span>
+                  </li>
+                );
+              }
+              const r = row as { tierId: string; costPoints: number; claimedAt: string; voucherCode: string };
+              const tier = tiers.find((t) => t.id === r.tierId);
               return (
-                <li
-                  key={i}
-                  className="flex items-center gap-3 px-4 py-3 text-sm"
-                >
-                  <Avatar
-                    name={user.displayName}
-                    color={user.avatarColor}
-                    size="sm"
-                  />
+                <li key={i} className="flex items-center gap-3 px-4 py-3 text-sm">
+                  <span className="text-2xl">{tier?.emoji ?? "🎁"}</span>
                   <span className="flex-1 truncate">
-                    {isStep && step ? (
-                      <>
-                        <span className="text-white/60">
-                          {locale === "nl" ? "Voltooid:" : "Completed:"}{" "}
-                        </span>
-                        <span className="text-brand-white">{step.title[locale]}</span>
-                      </>
-                    ) : ch ? (
-                      <>
-                        <span className="text-white/60">
-                          {locale === "nl" ? "Challenge:" : "Challenge:"}{" "}
-                        </span>
-                        <span className="text-brand-white">{ch.title[locale]}</span>
-                      </>
-                    ) : null}
+                    <span className="text-white/60">
+                      {locale === "nl" ? "Geclaimd:" : "Redeemed:"}{" "}
+                    </span>
+                    <span className="text-brand-white">{tier?.name ?? r.tierId}</span>
                   </span>
+                  <span className="text-brand-orange font-mono text-xs">-{r.costPoints}</span>
                   <span className="font-mono text-xs text-white/40">
-                    {new Date(row.completedAt).toLocaleString(locale)}
+                    {new Date(r.claimedAt).toLocaleString(locale)}
                   </span>
                 </li>
               );
             })}
-          {completions.length === 0 && attempts.length === 0 ? (
-            <li className="px-4 py-6 text-sm text-white/50">
-              {t.common.noResults}
-            </li>
+          {completions.length === 0 && redemptions.length === 0 ? (
+            <li className="px-4 py-6 text-sm text-white/50">{t.common.noResults}</li>
           ) : null}
         </ul>
       </section>
@@ -294,12 +269,12 @@ function Tile({
   return (
     <div className={`rounded-md border ${colors} bg-white/[0.02] p-5 sm:p-6`}>
       <div className="brand-section-label">{label}</div>
-      <div className={`font-display text-5xl mt-3 tabular-nums tracking-wide leading-tight py-0.5 ${colors.split(" ")[1]}`}>
+      <div
+        className={`font-display text-5xl mt-3 tabular-nums tracking-wide leading-tight py-0.5 ${colors.split(" ")[1]}`}
+      >
         {value}
       </div>
-      {mono ? (
-        <div className="mt-1 text-xs text-white/40 font-mono">{mono}</div>
-      ) : null}
+      {mono ? <div className="mt-1 text-xs text-white/40 font-mono">{mono}</div> : null}
     </div>
   );
 }

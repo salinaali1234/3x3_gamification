@@ -28,6 +28,10 @@ export default async function LoginPage({
       </p>
 
       <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:gap-12 lg:items-start">
+        <div className="rounded-md border border-white/10 bg-white/[0.02] p-6 sm:p-8">
+          <FestivalWelcomeIntro dict={t} variant="compact" />
+        </div>
+
         <div className="rounded-md border border-brand-green/30 bg-brand-green/5 p-6 sm:p-8">
           <LoginTabs
             supabaseEnabled={supabaseEnabled}
@@ -70,10 +74,6 @@ export default async function LoginPage({
             }}
             initialTab={initialTab}
           />
-        </div>
-
-        <div className="rounded-md border border-white/10 bg-white/[0.02] p-6 sm:p-8">
-          <FestivalWelcomeIntro dict={t} variant="compact" />
         </div>
       </div>
     </div>
