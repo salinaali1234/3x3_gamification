@@ -15,8 +15,8 @@ export default async function AdminCodesPage() {
     <div className="space-y-6">
       <p className="text-white/70 text-sm max-w-2xl">
         {locale === "nl"
-          ? "Print deze codes en geef ze aan de leaders op de juiste locaties. Deelnemers typen de code in op de challenge-kaart om punten te verdienen."
-          : "Print these codes and hand them to the leaders at the right locations. Participants type the code on the challenge card to earn points."}
+          ? "Print deze codes en geef ze aan de 3X3 Leaders op de juiste locaties. Deelnemers typen de code in op de challenge-kaart om punten te verdienen."
+          : "Print these codes and hand them to the 3X3 Leaders at the right locations. Participants type the code on the challenge card to earn points."}
       </p>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {codeChallenges.map((c) => (
@@ -31,11 +31,11 @@ export default async function AdminCodesPage() {
       </div>
 
       <section className="rounded-md border border-brand-orange/30 bg-brand-orange/5 p-4">
-        <h2 className="brand-section-label !text-brand-orange">Fence challenge</h2>
+        <h2 className="brand-section-label !text-brand-orange">3X3 Leader Exhibition</h2>
         <p className="text-sm text-white/70 mt-2">
           {locale === "nl"
-            ? "De fence-challenge gebruikt 10 letters die deelnemers van de 10 fence-leaders krijgen. Ze typen ze in de juiste volgorde."
-            : "The fence challenge uses 10 letters that participants collect from the 10 fence leaders. They enter them in the correct order."}
+            ? "De 3X3 Leader Exhibition-challenge gebruikt 10 letters die deelnemers van de 10 3X3 Leaders krijgen. Ze typen ze in de juiste volgorde."
+            : "The 3X3 Leader Exhibition challenge uses 10 letters that participants collect from the 10 3X3 Leaders. They enter them in the correct order."}
         </p>
         <div className="mt-3 flex flex-wrap gap-2 font-display text-2xl">
           {challenges

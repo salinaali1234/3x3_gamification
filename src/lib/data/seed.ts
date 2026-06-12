@@ -810,6 +810,20 @@ export const SEED_REWARDS: Reward[] = [
     emoji: "🏀",
     accent: "orange",
   },
+  {
+    id: "rw-tier-5-vip",
+    name: { nl: "VIP Upgrade", en: "VIP Upgrade" },
+    description: {
+      nl: "Tier 5 — VIP upgrade bij de reward desk. Daglimiet: vrijdag 1 · zaterdag 2 · zondag 3.",
+      en: "Tier 5 — VIP upgrade at the reward desk. Daily cap: Fri 1 · Sat 2 · Sun 3.",
+    },
+    type: "vip_upgrade",
+    verifiable: true,
+    costPoints: 500,
+    stock: 6,
+    emoji: "⭐",
+    accent: "blue",
+  },
 ];
 
 function rng(seed: number) {

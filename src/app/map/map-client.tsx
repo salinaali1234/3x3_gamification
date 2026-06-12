@@ -18,11 +18,89 @@ import { cn } from "@/lib/utils";
 const CATEGORY_COLORS: Record<MapPoiCategory, string> = {
   court: "bg-brand-orange",
   food: "bg-brand-green",
-  service: "bg-white/80",
+  service: "bg-white border border-black/15",
   activation: "bg-brand-blue",
   culture: "bg-purple-500",
   entertainment: "bg-pink-500",
 };
+
+function MapPoiDetail({
+  poi,
+  locale,
+  dict,
+  variant = "dark",
+}: {
+  poi: MapPoi;
+  locale: Locale;
+  dict: Dictionary;
+  variant?: "light" | "dark";
+}) {
+  const light = variant === "light";
+
+  return (
+    <div
+      className={cn(
+        "p-4",
+        light
+          ? "border-t border-black/10 bg-brand-offwhite text-brand-black"
+          : "rounded-md border border-brand-green/40 bg-brand-green/5"
+      )}
+    >
+      <div className="flex items-center justify-between gap-2">
+        <span
+          className={cn(
+            "font-mono text-xs",
+            light ? "text-brand-black/55" : "text-brand-green"
+          )}
+        >
+          {poi.mapCode}
+        </span>
+        <span
+          className={cn(
+            "rounded-full px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider text-brand-black",
+            CATEGORY_COLORS[poi.category]
+          )}
+        >
+          {dict.map.categories[poi.category]}
+        </span>
+      </div>
+      <h3
+        className={cn(
+          "mt-2 font-display text-2xl",
+          light ? "text-brand-black" : "text-brand-white"
+        )}
+      >
+        {poi.name[locale]}
+      </h3>
+      <p
+        className={cn(
+          "mt-1 text-sm leading-relaxed",
+          light ? "text-brand-black/70" : "text-white/70"
+        )}
+      >
+        {poi.description[locale]}
+      </p>
+      {poi.redeemCode ? (
+        <div className="mt-4 space-y-2">
+          <p
+            className={cn(
+              "text-xs font-mono",
+              light ? "text-brand-black/55" : "text-white/50"
+            )}
+          >
+            {dict.map.journeyCode}: {poi.redeemCode}
+          </p>
+          <Link
+            href={`/challenges?code=${encodeURIComponent(poi.redeemCode)}`}
+            className="inline-flex min-h-11 w-full sm:w-auto items-center justify-center gap-1 rounded-full bg-brand-green px-4 py-2.5 text-sm font-medium text-brand-black hover:bg-brand-green/90"
+          >
+            {dict.map.enterCode} →
+          </Link>
+        </div>
+      ) : null}
+    </div>
+  );
+}
 
 export function MapClient({
   locale,
@@ -88,12 +166,17 @@ export function MapClient({
             );
           })}
         </FestivalMapEmbed>
-        <p className="border-t border-white/10 px-3 py-2 text-center text-xs text-white/50">
+
+        {selected ? (
+          <MapPoiDetail poi={selected} locale={locale} dict={dict} variant="light" />
+        ) : null}
+
+        <p className="border-t border-black/10 px-3 py-2 text-center text-xs text-brand-black/50">
           <a
             href={FESTIVAL_MAP_PDF}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-mono uppercase tracking-wider hover:text-brand-green"
+            className="font-mono uppercase tracking-wider text-brand-black/70 hover:text-brand-orange"
           >
             {dict.map.openPdf} ↗
           </a>
@@ -116,42 +199,7 @@ export function MapClient({
           <p className="mt-2 text-xs text-white/40">{dict.map.searchHint}</p>
         </div>
 
-        {selected ? (
-          <div className="rounded-md border border-brand-green/40 bg-brand-green/5 p-4">
-            <div className="flex items-center justify-between gap-2">
-              <span className="font-mono text-xs text-brand-green">
-                {selected.mapCode}
-              </span>
-              <span
-                className={cn(
-                  "rounded-full px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider text-brand-black",
-                  CATEGORY_COLORS[selected.category]
-                )}
-              >
-                {dict.map.categories[selected.category]}
-              </span>
-            </div>
-            <h3 className="mt-2 font-display text-2xl">{selected.name[locale]}</h3>
-            <p className="mt-1 text-sm text-white/70">
-              {selected.description[locale]}
-            </p>
-            {selected.redeemCode ? (
-              <div className="mt-4 space-y-2">
-                <p className="text-xs text-white/50 font-mono">
-                  {dict.map.journeyCode}: {selected.redeemCode}
-                </p>
-                <Link
-                  href={`/challenges?code=${encodeURIComponent(selected.redeemCode)}`}
-                  className="inline-flex min-h-11 w-full sm:w-auto items-center justify-center gap-1 rounded-full bg-brand-green px-4 py-2.5 text-sm font-medium text-brand-black hover:bg-brand-green/90"
-                >
-                  {dict.map.enterCode} →
-                </Link>
-              </div>
-            ) : null}
-          </div>
-        ) : null}
-
-        <ul className="max-h-64 overflow-y-auto rounded-md border border-white/10 divide-y divide-white/5">
+        <ul className="max-h-[min(24rem,50vh)] overflow-y-auto rounded-md border border-white/10 divide-y divide-white/5">
           {results.length === 0 ? (
             <li className="px-4 py-6 text-sm text-white/50">{dict.map.noResults}</li>
           ) : (

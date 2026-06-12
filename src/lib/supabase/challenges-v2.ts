@@ -55,7 +55,7 @@ export async function getUserPointsBalanceDb(userId: string): Promise<number | n
   const supabase = await createSupabaseServerClient();
   if (!supabase) return null;
 
-  const [earnedRes, spentRes] = await Promise.all([
+  const [earnedRes, spentV2Res, claimsRes] = await Promise.all([
     supabase
       .from("challenge_completions_v2")
       .select("points_awarded")
@@ -64,17 +64,27 @@ export async function getUserPointsBalanceDb(userId: string): Promise<number | n
       .from("prize_redemptions_v2")
       .select("cost_points")
       .eq("user_id", userId),
+    supabase
+      .from("reward_claims")
+      .select("rewards(cost_points)")
+      .eq("user_id", userId),
   ]);
 
-  if (earnedRes.error && spentRes.error) return null;
+  if (earnedRes.error && spentV2Res.error && claimsRes.error) return null;
 
   const earned = (earnedRes.data ?? []).reduce(
     (sum, row) => sum + (row.points_awarded as number),
     0
   );
-  const spent = (spentRes.data ?? []).reduce(
+  const spentV2 = (spentV2Res.data ?? []).reduce(
     (sum, row) => sum + (row.cost_points as number),
     0
   );
-  return earned - spent;
+  const spentClaims = (claimsRes.data ?? []).reduce((sum, row) => {
+    const reward = row.rewards as { cost_points?: number } | { cost_points?: number }[] | null;
+    const cost = Array.isArray(reward) ? reward[0]?.cost_points : reward?.cost_points;
+    return sum + (cost ?? 0);
+  }, 0);
+
+  return earned - spentV2 - spentClaims;
 }

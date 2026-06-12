@@ -71,7 +71,11 @@ export async function getChallengePassPoints(userId: string): Promise<number> {
 }
 
 export async function getUserPointsBalance(userId: string): Promise<number> {
-  const mem = memUserPointsBalance(userId);
+  const memClaimsCost = memUserClaims(userId).reduce((sum, claim) => {
+    const reward = memGetRewardById(claim.rewardId);
+    return sum + (reward?.costPoints ?? 0);
+  }, 0);
+  const mem = memUserPointsBalance(userId) - memClaimsCost;
   if (isSupabaseConfigured()) {
     const db = await getUserPointsBalanceDb(userId);
     if (db !== null) return Math.max(db, mem);

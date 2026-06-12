@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -12,12 +13,14 @@ import {
   getUserMatchSubmissions,
   listLiveMatches,
 } from "@/lib/data/user-game";
+import { listUnifiedChallenges, userCompletedIds } from "@/lib/data/challenges-v2";
 import { getChallengeById, listChallenges } from "@/lib/data/store";
 import { ButtonLink } from "@/components/ui/button";
 import { SectionLabel } from "@/components/ui/section-label";
 import { BadgeSticker } from "@/components/ui/badge-sticker";
 import { Avatar } from "@/components/ui/avatar";
 import { MatchScorePopup } from "@/components/match-score-popup";
+import { ChallengeSchedulePopup } from "@/components/challenge-schedule-popup";
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();
@@ -48,6 +51,14 @@ export default async function DashboardPage() {
         locale={locale}
         dict={t}
       />
+      <Suspense fallback={null}>
+        <ChallengeSchedulePopup
+          challenges={listUnifiedChallenges()}
+          completedIds={Array.from(userCompletedIds(user.id))}
+          locale={locale}
+          dict={t}
+        />
+      </Suspense>
       <div className="brand-section-label mb-2">
         3X3 UNITES // dashboard
       </div>

@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "@/lib/session";
-import { addRewardClaim, challengePoints, getRewardById, matchScorePoints, userClaims } from "@/lib/data/store";
+import { addRewardClaim, getRewardById, userClaims } from "@/lib/data/store";
 import { generateVoucherCode } from "@/lib/utils";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { claimRewardDb } from "@/lib/supabase/game";
+import { syncMemCompletionsToDb } from "@/lib/supabase/challenges-v2";
+import { getUserPointsBalance } from "@/lib/data/user-game";
 
 export async function POST(
   _req: Request,
@@ -20,8 +23,18 @@ export async function POST(
   }
 
   if (isSupabaseConfigured()) {
-    const code = generateVoucherCode();
-    const result = await claimRewardDb(reward.id, code);
+    await syncMemCompletionsToDb(user.id);
+    const balance = await getUserPointsBalance(user.id);
+    if (balance < reward.costPoints) {
+      return NextResponse.json({
+        ok: false,
+        error: "not_enough_points",
+        balance,
+        required: reward.costPoints,
+      });
+    }
+
+    const result = await claimRewardDb(reward.id);
     if (!result) {
       return NextResponse.json({ ok: false, error: "db_error" }, { status: 500 });
     }
@@ -30,6 +43,8 @@ export async function POST(
     }
     const stockRemaining =
       typeof result.stock_remaining === "number" ? result.stock_remaining : undefined;
+    revalidatePath("/rewards");
+    revalidatePath("/profile");
     return NextResponse.json({
       ok: true,
       code: result.code,
@@ -43,9 +58,14 @@ export async function POST(
   if (userClaims(user.id).some((c) => c.rewardId === reward.id)) {
     return NextResponse.json({ ok: false, error: "already_claimed" });
   }
-  const points = challengePoints(user.id) + matchScorePoints(user.id);
+  const points = await getUserPointsBalance(user.id);
   if (points < reward.costPoints) {
-    return NextResponse.json({ ok: false, error: "not_enough_points" });
+    return NextResponse.json({
+      ok: false,
+      error: "not_enough_points",
+      balance: points,
+      required: reward.costPoints,
+    });
   }
   const code = generateVoucherCode();
   addRewardClaim({
@@ -56,6 +76,8 @@ export async function POST(
     voucherCode: code,
   });
   const updated = getRewardById(reward.id);
+  revalidatePath("/rewards");
+  revalidatePath("/profile");
   return NextResponse.json({
     ok: true,
     code,

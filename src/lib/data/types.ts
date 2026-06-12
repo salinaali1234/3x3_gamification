@@ -224,7 +224,8 @@ export type RewardType =
   | "water"
   | "merch_voucher"
   | "ball"
-  | "airpods_case";
+  | "airpods_case"
+  | "vip_upgrade";
 
 export type Reward = {
   id: string;

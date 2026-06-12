@@ -202,6 +202,13 @@ export const dictionaries = {
       attemptWrong: "Helaas, probeer een andere challenge.",
       alreadyDone: "Je hebt deze challenge al gedaan.",
     },
+    challengePopup: {
+      title: "Challenge nu live",
+      subtitle: "Deze challenge is vandaag beschikbaar — ga naar de locatie en markeer hem als voltooid.",
+      cta: "Naar challenge",
+      later: "Later",
+      dismiss: "Sluiten",
+    },
     leaderboard: {
       title: "Leaderboard",
       subtitle: "Top 100 deelnemers op basis van challenge-punten.",
@@ -217,7 +224,7 @@ export const dictionaries = {
     rewards: {
       title: "Street Pass",
       subtitle:
-        "Vier officiële tiers — verdien punten via challenges en claim je reward op locatie.",
+        "Vijf officiële tiers — verdien punten via challenges en claim je reward op locatie.",
       passSeason: "World Tour Weekend",
       loginToViewPass: "om je Street Pass te zien.",
       passPointsLabel: "Street Pass punten",
@@ -241,6 +248,11 @@ export const dictionaries = {
         "Tier 1 sticker/case · Tier 2 keychain · Tier 3 20% merch · Tier 4 3x3 bal. Punten zijn voorlopig.",
       notEnoughPoints: "Niet genoeg punten",
       outOfStock: "Op is op",
+      claimErrorNotEnough:
+        "Niet genoeg punten. Je hebt {balance} pts, deze reward kost {required} pts.",
+      claimErrorAlready: "Je hebt deze reward al geclaimd.",
+      claimErrorStock: "Deze reward is op.",
+      claimErrorGeneric: "Claimen mislukt. Probeer het opnieuw.",
       yourVoucher: "Jouw voucher code",
       redeemHint: "Toon deze code bij de reward desk op het terrein.",
       redeemed: "Opgehaald op locatie",
@@ -767,6 +779,13 @@ export const dictionaries = {
       attemptWrong: "Not quite, try another challenge.",
       alreadyDone: "You already did this one.",
     },
+    challengePopup: {
+      title: "Challenge live now",
+      subtitle: "This challenge is available today — head to the location and mark it done.",
+      cta: "Go to challenge",
+      later: "Later",
+      dismiss: "Close",
+    },
     leaderboard: {
       title: "Leaderboard",
       subtitle: "Top 100 participants ranked by challenge points.",
@@ -782,7 +801,7 @@ export const dictionaries = {
     rewards: {
       title: "Street Pass",
       subtitle:
-        "Four official tiers — earn points via challenges and claim on site.",
+        "Five official tiers — earn points via challenges and claim on site.",
       passSeason: "World Tour Weekend",
       loginToViewPass: "to view your Street Pass.",
       passPointsLabel: "Street Pass points",
@@ -806,6 +825,11 @@ export const dictionaries = {
         "Tier 1 sticker/case · Tier 2 keychain · Tier 3 20% merch · Tier 4 3x3 ball. Point values are provisional.",
       notEnoughPoints: "Not enough points",
       outOfStock: "Sold out",
+      claimErrorNotEnough:
+        "Not enough points. You have {balance} pts; this reward costs {required} pts.",
+      claimErrorAlready: "You already claimed this reward.",
+      claimErrorStock: "This reward is sold out.",
+      claimErrorGeneric: "Claim failed. Please try again.",
       yourVoucher: "Your voucher code",
       redeemHint: "Show this code at the reward desk on site.",
       redeemed: "Picked up on site",

@@ -199,13 +199,13 @@ export async function submitMatchScoreDb(
   return data as Record<string, unknown>;
 }
 
-export async function claimRewardDb(rewardSlug: string, voucherCode: string) {
+export async function claimRewardDb(rewardSlug: string, voucherCode?: string) {
   await ensureGameReady();
   const supabase = await createSupabaseServerClient();
   if (!supabase) return null;
   const { data, error } = await supabase.rpc("claim_reward", {
     p_slug: rewardSlug,
-    p_voucher_code: voucherCode,
+    p_voucher_code: voucherCode ?? null,
   });
   if (error) return { ok: false as const, error: error.message };
   return data as Record<string, unknown>;

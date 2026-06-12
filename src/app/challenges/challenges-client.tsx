@@ -26,9 +26,9 @@ type Status =
 const errorMessages: Record<string, string> = {
   invalid_challenge: "Challenge not found.",
   already_completed: "You've already completed this challenge.",
-  wrong_code: "That code isn't right — double-check with the leader.",
+  wrong_code: "That code isn't right — double-check with the 3X3 Leader.",
   wrong_letters: "Those letters don't form the secret word. Try again.",
-  code_required: "Enter the code from the leader.",
+  code_required: "Enter the code from the 3X3 Leader.",
   letters_required: "Enter all 10 letters.",
   not_logged_in: "Please log in to play.",
   network: "Something went wrong. Try again.",
@@ -172,8 +172,18 @@ function ChallengeCard({
   const unavailableForToday =
     !!challenge.dayFlag && currentDay !== null && currentDay !== challenge.dayFlag;
 
+  const dayScheduleLabel =
+    challenge.dayFlag && challenge.schedule
+      ? `${challenge.dayFlag === "friday" ? "Fri" : "Sat"} ${challenge.schedule.startTime}–${challenge.schedule.endTime}`
+      : challenge.dayFlag
+        ? challenge.dayFlag === "friday"
+          ? "Friday only"
+          : "Saturday only"
+        : null;
+
   return (
     <article
+      id={`challenge-${challenge.id}`}
       className={cn(
         "relative rounded-md border bg-white/[0.02] p-5 flex flex-col gap-3 transition-colors",
         done ? "border-brand-green/40 bg-brand-green/[0.04]" : "border-white/10",
@@ -197,14 +207,14 @@ function ChallengeCard({
                   ? "Photo"
                   : "Mark done"}
           </span>
-          {challenge.dayFlag ? (
+          {dayScheduleLabel ? (
             <span
               className={cn(
                 "inline-block px-2 py-0.5 brand-section-label rounded-sm border border-white/20",
                 unavailableForToday ? "text-white/40" : "text-white/70"
               )}
             >
-              {challenge.dayFlag === "friday" ? "Friday only" : "Saturday only"}
+              {dayScheduleLabel}
             </span>
           ) : null}
         </div>
@@ -237,8 +247,9 @@ function ChallengeCard({
           </div>
         ) : unavailableForToday ? (
           <p className="text-xs text-white/50">
-            Available on{" "}
-            {challenge.dayFlag === "friday" ? "Friday" : "Saturday"} only.
+            {challenge.schedule
+              ? `Available ${challenge.dayFlag === "friday" ? "Friday" : "Saturday"} ${challenge.schedule.startTime}–${challenge.schedule.endTime} only.`
+              : `Available on ${challenge.dayFlag === "friday" ? "Friday" : "Saturday"} only.`}
           </p>
         ) : challenge.verification === "code" ? (
           <CodeForm challengeId={challenge.id} onCompleted={onCompleted} accent={accent} />
@@ -309,9 +320,9 @@ function CodeForm({
           autoComplete="off"
           value={code}
           onChange={(e) => setCode(e.target.value)}
-          placeholder="Enter code from leader"
+          placeholder="Enter code from 3X3 Leader"
           className="flex-1 min-w-0 rounded border border-white/15 bg-brand-black/60 px-3 py-2 text-sm font-mono uppercase tracking-wider placeholder:text-white/30 focus:border-brand-green focus:outline-none"
-          aria-label="Code from leader"
+          aria-label="Code from 3X3 Leader"
         />
         <SubmitButton accent={accent} disabled={isPending || !code.trim()}>
           {isPending ? "…" : "Submit"}

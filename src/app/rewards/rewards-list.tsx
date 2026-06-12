@@ -50,6 +50,7 @@ export function RewardsList({
 }) {
   const router = useRouter();
   const [claimingId, setClaimingId] = useState<string | null>(null);
+  const [claimError, setClaimError] = useState<string | null>(null);
   const [freshVoucher, setFreshVoucher] = useState<{ rewardId: string; code: string } | null>(
     null
   );
@@ -88,16 +89,25 @@ export function RewardsList({
   async function claim(reward: Reward) {
     setClaimingId(reward.id);
     setFreshVoucher(null);
+    setClaimError(null);
     try {
       const res = await fetch(`/api/rewards/${reward.id}/claim`, { method: "POST" });
-      const data = await res.json();
-      if (data.ok) {
+      const data = (await res.json()) as {
+        ok: boolean;
+        error?: string;
+        code?: string;
+        stockRemaining?: number;
+        balance?: number;
+        required?: number;
+      };
+      if (data.ok && data.code) {
         setFreshVoucher({ rewardId: reward.id, code: data.code });
         setLocalClaimedIds((prev) =>
           prev.includes(reward.id) ? prev : [...prev, reward.id]
         );
         if (typeof data.stockRemaining === "number") {
-          setStockById((prev) => ({ ...prev, [reward.id]: data.stockRemaining }));
+          const stockRemaining = data.stockRemaining;
+          setStockById((prev) => ({ ...prev, [reward.id]: stockRemaining }));
         } else {
           setStockById((prev) => ({
             ...prev,
@@ -105,6 +115,23 @@ export function RewardsList({
           }));
         }
         router.refresh();
+        return;
+      }
+
+      if (data.error === "not_enough_points") {
+        const balance = data.balance ?? userPoints;
+        const required = data.required ?? reward.costPoints;
+        setClaimError(
+          dict.rewards.claimErrorNotEnough
+            .replace("{balance}", formatPts(balance, locale))
+            .replace("{required}", formatPts(required, locale))
+        );
+      } else if (data.error === "already_claimed") {
+        setClaimError(dict.rewards.claimErrorAlready);
+      } else if (data.error === "out_of_stock") {
+        setClaimError(dict.rewards.claimErrorStock);
+      } else {
+        setClaimError(dict.rewards.claimErrorGeneric);
       }
     } finally {
       setClaimingId(null);
@@ -225,6 +252,12 @@ export function RewardsList({
           </p>
         )}
       </div>
+
+      {claimError ? (
+        <p className="rounded-md border border-brand-orange/40 bg-brand-orange/10 px-4 py-3 text-sm text-brand-orange">
+          {claimError}
+        </p>
+      ) : null}
 
       {/* Tier cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

@@ -27,6 +27,8 @@ export type UnifiedChallenge = {
   /** Required when verification === "fence" — full ordered solution. */
   letters?: string[];
   dayFlag?: DayFlag;
+  /** When set with dayFlag, drives day-only availability + schedule popup. */
+  schedule?: { startTime: string; endTime: string };
   accent: ChallengeAccent;
 };
 
@@ -89,11 +91,11 @@ export const UNIFIED_CHALLENGES: UnifiedChallenge[] = [
 
   // Panna Courts
   { id: "panna-ko-watch",         location: "Panna Courts",        sortOrder: 10, title: "Panna KO",               subtitle: "Watch the intensity and flare of Panna KO street ballers at the panna cages", description: "Catch the Panna KO street ballers at the panna cages.", points: 50,  verification: "manual", accent: "blue" },
-  { id: "breakdance-battles",     location: "Panna Courts",        sortOrder: 20, title: "Break Dance Battles",    subtitle: "Experience the energy and vibes from the Break Dance Battles at the panna cages", description: "Catch the Break Dance Battles at the panna cages.", points: 50,  verification: "manual", dayFlag: "saturday", accent: "blue" },
+  { id: "breakdance-battles",     location: "Panna Courts",        sortOrder: 20, title: "Break Dance Battles",    subtitle: "Experience the energy and vibes from the Break Dance Battles at the panna cages", description: "Catch the Break Dance Battles at the panna cages.", points: 50,  verification: "manual", dayFlag: "saturday", schedule: { startTime: "13:00", endTime: "14:00" }, accent: "blue" },
 
   // Side Events Court
-  { id: "one-vs-one-leaders",     location: "Side Events Court",   sortOrder: 10, title: "1v1 vs 3X3 Leaders",     subtitle: "Take part on the 1v1 challenge versus 3X3 Unites Leaders from all over the country", description: "Sign up for a 1v1 versus a 3X3 Unites Leader. The 3X3 Leader hands out the code after your match.", points: 75,  verification: "code",   code: "ONE-V-ONE", accent: "green" },
-  { id: "nbb-clinic",             location: "Side Events Court",   sortOrder: 20, title: "NBB Clinic",               subtitle: "Join in on the 3x3 basketball clinic given by the Nederlandse Basketball Bond (NBB)", description: "Join the NBB clinic at the side events court.", points: 50, verification: "manual", dayFlag: "friday", accent: "green" },
+  { id: "one-vs-one-leaders",     location: "Side Events Court",   sortOrder: 10, title: "1v1 vs 3X3 Leaders",     subtitle: "Take part on the 1v1 challenge versus 3X3 Leaders from all over the country", description: "Sign up for a 1v1 versus a 3X3 Leader. The 3X3 Leader hands out the code after your match.", points: 75,  verification: "code",   code: "ONE-V-ONE", accent: "green" },
+  { id: "nbb-clinic",             location: "Side Events Court",   sortOrder: 20, title: "NBB Clinic",               subtitle: "Join in on the 3x3 basketball clinic given by the Nederlandse Basketball Bond (NBB)", description: "Join the NBB clinic at the side events court.", points: 50, verification: "manual", dayFlag: "friday", schedule: { startTime: "15:00", endTime: "16:30" }, accent: "green" },
   { id: "shootout-challenge",     location: "Side Events Court",   sortOrder: 30, title: "Shootout",               subtitle: "Take part in the Shootout challenge at the side events court", description: "Take three shots from the line. Code from the 3X3 Leader.", points: 100, verification: "code", code: "SHOOT-100", accent: "green" },
   { id: "meet-greet-teams",       location: "Side Events Court",   sortOrder: 40, title: "Meet & Greet",           subtitle: "Meet & Greet the 3x3 professional mens and womens basketball team", description: "Get a photo or autograph with the pro teams. Mark it done.", points: 50, verification: "manual", accent: "green" },
   { id: "rabobank-arcade",        location: "Side Events Court",   sortOrder: 50, title: "Rabobank Arcade",        subtitle: "Challenge a 3X3 Leader to play the Rabobank basketball arcade game in front of De Waaier", description: "Beat (or be beaten by) a 3X3 Leader on the Rabobank arcade game. The 3X3 Leader gives the code.", points: 50, verification: "code", code: "WAAIER-50", accent: "orange" },
@@ -103,11 +105,11 @@ export const UNIFIED_CHALLENGES: UnifiedChallenge[] = [
   { id: "dome-immersive-video",   location: INTERACTIVE_DOME,      sortOrder: 20, title: "Immersive Video",        subtitle: "Experience the first ever 3x3 basketball immersive video experience at the dome", description: "Step into the immersive video experience — pick up the code on your way out.", points: 200, verification: "code", code: "DOME-IMMERSIVE", accent: "blue" },
   { id: "odido-arcade-outside",   location: INTERACTIVE_DOME,      sortOrder: 30, title: "ODIDO Arcade",           subtitle: "Try out the ODIDO basketball arcade outside the Interactive Dome — powered by Odido", description: "Try the ODIDO arcade outside the dome and mark it done.", points: 50, verification: "manual", accent: "blue" },
 
-  // Fence Installations (special multi-letter)
-  { id: "fence-leaders", location: "Fence Installations", sortOrder: 10,
-    title: "3X3 Leader Fence Quest",
-    subtitle: "Meet all 10 3X3 Leaders on the fence installations in real life for a special reward",
-    description: "The 3X3 Leaders on the fences are here on the grounds! Meet all 10 in real life — each 3X3 Leader gives you one letter. Enter all 10 letters in the correct order to form the secret word and claim 333 points.",
+  // 3X3 Leader Exhibition (special multi-letter)
+  { id: "fence-leaders", location: "3X3 Leader Exhibition", sortOrder: 10,
+    title: "3X3 Leader Exhibition",
+    subtitle: "Meet all 10 3X3 Leaders at the 3X3 Leader Exhibition in real life for a special reward",
+    description: "The 3X3 Leaders at the exhibition are here on the grounds! Meet all 10 in real life — each 3X3 Leader gives you one letter. Enter all 10 letters in the correct order to form the secret word and claim 333 points.",
     points: 333, verification: "fence",
     letters: ["S","T","R","E","E","T","G","A","M","E"],
     accent: "orange" },
